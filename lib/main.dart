@@ -1,9 +1,13 @@
+import 'package:capygotchi/appwrite/auth_api.dart';
 import 'package:capygotchi/features/auth/pages/login.dart';
 import 'package:flutter/material.dart';
-import 'package:appwrite/appwrite.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(ChangeNotifierProvider(
+    create: (context) => AuthAPI(),
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -12,20 +16,24 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-
-    Client client = Client()
-        .setEndpoint("https://cloud.appwrite.io/v1")
-        .setProject("65eb3c30edc0ee1934e6")
-        .setSelfSigned(status: true); //! For self signed certificates, only use for development
-    Account account = Account(client);
+    final authStatus = context.watch<AuthAPI>().status;
 
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Capygotchi',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: LoginPage(account: account)
+      home: authStatus == AuthStatus.unknown
+          ? const Scaffold(
+              body: Center(child: CircularProgressIndicator()),
+            )
+          : authStatus == AuthStatus.authenticated
+          ? const Scaffold(
+            body: Center(child: Text('Welcome!')),
+          )
+          : const LoginPage(),
     );
   }
 }
