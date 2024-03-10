@@ -1,5 +1,5 @@
 import 'package:capygotchi/appwrite/auth_api.dart';
-import 'package:capygotchi/features/auth/pages/login.dart';
+import 'package:capygotchi/pages/login.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

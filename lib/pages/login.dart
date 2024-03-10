@@ -22,6 +22,14 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
+  signInWithMagicLink(String email) {
+    try {
+      context.read<AuthAPI>().signInWithMagicLink(email: email);
+    } on AppwriteException catch (e) {
+      showAlert(title: 'Login failed', text: e.message.toString());
+    }
+  }
+
   showAlert({required String title, required String text}) {
     showDialog(
         context: context,
@@ -58,7 +66,7 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               ElevatedButton(
-                onPressed: () => null, // signInWithMagicLink(emailController.text), TO BE IMPLEMENTED
+                onPressed: () => signInWithMagicLink(emailController.text),
                 child: const Text('Login/Register'),
               ),
               const SizedBox(width: 16.0),
