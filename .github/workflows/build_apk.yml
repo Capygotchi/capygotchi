@@ -1,5 +1,5 @@
 # Name of the workflow
-name: Build
+name: Build APK
 
  # Controls what will trigger the workflow.
  # Change it to your needs.
@@ -25,7 +25,6 @@ jobs:
         with:
           channel: 'beta'
       - run: flutter pub get
-      - run: flutter format --set-exit-if-changed .
       - run: flutter analyze .
       - run: flutter build apk
       - uses: actions/upload-artifact@v1
