@@ -5,6 +5,7 @@ import 'package:appwrite/models.dart' as models;
 
 class LoginPage extends StatefulWidget {
   final Account account;
+
   const LoginPage({super.key, required this.account});
 
   @override
@@ -40,42 +41,74 @@ class _LoginPageState extends State<LoginPage> {
     return MaterialApp(
       home: Scaffold(
         body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Text("Capygatcha",
+                style: TextStyle(fontSize: 50, fontFamily: 'Raleway')),
             Text(loggedInUser != null
                 ? 'Logged in as ${loggedInUser!.name}'
                 : 'Not logged in'),
-            const SizedBox(height: 16.0),
-            TextField(
-              controller: emailController,
-              decoration: const InputDecoration(labelText: 'Email'),
-            ),
-            const SizedBox(height: 16.0),
+            const SizedBox(height: 20.0),
+            Container(
+                margin: EdgeInsets.symmetric(horizontal: 50),
+                child: TextField(
+                  controller: emailController,
+                  decoration: const InputDecoration(labelText: 'Email'),
+                )),
+            const SizedBox(height: 25.0),
             Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 ElevatedButton(
                   onPressed: () {
                     login(emailController.text);
                   },
-                  child: const Text('Login'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xffca2e55),
+                  ),
+                  child: const Text('Login',
+                      style: TextStyle(color: Colors.white)),
                 ),
-                const SizedBox(width: 16.0),
-                ElevatedButton(
-                  onPressed: () {
-                    googleLogin();
-                  },
-                  child: const Text('Login with google'),
-                ),
-                const SizedBox(width: 16.0),
+                const SizedBox(width: 20.0),
                 ElevatedButton(
                   onPressed: () {
                     logout();
                   },
-                  child: const Text('Logout'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xffca2e55),
+                  ),
+                  child: const Text('Logout',
+                      style: TextStyle(color: Colors.white)),
                 ),
               ],
             ),
+            const SizedBox(height: 20.0),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 100),
+              child:
+              ElevatedButton(
+                  onPressed: () {
+                    googleLogin();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xffca2e55),
+                  ),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Container(height:30,
+                          child: Image(image: AssetImage('assets/discord.png'),
+                              fit: BoxFit.fitHeight
+                          ),
+                        ),
+                        const SizedBox(width: 5.0),
+                        const Text('Login with Discord',
+                            style: TextStyle(color: Colors.white)),
+                      ])
+              ),
+            ),
+
           ],
         ),
       ),
