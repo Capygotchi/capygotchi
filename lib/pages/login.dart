@@ -1,7 +1,6 @@
 import 'package:appwrite/appwrite.dart';
-import 'package:appwrite/enums.dart';
 import 'package:flutter/material.dart';
-import 'package:capygotchi/appwrite/auth_api.dart';
+import 'package:capygotchi/apis/auth_api.dart';
 import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
@@ -14,7 +13,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController emailController = TextEditingController();
 
-  signInWithProvider(OAuthProvider provider) {
+  signInWithProvider(String provider) {
     try {
       context.read<AuthAPI>().signInWithProvider(provider: provider);
     } on AppwriteException catch (e) {
@@ -67,11 +66,13 @@ class _LoginPageState extends State<LoginPage> {
             children: <Widget>[
               ElevatedButton(
                 onPressed: () => signInWithMagicLink(emailController.text),
-                child: const Text('Login/Register'),
+                style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.black,
+                    backgroundColor: Colors.white),
+                child: const Text('Login with discord'),
               ),
-              const SizedBox(width: 16.0),
               ElevatedButton(
-                onPressed: () => signInWithProvider(OAuthProvider.discord),
+                onPressed: () => signInWithProvider('discord'),
                 style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.black,
                     backgroundColor: Colors.white),

@@ -1,5 +1,6 @@
-import 'package:capygotchi/appwrite/auth_api.dart';
+import 'package:capygotchi/pages/home.dart';
 import 'package:capygotchi/pages/login.dart';
+import 'package:capygotchi/apis/auth_api.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -17,6 +18,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authStatus = context.watch<AuthAPI>().status;
+    final userName = authStatus == AuthStatus.authenticated ? context.watch<AuthAPI>().userName : null;
+
+    print('Auth status: $authStatus');
+    print('User name: $userName');
 
     return MaterialApp(
       title: 'Capygotchi',
@@ -30,9 +35,7 @@ class MyApp extends StatelessWidget {
               body: Center(child: CircularProgressIndicator()),
             )
           : authStatus == AuthStatus.authenticated
-          ? const Scaffold(
-            body: Center(child: Text('Welcome!')),
-          )
+          ? const HomePage()
           : const LoginPage(),
     );
   }

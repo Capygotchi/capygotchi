@@ -1,6 +1,5 @@
-import 'package:capygotchi/constants/app_write.dart';
+import 'package:capygotchi/constants/appwrite.dart';
 import 'package:appwrite/appwrite.dart';
-import 'package:appwrite/enums.dart';
 import 'package:appwrite/models.dart';
 import 'package:flutter/widgets.dart';
 
@@ -33,8 +32,8 @@ class AuthAPI extends ChangeNotifier {
   // Initialize the client
   initClient() {
     client
-        .setEndpoint(appWriteEndpoint) // Your API Endpoint
-        .setProject(appWriteProjectId) // Your project ID
+        .setEndpoint(appWriteConstants.endpoint) // Your API Endpoint
+        .setProject(appWriteConstants.projectId) // Your project ID
         .setSelfSigned(status: true); // For self signed certificates, only use for development
     account = Account(client);
   }
@@ -50,11 +49,11 @@ class AuthAPI extends ChangeNotifier {
       notifyListeners();
     }
   }
-  
-  // SignIn with magic link
-  signInWithMagicLink({required String email}) async {
+
+  // SignIn with provider
+  signInWithProvider({required String provider}) async {
     try {
-      final session = await account.createMagicURLToken(userId: ID.unique(), email: email);
+      final session = await account.createOAuth2Session(provider: provider);
       _currentUser = await account.get();
       _status = AuthStatus.authenticated;
       return session;
@@ -63,13 +62,12 @@ class AuthAPI extends ChangeNotifier {
     }
   }
 
-  // SignIn with provider
-  signInWithProvider({required OAuthProvider provider}) async {
+  // SignIn with magic link
+  signInWithMagicLink({required String email}) async {
     try {
-      final session = await account.createOAuth2Session(provider: provider);
+      await account.createMagicURLSession(userId: ID.unique(), email: email);
       _currentUser = await account.get();
       _status = AuthStatus.authenticated;
-      return session;
     } finally {
       notifyListeners();
     }
