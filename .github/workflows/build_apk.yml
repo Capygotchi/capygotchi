@@ -14,7 +14,7 @@ on:
  
 # A single workflow can have multiple jobs.
 jobs:
-  build:
+  buildAndRelease:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -41,7 +41,7 @@ jobs:
           repo_token: ${{ secrets.SECRET_TOKEN }}
           file: build/app/outputs/apk/release/app-release.apk
           asset_name: app-release.apk
-          tag: ${{ github.ref }}
+          tag: ${{ github.ref_name }}
           overwrite: true
           body: "Release automatically created by GitHub Actions"
           prerelease: true
