@@ -1,4 +1,5 @@
 import 'package:capygotchi/features/auth/pages/login.dart';
+import 'package:capygotchi/features/pages/home.dart';
 import 'package:flutter/material.dart';
 import 'package:appwrite/appwrite.dart';
 
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: LoginPage(account: account)
+      home: HomePage()
     );
   }
 }

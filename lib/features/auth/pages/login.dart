@@ -45,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text("Capygatcha",
-                style: TextStyle(fontSize: 50, fontFamily: 'Raleway')),
+                style: TextStyle(fontSize: 50, fontFamily: 'Capriola')),
             Text(loggedInUser != null
                 ? 'Logged in as ${loggedInUser!.name}'
                 : 'Not logged in'),
