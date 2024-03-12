@@ -33,14 +33,14 @@ jobs:
       - uses: actions/upload-artifact@v1
         with:
           name: release-apk
-          path: build/app/outputs/apk/release/app-release.apk
+          path: build/app/outputs/apk/release/app-debug.apk
 
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.SECRET_TOKEN }}
-          file: build/app/outputs/apk/release/app-release.apk
-          asset_name: app-release.apk
+          file: build/app/outputs/apk/release/app-debug.apk
+          asset_name: app-debug.apk
           tag: ${{ github.ref_name }}
           overwrite: true
           body: "Release automatically created by GitHub Actions"
