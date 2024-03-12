@@ -33,8 +33,8 @@ class AuthAPI extends ChangeNotifier {
   // Initialize the client
   initClient() {
     client
-        .setEndpoint(appWriteConstants.endpoint) // Your API Endpoint
-        .setProject(appWriteConstants.projectId) // Your project ID
+        .setEndpoint(AppWriteConstants.endpoint) // Your API Endpoint
+        .setProject(AppWriteConstants.projectId) // Your project ID
         .setSelfSigned(status: true); // For self signed certificates, only use for development
     account = Account(client);
   }
@@ -66,7 +66,7 @@ class AuthAPI extends ChangeNotifier {
   // SignIn with magic link
   signInWithMagicLink({required String email}) async {
     try {
-      await account.createMagicURLSession(userId: ID.unique(), email: email, url: constants.basePath == '' ? null : '${constants.basePath}/login-magic');
+      await account.createMagicURLSession(userId: ID.unique(), email: email, url: Constants.basePath == '' ? null : '${Constants.basePath}/login-magic');
     } finally {
       notifyListeners();
     }
