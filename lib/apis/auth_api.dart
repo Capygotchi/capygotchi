@@ -1,6 +1,7 @@
 import 'package:capygotchi/constants/appwrite.dart';
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
+import 'package:capygotchi/constants/project.dart';
 import 'package:flutter/widgets.dart';
 
 enum AuthStatus {
@@ -19,9 +20,9 @@ class AuthAPI extends ChangeNotifier {
   // Getter methods
   User get currentUser => _currentUser;
   AuthStatus get status => _status;
-  String? get userId => _currentUser?.$id;
-  String? get userEmail => _currentUser?.email;
-  String? get userName => _currentUser?.name;
+  String? get userId => _currentUser.$id;
+  String? get userEmail => _currentUser.email;
+  String? get userName => _currentUser.name;
 
   // Constructor
   AuthAPI() {
@@ -65,9 +66,19 @@ class AuthAPI extends ChangeNotifier {
   // SignIn with magic link
   signInWithMagicLink({required String email}) async {
     try {
-      await account.createMagicURLSession(userId: ID.unique(), email: email);
+      await account.createMagicURLSession(userId: ID.unique(), email: email, url: constants.basePath == '' ? null : '${constants.basePath}/login-magic');
+    } finally {
+      notifyListeners();
+    }
+  }
+
+  // Confirm magic link
+  confirmMagicLink({required String userId, required String secret}) async {
+    try {
+      final session = await account.updateMagicURLSession(userId: userId, secret: secret);
       _currentUser = await account.get();
       _status = AuthStatus.authenticated;
+      return session;
     } finally {
       notifyListeners();
     }

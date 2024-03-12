@@ -1,6 +1,8 @@
 import 'package:appwrite/appwrite.dart';
-import 'package:flutter/material.dart';
+import 'package:capygotchi/shared/utils.dart';
 import 'package:capygotchi/apis/auth_api.dart';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
@@ -13,73 +15,71 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController emailController = TextEditingController();
 
-  signInWithProvider(String provider) {
+  signInWithProvider(String provider, BuildContext context) {
     try {
       context.read<AuthAPI>().signInWithProvider(provider: provider);
     } on AppwriteException catch (e) {
-      showAlert(title: 'Login failed', text: e.message.toString());
+      Utils.showAlert(title: 'Login failed', text: e.message.toString(), context: context);
     }
   }
 
-  signInWithMagicLink(String email) {
+  signInWithMagicLink(String email, BuildContext context) {
     try {
       context.read<AuthAPI>().signInWithMagicLink(email: email);
+      print('Magic link sent to $email');
     } on AppwriteException catch (e) {
-      showAlert(title: 'Login failed', text: e.message.toString());
+      Utils.showAlert(title: 'Login failed', text: e.message.toString(), context: context);
     }
-  }
-
-  showAlert({required String title, required String text}) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text(title),
-            content: Text(text),
-            actions: [
-              ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text('Ok'))
-            ],
-          );
-        });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Capygotchi'),
-      ),
+      backgroundColor: const Color(0xffF4E6E4),
       body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          TextField(
-            controller: emailController,
-            decoration: const InputDecoration(labelText: 'Email'),
+          const Text("Capygatcha",
+              style: TextStyle(fontSize: 50, fontFamily: 'Capriola')),
+          const SizedBox(height: 25.0),
+          Container(
+              margin: const EdgeInsets.symmetric(horizontal: 80),
+              child: TextField(
+                controller: emailController,
+                decoration: const InputDecoration(labelText: 'Email'),
+              )),
+          const SizedBox(height: 20.0),
+          ElevatedButton(
+            onPressed: () => signInWithMagicLink(
+                emailController.text,
+                context),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xffca2e55),
+            ),
+            child: const Text('Login with email',
+            style: TextStyle(color: Colors.white)),
           ),
+          ElevatedButton(
+              onPressed: () => signInWithProvider('discord', context),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xffca2e55),
+              ),
+              child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    SizedBox(
+                      height: 30,
+                      child: Image(
+                          image: AssetImage('assets/discord.png'),
+                          fit: BoxFit.fitHeight),
+                    ),
+                    SizedBox(width: 5.0),
+                    Text('Login with Discord',
+                        style: TextStyle(color: Colors.white)),
+                  ])),
           const SizedBox(height: 16.0),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              ElevatedButton(
-                onPressed: () => signInWithMagicLink(emailController.text),
-                style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.black,
-                    backgroundColor: Colors.white),
-                child: const Text('Login with discord'),
-              ),
-              ElevatedButton(
-                onPressed: () => signInWithProvider('discord'),
-                style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.black,
-                    backgroundColor: Colors.white),
-                child: const Text('Login with discord'),
-              ),
-            ],
-          ),
+
         ],
       ),
     );
