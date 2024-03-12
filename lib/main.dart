@@ -18,25 +18,27 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authStatus = context.watch<AuthAPI>().status;
-    final userName = authStatus == AuthStatus.authenticated ? context.watch<AuthAPI>().userName : null;
+    final userName = authStatus == AuthStatus.authenticated
+        ? context.watch<AuthAPI>().userName
+        : null;
 
     print('Auth status: $authStatus');
     print('User name: $userName');
 
     return MaterialApp(
-      title: 'Capygotchi',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: authStatus == AuthStatus.unknown
-          ? const Scaffold(
-              body: Center(child: CircularProgressIndicator()),
-            )
-          : authStatus == AuthStatus.authenticated
-          ? const HomePage()
-          : const LoginPage(),
-    );
+        title: 'Capygotchi',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+        home: authStatus == AuthStatus.unknown
+            ? const Scaffold(
+                body: Center(child: CircularProgressIndicator()),
+              )
+            : authStatus == AuthStatus.authenticated
+                ? const HomePage()
+                //: const LoginPage(),
+                : const HomePage());
   }
 }
