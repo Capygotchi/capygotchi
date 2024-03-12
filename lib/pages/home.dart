@@ -11,6 +11,23 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  int hunger = 100;
+  int happiness = 100;
+
+  feed() {
+    setState(() {
+      if (hunger < 200) {
+        hunger += 10;
+      }
+    });
+  }
+  pet() {
+    setState(() {
+      if (happiness < 200) {
+        happiness += 10;
+      }
+    });
+  }
   signOut() {
     try {
       context.read<AuthAPI>().signOut();
@@ -45,13 +62,26 @@ class _HomePageState extends State<HomePage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           const Text('Welcome!'),
-          ElevatedButton(
-            onPressed: () => signOut(),
-            style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.black, backgroundColor: Colors.white),
-            child: const Text('logout'),
+          Container(
+            height: 200,
+            width: 200,
+            child: Column(
+              children: <Widget>[
+                Text('Hunger: $hunger'),
+                Text('Happiness: $happiness'),
+              ],
+            )
           ),
           const Spacer(),
+          const SizedBox(
+            height: 200,
+            width: 200,
+            child: Column(children: [
+              Text('Capygatcha'),
+              Image(image: AssetImage('assets/bigger_capy.gif')),
+            ]),
+
+          ),
           SizedBox(
               height: 70,
               child: Stack(children: [
@@ -62,37 +92,34 @@ class _HomePageState extends State<HomePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
                       ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {pet();},
                         child: const Icon(
                           Icons.pets,
                           color: Colors.white,
                           size: 40,
                         ),
                       ),
-                      ElevatedButton(
-                        onPressed: () {},
-                        child: const Icon(Icons.food_bank,
-                            color: Colors.white, size: 40),
+                      SizedBox(
+                        width: 100,
+                        height: 100,
+                        child: ElevatedButton(
+                          onPressed: () {feed();},
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xff8A6552),
+                            minimumSize: const Size(100, 100),
+                            fixedSize: const Size(100, 100),
+                          ),
+                          child: const Icon(Icons.food_bank,
+                              color: Colors.white, size: 40),
+                        ),
                       ),
+
                     ],
                   ),
                 ),
               ]))
         ],
       ),
-      /*bottomNavigationBar: BottomNavigationBar(
-      backgroundColor: const Color(0xff8A6552),
-      items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
-          icon: Icon(Icons.call),
-          label: 'pet',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.camera),
-          label: 'feed',
-        ),
-      ],
-    )*/
     );
   }
 }
