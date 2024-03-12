@@ -4,6 +4,7 @@ import 'package:capygotchi/pages/capybara_stats.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'capybara.dart';
+import 'capybara_frame.dart';
 import 'home_footer.dart';
 
 class HomePage extends StatefulWidget {
@@ -58,14 +59,8 @@ class _HomePageState extends State<HomePage> {
           CapybaraStatsWidget(
             myCapybara: myCapybara, // Assurez-vous d'avoir accès au capybara dans cette classe
           ),
-          SizedBox(
-            height: 200,
-            width: 200,
-            child: Column(children: [
-              Text(myCapybara.name),
-              const Image(image: AssetImage('assets/bigger_capy.gif')),
-            ]),
-
+          CapybaraFrameWidget(
+            myCapybara: myCapybara,
           ),
           const Spacer(),
           HomeFooterWidget(

@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 
 class CapybaraStatsWidget extends StatelessWidget {
   const CapybaraStatsWidget({
-    Key? key,
+    super.key,
     required this.myCapybara,
-  }) : super(key: key);
+  });
 
   final Capybara myCapybara; // Assurez-vous d'importer correctement la classe MyCapybara
 
