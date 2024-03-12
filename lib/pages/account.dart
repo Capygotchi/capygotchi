@@ -1,6 +1,7 @@
 import 'package:capygotchi/pages/home.dart';
-import 'package:capygotchi/pages/login.dart';
+import 'package:capygotchi/apis/auth_api.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
@@ -26,9 +27,7 @@ class _AccountPageState extends State<AccountPage> {
   }
 
   logoutButton(){
-    //todo: put logout here.
-
-    Navigator.push(context, MaterialPageRoute(builder: (context)=> const LoginPage()));
+    context.read<AuthAPI>().signOut();
   }
 
   reskinButton(String pType){
