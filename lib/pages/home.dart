@@ -1,22 +1,18 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:capygotchi/apis/auth_api.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-
-  signOut() {
+  void signOut(BuildContext context) {
     try {
       context.read<AuthAPI>().signOut();
+      context.go('/login');
     } on AppwriteException catch (e) {
-      return null;
+      return;
     }
   }
 
@@ -28,11 +24,12 @@ class _HomePageState extends State<HomePage> {
         children: <Widget>[
           const Text('Welcome!'),
           ElevatedButton(
-            onPressed: () => signOut(),
+            onPressed: () => signOut(context),
             style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.black,
-                backgroundColor: Colors.white),
-            child: const Text('logout'),
+              foregroundColor: Colors.black,
+              backgroundColor: Colors.white,
+            ),
+            child: const Text('Logout'),
           ),
         ],
       ),

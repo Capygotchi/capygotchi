@@ -1,6 +1,8 @@
 import 'package:appwrite/appwrite.dart';
-import 'package:flutter/material.dart';
+import 'package:capygotchi/shared/utils.dart';
 import 'package:capygotchi/apis/auth_api.dart';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
@@ -13,39 +15,24 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController emailController = TextEditingController();
 
-  signInWithProvider(String provider) {
+  signInWithProvider(String provider, BuildContext context) {
     try {
       context.read<AuthAPI>().signInWithProvider(provider: provider);
     } on AppwriteException catch (e) {
-      showAlert(title: 'Login failed', text: e.message.toString());
+      Utils.showAlert(title: 'Login failed', text: e.message.toString(), context: context);
     }
   }
 
-  signInWithMagicLink(String email) {
+  signInWithMagicLink(String email, BuildContext context) {
     try {
       context.read<AuthAPI>().signInWithMagicLink(email: email);
+      print('Magic link sent to $email');
     } on AppwriteException catch (e) {
-      showAlert(title: 'Login failed', text: e.message.toString());
+      Utils.showAlert(title: 'Login failed', text: e.message.toString(), context: context);
     }
   }
 
-  showAlert({required String title, required String text}) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text(title),
-            content: Text(text),
-            actions: [
-              ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text('Ok'))
-            ],
-          );
-        });
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -65,14 +52,14 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               ElevatedButton(
-                onPressed: () => signInWithMagicLink(emailController.text),
+                onPressed: () => signInWithMagicLink(emailController.text, context),
                 style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.black,
                     backgroundColor: Colors.white),
-                child: const Text('Login with discord'),
+                child: const Text('Login'),
               ),
               ElevatedButton(
-                onPressed: () => signInWithProvider('discord'),
+                onPressed: () => signInWithProvider('discord', context),
                 style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.black,
                     backgroundColor: Colors.white),
