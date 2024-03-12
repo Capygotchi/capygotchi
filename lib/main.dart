@@ -1,8 +1,8 @@
-import 'package:capygotchi/pages/account.dart';
-import 'package:capygotchi/pages/home.dart';
-import 'package:capygotchi/pages/login.dart';
-import 'package:capygotchi/apis/auth_api.dart';
-import 'package:capygotchi/pages/login_magic.dart';
+import 'package:capygotchi/features/account/view/account_page.dart';
+import 'package:capygotchi/features/home/view/home_page.dart';
+import 'package:capygotchi/features/login/view/login.dart';
+import 'package:capygotchi/core/infrastructure/auth_api.dart';
+import 'package:capygotchi/features/login/view/login_magic.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';

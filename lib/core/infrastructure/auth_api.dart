@@ -1,7 +1,7 @@
-import 'package:capygotchi/constants/appwrite.dart';
+import 'package:capygotchi/shared/constants/appwrite.dart';
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
-import 'package:capygotchi/constants/project.dart';
+import 'package:capygotchi/shared/constants/project.dart';
 import 'package:flutter/widgets.dart';
 
 enum AuthStatus {

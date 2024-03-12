@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:capygotchi/apis/auth_api.dart';
+import 'package:capygotchi/core/infrastructure/auth_api.dart';
 import 'package:provider/provider.dart';
 
 class LoginMagicPage extends StatefulWidget {
