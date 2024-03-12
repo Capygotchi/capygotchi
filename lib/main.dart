@@ -20,7 +20,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authStatus = context.watch<AuthAPI>().status;
-    final userName = authStatus == AuthStatus.authenticated ? context.watch<AuthAPI>().userName : null;
+    final userName = authStatus == AuthStatus.authenticated
+        ? context.watch<AuthAPI>().userName
+        : null;
 
     print('Auth status: $authStatus');
     print('User name: $userName');
