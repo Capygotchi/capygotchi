@@ -31,6 +31,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
+          fontFamily: 'Capriola',
         ),
         home: authStatus == AuthStatus.unknown
             ? const Scaffold(
@@ -38,7 +39,7 @@ class MyApp extends StatelessWidget {
               )
             : authStatus == AuthStatus.authenticated
                 ? const HomePage()
-                : const LoginPage());
-                // const HomePage());
+                //: const LoginPage());
+                : const HomePage());
   }
 }

@@ -1,7 +1,9 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:capygotchi/apis/auth_api.dart';
+import 'package:capygotchi/pages/capybara_stats.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'capybara.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -11,23 +13,29 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int hunger = 100;
-  int happiness = 100;
+  Capybara myCapybara = Capybara(
+    name: 'Roger',
+    color: 'Brown',
+    birthDate: DateTime.now(),
+    hunger: 100,
+    happiness: 100,
+  );
 
   feed() {
     setState(() {
-      if (hunger < 200) {
-        hunger += 10;
+      if (myCapybara.hunger < 200) {
+        myCapybara.hunger += 10;
       }
     });
   }
   pet() {
     setState(() {
-      if (happiness < 200) {
-        happiness += 10;
+      if (myCapybara.happiness < 200) {
+        myCapybara.happiness += 10;
       }
     });
   }
+
   signOut() {
     try {
       context.read<AuthAPI>().signOut();
@@ -61,27 +69,19 @@ class _HomePageState extends State<HomePage> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          const Text('Welcome!'),
-          Container(
-            height: 200,
-            width: 200,
-            child: Column(
-              children: <Widget>[
-                Text('Hunger: $hunger'),
-                Text('Happiness: $happiness'),
-              ],
-            )
+          CapybaraStatsWidget(
+            myCapybara: myCapybara, // Assurez-vous d'avoir accès au capybara dans cette classe
           ),
-          const Spacer(),
-          const SizedBox(
+          SizedBox(
             height: 200,
             width: 200,
             child: Column(children: [
-              Text('Capygatcha'),
-              Image(image: AssetImage('assets/bigger_capy.gif')),
+              Text(myCapybara.name),
+              const Image(image: AssetImage('assets/bigger_capy.gif')),
             ]),
 
           ),
+          const Spacer(),
           SizedBox(
               height: 70,
               child: Stack(children: [
