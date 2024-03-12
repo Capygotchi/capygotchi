@@ -1,17 +1,17 @@
-import 'package:capygotchi/pages/capybara.dart';
+import 'package:capygotchi/core/domain/entities/capybara.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class CapybaraStatsWidget extends StatefulWidget {
-  const CapybaraStatsWidget({
+class HomeStats extends StatefulWidget {
+  const HomeStats({
     super.key
   });
 
   @override
-  State<CapybaraStatsWidget> createState() => _CapybaraStatsWidgetState();
+  State<HomeStats> createState() => _HomeStatsState();
 }
 
-class _CapybaraStatsWidgetState extends State<CapybaraStatsWidget> {
+class _HomeStatsState extends State<HomeStats> {
 
   getAge() {
     return DateTime.now().difference(context.read<Capybara>().birthDate).inDays;

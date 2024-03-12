@@ -1,17 +1,17 @@
-import 'package:capygotchi/pages/capybara.dart';
+import 'package:capygotchi/core/domain/entities/capybara.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class CapybaraFrameWidget extends StatefulWidget {
-  const CapybaraFrameWidget({
+class HomeFrame extends StatefulWidget {
+  const HomeFrame({
     super.key
   });
 
   @override
-  State<CapybaraFrameWidget> createState() => _CapybaraFrameWidgetState();
+  State<HomeFrame> createState() => _HomeFrameState();
 }
 
-class _CapybaraFrameWidgetState extends State<CapybaraFrameWidget> {
+class _HomeFrameState extends State<HomeFrame> {
   @override
   Widget build(BuildContext context) {
     return Container(

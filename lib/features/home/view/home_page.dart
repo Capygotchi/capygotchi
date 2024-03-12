@@ -1,12 +1,12 @@
 import 'package:appwrite/appwrite.dart';
-import 'package:capygotchi/apis/auth_api.dart';
-import 'package:capygotchi/pages/capybara_stats.dart';
+import 'package:capygotchi/core/infrastructure/auth_api.dart';
+import 'package:capygotchi/features/home/widgets/home_footer.dart';
+import 'package:capygotchi/features/home/widgets/home_frame.dart';
+import 'package:capygotchi/features/home/widgets/home_stats.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:capygotchi/pages/capybara_frame.dart';
-import 'package:capygotchi/pages/capybara.dart';
-import 'package:capygotchi/pages/home_footer.dart';
+import 'package:capygotchi/core/domain/entities/capybara.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -28,15 +28,15 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => Capybara(
-        name: 'Roger',
-        color: 'Brown'
+          name: 'Roger',
+          color: 'Brown'
       ),
       child: Scaffold(
         backgroundColor: const Color(0xffF4E6E4),
         appBar: AppBar(
           title: const Text(
             'Capygatcha',
-            style: TextStyle(fontFamily: 'Capriola', color: Colors.white),
+            style: TextStyle(color: Colors.white),
           ),
           actions: <Widget>[
             IconButton(
@@ -56,10 +56,10 @@ class _HomePageState extends State<HomePage> {
         body: const Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            CapybaraStatsWidget(),
-            CapybaraFrameWidget(),
+            HomeStats(),
+            HomeFrame(),
             Spacer(),
-            HomeFooterWidget(),
+            HomeFooter(),
           ],
         ),
       ),
