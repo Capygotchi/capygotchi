@@ -15,7 +15,7 @@ class _HomePageState extends State<HomePage> {
   signOut() {
     try {
       context.read<AuthAPI>().signOut();
-    } on AppwriteException catch (e) {
+    } on AppwriteException {
       return null;
     }
   }

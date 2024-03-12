@@ -19,9 +19,9 @@ class AuthAPI extends ChangeNotifier {
   // Getter methods
   User get currentUser => _currentUser;
   AuthStatus get status => _status;
-  String? get userId => _currentUser?.$id;
-  String? get userEmail => _currentUser?.email;
-  String? get userName => _currentUser?.name;
+  String? get userId => _currentUser.$id;
+  String? get userEmail => _currentUser.email;
+  String? get userName => _currentUser.name;
 
   // Constructor
   AuthAPI() {
