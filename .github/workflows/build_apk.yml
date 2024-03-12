@@ -29,7 +29,7 @@ jobs:
       - name: Analyze
         run: flutter analyze .
       - name: Build APK
-        run: flutter build apk
+        run: flutter build apk --debug
       - uses: actions/upload-artifact@v1
         with:
           name: release-apk
