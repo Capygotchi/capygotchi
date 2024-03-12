@@ -1,3 +1,4 @@
+import 'package:capygotchi/pages/account.dart';
 import 'package:capygotchi/pages/home.dart';
 import 'package:capygotchi/pages/login.dart';
 import 'package:capygotchi/apis/auth_api.dart';
