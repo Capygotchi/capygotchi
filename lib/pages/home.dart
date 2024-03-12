@@ -2,6 +2,7 @@ import 'package:appwrite/appwrite.dart';
 import 'package:capygotchi/apis/auth_api.dart';
 import 'package:capygotchi/pages/capybara_stats.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'capybara.dart';
 import 'capybara_frame.dart';
@@ -48,7 +49,9 @@ class _HomePageState extends State<HomePage> {
               color: Colors.white,
             ),
             tooltip: 'Account button',
-            onPressed: () {},
+            onPressed: () {
+              context.go('/account');
+            },
           ),
         ],
         backgroundColor: const Color(0xff8a6552),
