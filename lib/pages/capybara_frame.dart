@@ -13,10 +13,10 @@ class CapybaraFrameWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: double.infinity,
+      height: 500,
       child : SizedBox(
-        height: 200,
-        width: 200,
+        height: double.infinity,
+        width: double.infinity,
         child: Column(children: [
           Text(myCapybara.name),
           const Image(image: AssetImage('assets/bigger_capy.gif')),

@@ -32,8 +32,6 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,43 +51,35 @@ class _LoginPageState extends State<LoginPage> {
               )),
           const SizedBox(height: 20.0),
           ElevatedButton(
-            onPressed: () => signInWithMagicLink(emailController.text),
+            onPressed: () => signInWithMagicLink(
+                emailController.text,
+                context),
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xffca2e55),
             ),
             child: const Text('Login with email',
             style: TextStyle(color: Colors.white)),
           ),
-          const SizedBox(height: 16.0),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              ElevatedButton(
-                onPressed: () => signInWithMagicLink(emailController.text, context),
-                style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.black,
-                    backgroundColor: Colors.white),
-                child: const Text('Login'),
+          ElevatedButton(
+              onPressed: () => signInWithProvider('discord', context),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xffca2e55),
               ),
-              ElevatedButton(
-                onPressed: () => signInWithProvider('discord', context),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xffca2e55),
-                ),
-                child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      SizedBox(
-                        height: 30,
-                        child: Image(
-                            image: AssetImage('assets/discord.png'),
-                            fit: BoxFit.fitHeight),
-                      ),
-                      SizedBox(width: 5.0),
-                      Text('Login with Discord',
-                          style: TextStyle(color: Colors.white)),
-                    ])),
-          ),
+              child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    SizedBox(
+                      height: 30,
+                      child: Image(
+                          image: AssetImage('assets/discord.png'),
+                          fit: BoxFit.fitHeight),
+                    ),
+                    SizedBox(width: 5.0),
+                    Text('Login with Discord',
+                        style: TextStyle(color: Colors.white)),
+                  ])),
+          const SizedBox(height: 16.0),
+
         ],
       ),
     );

@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
               final insideLoginPath = state.fullPath.toString().startsWith('/login');
               if(authStatus == AuthStatus.unauthenticated && !insideLoginPath) {
                 print('home: unauthenticated or not in loginPath redirecting to /login');
-                return '/login';
+                return '/';
               } else {
                 return null;
               }

@@ -2,13 +2,12 @@ import 'package:appwrite/appwrite.dart';
 import 'package:capygotchi/apis/auth_api.dart';
 import 'package:capygotchi/pages/capybara_stats.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'capybara.dart';
 import 'capybara_frame.dart';
 import 'home_footer.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
