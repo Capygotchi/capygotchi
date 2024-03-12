@@ -1,14 +1,17 @@
 import 'package:capygotchi/pages/capybara.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class CapybaraFrameWidget extends StatelessWidget {
+class CapybaraFrameWidget extends StatefulWidget {
   const CapybaraFrameWidget({
-    super.key,
-    required this.myCapybara,
+    super.key
   });
 
-  final Capybara myCapybara;
+  @override
+  State<CapybaraFrameWidget> createState() => _CapybaraFrameWidgetState();
+}
 
+class _CapybaraFrameWidgetState extends State<CapybaraFrameWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -18,13 +21,10 @@ class CapybaraFrameWidget extends StatelessWidget {
         height: double.infinity,
         width: double.infinity,
         child: Column(children: [
-          Text(myCapybara.name),
+          Text(context.read<Capybara>().name),
           const Image(image: AssetImage('assets/bigger_capy.gif')),
         ]),
-
       ),
     );
-
-
   }
 }

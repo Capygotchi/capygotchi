@@ -2,7 +2,6 @@ import 'package:appwrite/appwrite.dart';
 import 'package:capygotchi/shared/utils.dart';
 import 'package:capygotchi/apis/auth_api.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {

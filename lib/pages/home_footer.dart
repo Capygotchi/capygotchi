@@ -1,29 +1,17 @@
 import 'package:flutter/material.dart';
-import 'capybara.dart';
+import 'package:provider/provider.dart';
+import 'package:capygotchi/pages/capybara.dart';
 
-class HomeFooterWidget extends StatelessWidget {
-  final Capybara myCapybara;
-
+class HomeFooterWidget extends StatefulWidget {
   const HomeFooterWidget({
-    super.key,
-    required this.myCapybara,
+    super.key
   });
 
-  feed() {
-    setState(() {
-      if (myCapybara.hunger < 200) {
-        myCapybara.hunger += 10;
-      }
-    });
-  }
-  pet() {
-    setState(() {
-      if (myCapybara.happiness < 200) {
-        myCapybara.happiness += 10;
-      }
-    });
-  }
+  @override
+  State<HomeFooterWidget> createState() => _HomeFooterWidgetState();
+}
 
+class _HomeFooterWidgetState extends State<HomeFooterWidget> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -36,7 +24,7 @@ class HomeFooterWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 ElevatedButton(
-                  onPressed: () {pet();},
+                  onPressed: () => context.read<Capybara>().pet(),
                   child: const Icon(
                     Icons.pets,
                     color: Colors.white,
@@ -47,7 +35,7 @@ class HomeFooterWidget extends StatelessWidget {
                   width: 100,
                   height: 100,
                   child: ElevatedButton(
-                    onPressed: () {feed();},
+                    onPressed: () => context.read<Capybara>().feed(),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xff8A6552),
                       minimumSize: const Size(100, 100),
@@ -60,8 +48,7 @@ class HomeFooterWidget extends StatelessWidget {
               ],
             ),
           ),
-        ]));
+        ])
+    );
   }
-
-  void setState(Null Function() param0) {}
 }

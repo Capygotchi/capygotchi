@@ -1,20 +1,26 @@
 import 'package:capygotchi/pages/capybara.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class CapybaraStatsWidget extends StatelessWidget {
+class CapybaraStatsWidget extends StatefulWidget {
   const CapybaraStatsWidget({
-    super.key,
-    required this.myCapybara,
+    super.key
   });
 
-  final Capybara myCapybara; // Assurez-vous d'importer correctement la classe MyCapybara
+  @override
+  State<CapybaraStatsWidget> createState() => _CapybaraStatsWidgetState();
+}
+
+class _CapybaraStatsWidgetState extends State<CapybaraStatsWidget> {
 
   getAge() {
-    return DateTime.now().difference(myCapybara.birthDate).inDays;
+    return DateTime.now().difference(context.read<Capybara>().birthDate).inDays;
   }
 
   @override
   Widget build(BuildContext context) {
+    final capybara = context.watch<Capybara>();
+
     return Container(
       width: double.infinity,
       child: Padding(
@@ -36,10 +42,10 @@ class CapybaraStatsWidget extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text("- Type :${myCapybara.color}"),
+                      Text("- Type :${capybara.color}"),
                       Text("- He is : ${getAge()} days old."),
-                      Text('- Hunger: ${myCapybara.hunger}'),
-                      Text('- Happiness: ${myCapybara.happiness}'),
+                      Text('- Hunger: ${capybara.hunger}'),
+                      Text('- Happiness: ${capybara.happiness}'),
                     ],
                   ),
                 ),
