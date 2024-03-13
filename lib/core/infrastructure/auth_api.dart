@@ -13,6 +13,7 @@ enum AuthStatus {
 class AuthAPI extends ChangeNotifier {
   Client client = Client();
   late final Account account;
+  late final Functions functions;
 
   late models.User _currentUser;
   AuthStatus _status = AuthStatus.unknown;
@@ -34,6 +35,7 @@ class AuthAPI extends ChangeNotifier {
         .setProject(AppWriteConstants.projectId) // Your project ID
         .setSelfSigned(status: true); // For self signed certificates, only use for development
     account = Account(client);
+    functions = Functions(client);
   }
 
   loadUser() async {
