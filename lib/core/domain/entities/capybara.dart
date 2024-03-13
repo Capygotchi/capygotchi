@@ -92,7 +92,7 @@ class Capybara extends ChangeNotifier {
   void _updateLife() {
     if (_happiness < 10 || _hunger < 10) {
       _life -= 2;
-    } else if ((_happiness < 20 || _hunger < 20) && _life < 100) {
+    } else if ((_happiness > 55 || _hunger > 70) && _life < 100) {
       _life += 1;
     }
 

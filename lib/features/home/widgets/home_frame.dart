@@ -2,6 +2,7 @@ import 'package:capygotchi/core/domain/entities/capybara.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'dart:async';
+import 'dart:math';
 
 class HomeFrame extends StatefulWidget {
   const HomeFrame({
@@ -15,7 +16,9 @@ class HomeFrame extends StatefulWidget {
 class _HomeFrameState extends State<HomeFrame> {
   double _leftPosition = 20; // Position horizontale initiale de l'image
   bool _movingRight = true; // Indicateur pour savoir si l'image se déplace vers la droite ou vers la gauche
+  bool _isMoving = true; // Indicateur pour savoir si l'image est en mouvement ou figée
   late Timer _timer; // Timer pour mettre à jour la position de l'image
+  final _random = Random(); // Générateur de nombre aléatoire
 
   @override
   void initState() {
@@ -23,17 +26,33 @@ class _HomeFrameState extends State<HomeFrame> {
     // Démarre un Timer pour mettre à jour la position de l'image toutes les 1000 millisecondes
     _timer = Timer.periodic(const Duration(milliseconds: 1000), (timer) {
       setState(() {
-        if (_leftPosition < 280 && _movingRight) {
-          _leftPosition += 10; // Déplacer l'image vers la droite
+        if (_isMoving) {
+          if (_leftPosition < MediaQuery
+              .of(context)
+              .size
+              .width - 100 && _movingRight) {
+            _leftPosition += 10; // Déplacer l'image vers la droite
+          } else {
+            _movingRight = false;
+          }
+
+          if (_leftPosition > 20 && !_movingRight) {
+            _leftPosition -= 10; // Déplacer l'image vers la gauche
+          } else {
+            _movingRight = true;
+          }
         } else {
-          _movingRight = false;
+          // Changer de sprite et figer l'image
+          _isMoving = _random.nextDouble() <
+              0.2; // 20% de chance que le capybara se fige
+          // met un message dans les logs si il bouge ou pas
+          if (_isMoving) {
+            print('Capybara is moving');
+          } else {
+            print('Capybara is standing still');
+          }
         }
 
-        if (_leftPosition > 20 && !_movingRight) {
-          _leftPosition -= 10; // Déplacer l'image vers la gauche
-        } else {
-          _movingRight = true;
-        }
       });
     });
   }
@@ -61,7 +80,7 @@ class _HomeFrameState extends State<HomeFrame> {
       child: Stack(
         children: [
           Align(  //NOM DU CAPYBARA
-            alignment: Alignment.bottomCenter,
+            alignment: Alignment.topCenter,
             child: Text(
               context.read<Capybara>().name,
               style: TextStyle(fontSize: 18),
@@ -71,7 +90,11 @@ class _HomeFrameState extends State<HomeFrame> {
             duration: const Duration(milliseconds: 1000),
             bottom: 0,
             left: _leftPosition,
-            child: Image.asset('assets/bigger_capy.gif'),
+            child: Transform(
+              transform: _movingRight ? Matrix4.rotationY(3.14159) : Matrix4.rotationY(0), // Retourner l'image si elle se déplace vers la droite
+              alignment: Alignment.center,
+              child: _isMoving ? Image.asset('assets/walk_left.gif') : Image.asset('assets/stand_left.gif'), // Utiliser le sprite de marche ou de fige
+            ),
           ),
         ],
       ),
