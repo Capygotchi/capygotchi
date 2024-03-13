@@ -1,18 +1,16 @@
 import 'package:capygotchi/core/domain/entities/capybara.dart';
+import 'package:capygotchi/features/home/widgets/home_stat_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class HomeStats extends StatefulWidget {
-  const HomeStats({
-    super.key
-  });
+  const HomeStats({super.key});
 
   @override
   State<HomeStats> createState() => _HomeStatsState();
 }
 
 class _HomeStatsState extends State<HomeStats> {
-
   getAge() {
     return DateTime.now().difference(context.read<Capybara>().birthDate).inDays;
   }
@@ -20,7 +18,6 @@ class _HomeStatsState extends State<HomeStats> {
   @override
   Widget build(BuildContext context) {
     final capybara = context.watch<Capybara>();
-
     return Container(
       width: double.infinity,
       child: Padding(
@@ -39,16 +36,22 @@ class _HomeStatsState extends State<HomeStats> {
             Row(
               children: <Widget>[
                 Expanded(
+                    child: Padding(
+                  padding: const EdgeInsets.only(right: 20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text("- Type :${capybara.color}"),
                       Text("- He is : ${getAge()} days old."),
-                      Text('- Hunger: ${capybara.hunger}'),
-                      Text('- Happiness: ${capybara.happiness}'),
+                      HomeStatBar(
+                          value: capybara.life!, type: "life:              "),
+                      HomeStatBar(
+                          value: capybara.hunger!, type: "Hunger:      "),
+                      HomeStatBar(
+                          value: capybara.happiness!, type: "Happiness:"),
                     ],
                   ),
-                ),
+                )),
               ],
             ),
           ],

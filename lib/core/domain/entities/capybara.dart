@@ -69,6 +69,9 @@ class Capybara extends ChangeNotifier {
       if (_hunger > 0) {
         _hunger -= 3;
       }
+      if( _hunger < 0){
+        _hunger = 0;
+      }
       _updateLife();
       notifyListeners();
     });
@@ -76,6 +79,9 @@ class Capybara extends ChangeNotifier {
     _happinessTimer = Timer.periodic(const Duration(seconds: 10), (_) {
       if (_happiness > 0) {
         _happiness -= 2;
+      }
+      if( _happiness < 0){
+        _happiness = 0;
       }
       _updateLife();
       notifyListeners();
@@ -88,6 +94,10 @@ class Capybara extends ChangeNotifier {
       _life -= 2;
     } else if ((_happiness < 20 || _hunger < 20) && _life < 100) {
       _life += 1;
+    }
+
+    if( _life < 0){
+      _life = 0;
     }
     notifyListeners();
   }
