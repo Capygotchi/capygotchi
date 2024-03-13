@@ -26,6 +26,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    //initializing the capybara
     return ChangeNotifierProvider(
       create: (_) => Capybara(
           name: 'Roger',
