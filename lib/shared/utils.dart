@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:developer';
 
 class Utils {
   static showAlertOK({required BuildContext context, required String title, required String text, required String okBtnText}) {
@@ -39,10 +40,19 @@ class Utils {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: Text(yesBtnText))
-              ],
-              );
-            }
+                  child: Text(yesBtnText)
+              )
+            ],
+          );
+        }
     );
+  }
+
+  static logDebug({required dynamic message}) {
+    log(message.toString(), name: 'DEBUG', level: 700);
+  }
+
+  static logError({required dynamic message}) {
+    log(message.toString(), name: 'ERROR', level: 1000);
   }
 }

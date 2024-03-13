@@ -2,6 +2,7 @@ import 'package:capygotchi/app_router.dart';
 import 'package:capygotchi/core/domain/entities/user.dart';
 import 'package:capygotchi/core/infrastructure/auth_api.dart';
 import 'package:capygotchi/core/infrastructure/database_api.dart';
+import 'package:capygotchi/shared/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -48,8 +49,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final authStatus = context.watch<AuthAPI>().status;
     final userName = context.watch<User?>()?.userName ?? 'null';
-    print('Auth status: $authStatus');
-    print('User name: $userName');
+    Utils.logDebug(message: 'Auth status: $authStatus');
+    Utils.logDebug(message: 'User name: $userName');
 
     final router = AppRouter.createRouter(context, context.read<AuthAPI>());
 

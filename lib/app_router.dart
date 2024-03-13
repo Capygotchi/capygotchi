@@ -3,6 +3,7 @@ import 'package:capygotchi/features/home/view/home_page.dart';
 import 'package:capygotchi/features/login/view/login.dart';
 import 'package:capygotchi/core/infrastructure/auth_api.dart';
 import 'package:capygotchi/features/login/view/login_magic.dart';
+import 'package:capygotchi/shared/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -18,7 +19,7 @@ class AppRouter {
               redirect: (BuildContext context, GoRouterState state) {
                 final insideLoginPath = state.fullPath.toString().startsWith('/login');
                 if(authStatus == AuthStatus.unauthenticated && !insideLoginPath) {
-                  print('home: unauthenticated or not in loginPath redirecting to /login');
+                  Utils.logDebug(message: 'home: unauthenticated or not in loginPath redirecting to /login');
                   return '/login';
                 } else {
                   return null;
@@ -30,7 +31,7 @@ class AppRouter {
                   builder: (context, state) => const LoginPage(),
                   redirect: (_, __) {
                     if (authStatus == AuthStatus.authenticated) {
-                      print('login: already authenticated, redirecting to /');
+                      Utils.logDebug(message: 'login: already authenticated, redirecting to /');
                       return '/';
                     } else {
                       return null;
@@ -47,10 +48,10 @@ class AppRouter {
                   },
                   redirect: (_, GoRouterState state) {
                     if (authStatus == AuthStatus.authenticated) {
-                      print('login-magic: already authenticated, redirecting to /');
+                      Utils.logDebug(message: 'login-magic: already authenticated, redirecting to /');
                       return '/';
                     } else if (state.uri.queryParameters['userId'] == null || state.uri.queryParameters['secret'] == null) {
-                      print('login-magic: userId or secret is null, redirecting to /login');
+                      Utils.logDebug(message: 'login-magic: userId or secret is null, redirecting to /login');
                       return '/';
                     } else {
                       return null;

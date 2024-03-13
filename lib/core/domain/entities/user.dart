@@ -1,4 +1,5 @@
 import 'package:capygotchi/shared/constants/appwrite.dart';
+import 'package:capygotchi/shared/utils.dart';
 import 'package:flutter/widgets.dart';
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart' as models;
@@ -59,7 +60,7 @@ class User extends ChangeNotifier {
   //Check premium
   checkPremium() async {
     try {
-      final response = await _functions.createExecution(
+      await _functions.createExecution(
         functionId: AppWriteConstants.functionId,
         path: '/?userId=$_userId',
         method: 'GET',
@@ -74,7 +75,7 @@ class User extends ChangeNotifier {
 
   Future<bool> addPremium() async {
     try {
-      final response = await _functions.createExecution(
+      await _functions.createExecution(
         functionId: AppWriteConstants.functionId,
         path: '/?userId=$_userId',
         method: 'PATCH',
@@ -86,9 +87,9 @@ class User extends ChangeNotifier {
   }
 
   void displayInfo() {
-    print('Username: $_userName');
-    print('User id: $_userId');
-    print('Premium: $_isPremium');
-    print('Premium purchase date: $_premiumPurchaseDate');
+    Utils.logDebug(message: 'Username: $_userName');
+    Utils.logDebug(message: 'User id: $_userId');
+    Utils.logDebug(message: 'Premium: $_isPremium');
+    Utils.logDebug(message: 'Premium purchase date: $_premiumPurchaseDate');
   }
 }
