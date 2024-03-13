@@ -44,6 +44,8 @@ class _HomeStatsState extends State<HomeStats> {
                       Text("- Type :${capybara.color}"),
                       Text("- He is : ${getAge()} days old."),
                       HomeStatBar(
+                          value: capybara.life!, type: "life:              "),
+                      HomeStatBar(
                           value: capybara.hunger!, type: "Hunger:      "),
                       HomeStatBar(
                           value: capybara.happiness!, type: "Happiness:"),
