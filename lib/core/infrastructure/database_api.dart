@@ -25,7 +25,6 @@ class DatabaseAPI extends ChangeNotifier{
           ]
       );
 
-
     } on AppwriteException catch(e) {
       print(e);
     }

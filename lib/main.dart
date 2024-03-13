@@ -1,22 +1,45 @@
 import 'package:capygotchi/app_router.dart';
 import 'package:capygotchi/core/domain/entities/user.dart';
 import 'package:capygotchi/core/infrastructure/auth_api.dart';
+import 'package:capygotchi/core/infrastructure/database_api.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void main() {
+
   runApp(ChangeNotifierProvider(
     create: (context) => AuthAPI(),
-    child: ChangeNotifierProvider(
-      create: (context) {
-        if(context.read<AuthAPI>().status == AuthStatus.authenticated) {
-          return User(account: context.read<AuthAPI>().account, user: context.read<AuthAPI>().currentUser);
-        }
-        return null;
-      },
+    child: MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) {
+          if(context.read<AuthAPI>().status == AuthStatus.authenticated) {
+            return User(account: context.read<AuthAPI>().account, user: context.read<AuthAPI>().currentUser);
+          }
+          return null;
+        }),
+        ChangeNotifierProvider(create: (context) {
+          if(context.read<AuthAPI>().status == AuthStatus.authenticated) {
+            return DatabaseAPI(databases: context.read<AuthAPI>().databases);
+          }
+          return null;
+        })
+      ],
       child: const MyApp(),
     ),
   ));
+
+  // runApp(ChangeNotifierProvider(
+  //   create: (context) => AuthAPI(),
+  //   child: ChangeNotifierProvider(
+  //     create: (context) {
+  //       if(context.read<AuthAPI>().status == AuthStatus.authenticated) {
+  //         return User(account: context.read<AuthAPI>().account, user: context.read<AuthAPI>().currentUser);
+  //       }
+  //       return null;
+  //     },
+  //     child: const MyApp(),
+  //   ),
+  // ));
 }
 
 class MyApp extends StatelessWidget {
