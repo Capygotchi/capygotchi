@@ -10,8 +10,11 @@ void main() {
 
   print('main: ${client.endPoint}');
 
-  runApp(ChangeNotifierProvider(
-    create: (context) => AuthAPI(client: client),
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => AuthAPI(client: client)),
+      ChangeNotifierProvider(create: (context) => User(account: context.watch<AuthAPI>().account)),
+    ],
     child: const MyApp(),
   ));
 }
@@ -23,6 +26,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authStatus = context.watch<AuthAPI>().status;
+    final userName = context.watch<User>().userName;
+    print('Auth status: $authStatus');
     print('Auth status: $authStatus');
 
     final router = AppRouter.createRouter(context, context.read<AuthAPI>());

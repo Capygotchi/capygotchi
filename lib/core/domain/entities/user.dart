@@ -24,6 +24,7 @@ class User extends ChangeNotifier {
   }) {
     _account = account;
     loadUser();
+    //TODO: load premium status
   }
 
   void loadUser () async {

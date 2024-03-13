@@ -2,7 +2,8 @@ import 'dart:convert';
 import 'dart:ffi';
 
 import 'package:appwrite/appwrite.dart';
-import 'package:appwrite/models.dart';
+import 'package:appwrite/models.dart' as models;
+import 'package:capygotchi/core/domain/entities/user.dart';
 import 'package:capygotchi/core/infrastructure/auth_api.dart';
 import 'package:capygotchi/features/account/widgets/account_text_field.dart';
 import 'package:capygotchi/shared/utils.dart';
@@ -29,7 +30,7 @@ class _AccountPageState extends State<AccountPage> {
     super.initState();
 
     //get account info here
-    accountName = context.read<User>().name;
+    accountName = context.read<User>().userName;
     capybaraType = "brun";
     accountNameController = TextEditingController(text: accountName);
 
@@ -46,7 +47,7 @@ class _AccountPageState extends State<AccountPage> {
   }
 
   wantPremiumButton() async{
-    var isPremium = await //TODO RECUP PREMIUM STATUS;
+    final isPremium = context.watch<User>().isPremium; //TODO RECUP PREMIUM STATUS;
     if(isPremium){
       Utils.showAlertOK(context: context, title: "You are premium already!", text: "🎉 You have already subscribed! Thanks for your support", okBtnText: "Awesome!");
     }else{
