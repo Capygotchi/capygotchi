@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:capygotchi/shared/utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -12,7 +11,6 @@ class Capybara extends ChangeNotifier {
   late int _life;
   late String _documentId;
   late bool _alive;
-  late BuildContext _context;
 
   late Timer _hungerTimer;
   late Timer _happinessTimer;
@@ -31,7 +29,6 @@ class Capybara extends ChangeNotifier {
   Capybara({
     required String name,
     required String color,
-    required BuildContext context,
     DateTime? birthDate,
     int hunger = 100,
     int happiness = 100,
@@ -40,7 +37,6 @@ class Capybara extends ChangeNotifier {
   }) {
     _name = name;
     _color = color;
-    _context = context;
     _birthDate = birthDate ?? DateTime.now();
     _hunger = hunger;
     _happiness = happiness;
@@ -140,10 +136,12 @@ class Capybara extends ChangeNotifier {
       _happiness = 0;
 
 
-      Utils.showAlert(
-          context: _context,
-          title: "$_name is dead",
-          text: "your $_name is dead!");
+      //TODO: remove context from class alert should be in the page controller
+      // Utils.showAlertOK(
+      //     context: _context,
+      //     title: "$_name is dead",
+      //     text: "your $_name is dead!",
+      //     okBtnText: 'OK');
 
       _name += " is dead";
     }

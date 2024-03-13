@@ -51,7 +51,6 @@ class _HomePageState extends State<HomePage> {
           name: 'Roger',
           color: 'Brown',
           documentId: '',
-          context: context
       ),
       child: Scaffold(
         backgroundColor: const Color(0xffF4E6E4),
