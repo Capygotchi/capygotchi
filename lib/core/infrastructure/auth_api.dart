@@ -1,3 +1,4 @@
+import 'package:capygotchi/core/domain/entities/capybara.dart';
 import 'package:capygotchi/shared/constants/appwrite.dart';
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
@@ -13,6 +14,7 @@ enum AuthStatus {
 class AuthAPI extends ChangeNotifier {
   Client client = Client();
   late final Account account;
+  late final Databases databases;
 
   late User _currentUser;
   AuthStatus _status = AuthStatus.unknown;
@@ -37,6 +39,7 @@ class AuthAPI extends ChangeNotifier {
         .setProject(AppWriteConstants.projectId) // Your project ID
         .setSelfSigned(status: true); // For self signed certificates, only use for development
     account = Account(client);
+    databases = Databases(client);
   }
 
   // Load user
@@ -104,4 +107,19 @@ class AuthAPI extends ChangeNotifier {
     }
   }
 
+  saveMonster(cabybara) async {
+    try {
+      final document = databases.createDocument(
+          databaseId: AppWriteConstants.databaseId,
+          collectionId: AppWriteConstants.collectionId,
+          documentId: ID.unique(),
+          data: {
+            'userId': _currentUser.$id,
+            'name': ''
+          }
+        );
+      } on AppwriteException catch(e) {
+      print(e);
+    }
+  }
 }
