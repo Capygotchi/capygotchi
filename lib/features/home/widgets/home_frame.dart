@@ -24,37 +24,26 @@ class _HomeFrameState extends State<HomeFrame> {
   void initState() {
     super.initState();
     // Démarre un Timer pour mettre à jour la position de l'image toutes les 1000 millisecondes
-    _timer = Timer.periodic(const Duration(milliseconds: 1000), (timer) {
-      setState(() {
-        if (_isMoving) {
-          if (_leftPosition < MediaQuery
-              .of(context)
-              .size
-              .width - 100 && _movingRight) {
-            _leftPosition += 10; // Déplacer l'image vers la droite
-          } else {
-            _movingRight = false;
-          }
-
-          if (_leftPosition > 20 && !_movingRight) {
-            _leftPosition -= 10; // Déplacer l'image vers la gauche
-          } else {
-            _movingRight = true;
-          }
-        } else {
-          // Changer de sprite et figer l'image
-          _isMoving = _random.nextDouble() <
-              0.2; // 20% de chance que le capybara se fige
-          // met un message dans les logs si il bouge ou pas
+    _timer = Timer.periodic(const Duration(milliseconds: 700), (timer) {
+        setState(() {
+          _isMoving = _random.nextDouble() > 0.2; // 20% de chance que le capybara se fige
           if (_isMoving) {
-            print('Capybara is moving');
+            if (_leftPosition < MediaQuery.of(context).size.width - 100 && _movingRight) {
+              _leftPosition += 10; // Déplacer l'image vers la droite
+            } else {
+              _movingRight = false;
+            }
+            if (_leftPosition > 20 && !_movingRight) {
+              _leftPosition -= 10; // Déplacer l'image vers la gauche
+            } else {
+              _movingRight = true;
+            }
           } else {
-            print('Capybara is standing still');
-          }
-        }
+            _leftPosition = _leftPosition; // Ne pas bouger
+            };
+          });
+        });
 
-      });
-    });
   }
 
   @override
@@ -86,16 +75,24 @@ class _HomeFrameState extends State<HomeFrame> {
               style: TextStyle(fontSize: 18),
             ),
           ),
-          AnimatedPositioned(  //IMAGE DU CAPYBARA
-            duration: const Duration(milliseconds: 1000),
+
+          AnimatedPositioned(
+            duration: const Duration(milliseconds: 700),
             bottom: 0,
             left: _leftPosition,
-            child: Transform(
-              transform: _movingRight ? Matrix4.rotationY(3.14159) : Matrix4.rotationY(0), // Retourner l'image si elle se déplace vers la droite
-              alignment: Alignment.center,
-              child: _isMoving ? Image.asset('assets/walk_left.gif') : Image.asset('assets/stand_left.gif'), // Utiliser le sprite de marche ou de fige
-            ),
+            child: _isMoving
+                ? Transform(
+                    transform: _movingRight ? Matrix4.rotationY(3.14159) : Matrix4.rotationY(0),
+                    alignment: Alignment.center,
+                    child: Image.asset('assets/walk_left.gif'),
+                )
+                : Transform(
+                    transform: _movingRight ? Matrix4.rotationY(3.14159) : Matrix4.rotationY(0),
+                    alignment: Alignment.center,
+                    child:Image.asset('assets/stand_left.gif'),
+                ),
           ),
+
         ],
       ),
     );
