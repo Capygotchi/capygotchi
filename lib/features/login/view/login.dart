@@ -26,6 +26,7 @@ class _LoginPageState extends State<LoginPage> {
 
   signInWithMagicLink(String email) {
     try {
+      if(email.isEmpty) return;
       context.read<AuthAPI>().signInWithMagicLink(email: email);
       print('Magic link sent to $email');
     } on AppwriteException catch (e) {
