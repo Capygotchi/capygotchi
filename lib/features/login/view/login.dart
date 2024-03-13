@@ -1,4 +1,5 @@
 import 'package:appwrite/appwrite.dart';
+import 'package:capygotchi/core/domain/entities/user.dart';
 import 'package:capygotchi/shared/utils.dart';
 import 'package:capygotchi/core/infrastructure/auth_api.dart';
 import 'package:capygotchi/shared/widgets/capy_button.dart';
@@ -18,6 +19,7 @@ class _LoginPageState extends State<LoginPage> {
   signInWithProvider(String provider) {
     try {
       context.read<AuthAPI>().signInWithProvider(provider: provider);
+      context.read<User>().loadUser(user: context.read<AuthAPI>().currentUser);
     } on AppwriteException catch (e) {
       Utils.showAlertOK(title: 'Login failed', text: e.message.toString(), context: context, okBtnText: "Ok");
     }

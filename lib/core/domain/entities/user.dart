@@ -1,7 +1,7 @@
 import 'dart:convert';
+import 'package:flutter/widgets.dart';
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart' as models;
-import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
 class User extends ChangeNotifier {
@@ -21,17 +21,17 @@ class User extends ChangeNotifier {
   // Constructor
   User({
     required Account account,
+    required models.User user,
   }) {
     _account = account;
-    loadUser();
-    //TODO: load premium status
+    _user = user;
+    loadUser(user: user);
   }
 
-  void loadUser () async {
+  void loadUser ({required models.User user}) {
     try {
-      _user = await _account.get();
-      _userId = _user.$id;
-      _userName = _user.name;
+      _userId = user.$id;
+      _userName = user.name;
       //TODO le reste
     } finally {
       notifyListeners();

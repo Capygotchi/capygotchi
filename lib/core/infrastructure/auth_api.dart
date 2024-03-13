@@ -1,6 +1,6 @@
 import 'package:capygotchi/shared/constants/appwrite.dart';
 import 'package:appwrite/appwrite.dart';
-import 'package:appwrite/models.dart';
+import 'package:appwrite/models.dart' as models;
 import 'package:capygotchi/shared/constants/project.dart';
 import 'package:flutter/widgets.dart';
 
@@ -11,25 +11,49 @@ enum AuthStatus {
 }
 
 class AuthAPI extends ChangeNotifier {
-  late Account _account;
+  Client client = Client();
+  late final Account account;
+
+  late models.User _currentUser;
   AuthStatus _status = AuthStatus.unknown;
 
   // Getter methods
+  models.User get currentUser => _currentUser;
   AuthStatus get status => _status;
 
   // Constructor
-  AuthAPI ({required Account account}) {
-    _account = account;
-    _status = AuthStatus.unauthenticated;
+  AuthAPI() {
+    initClient();
+    loadUser();
+  }
+
+  // Initialize the client
+  initClient() {
+    client
+        .setEndpoint(AppWriteConstants.endpoint) // Your API Endpoint
+        .setProject(AppWriteConstants.projectId) // Your project ID
+        .setSelfSigned(status: true); // For self signed certificates, only use for development
+    account = Account(client);
+  }
+
+  loadUser() async {
+    try {
+      _currentUser = await account.get();
+      _status = AuthStatus.authenticated;
+    } catch (e) {
+      _status = AuthStatus.unauthenticated;
+    } finally {
+      notifyListeners();
+    }
   }
 
   // SignIn with provider
-  Future<User> signInWithProvider({required String provider}) async {
+  signInWithProvider({required String provider}) async {
     try {
-      await _account.createOAuth2Session(provider: provider);
-      final user = await _account.get();
+      final session = await account.createOAuth2Session(provider: provider);
+      _currentUser = await account.get();
       _status = AuthStatus.authenticated;
-      return user;
+      return session;
     } finally {
       notifyListeners();
     }
@@ -38,29 +62,28 @@ class AuthAPI extends ChangeNotifier {
   // SignIn with magic link
   signInWithMagicLink({required String email}) async {
     try {
-      await _account.createMagicURLSession(userId: ID.unique(), email: email, url: Constants.basePath == '' ? null : '${Constants.basePath}/login-magic');
+      await account.createMagicURLSession(userId: ID.unique(), email: email, url: Constants.basePath == '' ? null : '${Constants.basePath}/login-magic');
     } finally {
       notifyListeners();
     }
   }
 
   // Confirm magic link
-  Future<User> confirmMagicLink({required String userId, required String secret}) async {
+  confirmMagicLink({required String userId, required String secret}) async {
     try {
-      await _account.updateMagicURLSession(userId: userId, secret: secret);
-      final user = await _account.get();
+      final session = await account.updateMagicURLSession(userId: userId, secret: secret);
+      _currentUser = await account.get();
       _status = AuthStatus.authenticated;
-      return user;
+      return session;
     } finally {
       notifyListeners();
     }
   }
 
-  //TODO
   // SignOut
   signOut() async {
     try {
-      await _account.deleteSession(sessionId: 'current');
+      await account.deleteSession(sessionId: 'current');
       _status = AuthStatus.unauthenticated;
     } finally {
       notifyListeners();
