@@ -63,6 +63,9 @@ class Capybara extends ChangeNotifier {
     }
     else {
       _happiness -= 20;
+      if(_happiness < 0){
+        _happiness = 0;
+      }
     }
     notifyListeners();
   }
@@ -142,10 +145,10 @@ class Capybara extends ChangeNotifier {
       _happiness = 0;
 
 
-      Utils.showAlert(
+      Utils.showAlertOK(
           context: _context,
           title: "$_name is dead",
-          text: "your $_name is dead!");
+          text: "your $_name is dead!", okBtnText: 'OK');
 
       _name += " is dead";
     }
