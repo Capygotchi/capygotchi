@@ -1,5 +1,4 @@
 import 'package:capygotchi/features/home/widgets/home_footer_button.dart';
-import 'package:capygotchi/shared/widgets/capy_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:capygotchi/core/domain/entities/capybara.dart';
@@ -21,19 +20,19 @@ class _HomeFooterState extends State<HomeFooter> {
         child: Stack(children: [
           Container(color: const Color(0xff8A6552), height: 80),
           Padding(
-            padding: const EdgeInsets.only(bottom: 30),
+            padding: const EdgeInsets.only(bottom: 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 HomeFooterButton(
                   onPressed: () => context.read<Capybara>().pet(),
                   icon: const AssetImage('assets/pet.png'),
-                  backgroundColor: const Color(0xff8A6552),
+                  backgroundColor: const Color(0xffA8C69F),
                 ),
                 HomeFooterButton(
                   onPressed: () => context.read<Capybara>().feed(),
-                  icon: const AssetImage('assets/discord.png'),
-                  backgroundColor: const Color(0xff8A6552),
+                  icon: const AssetImage('assets/food.png'),
+                  backgroundColor: const Color(0xffA8C69F),
                 ),
 
               ],

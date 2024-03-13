@@ -16,33 +16,32 @@ class HomeFooterButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(icon);
     return Container(
-        width: 50,
-        height: 50,
+        width: 60,
+        height: 60,
+        //color: const Color(0xffA8C69F),
         decoration: BoxDecoration(
+          color: const Color(0xffA8C69F),
           border: Border.all(
               color: const Color(0xFF000000),
               width: 2.0,
               style: BorderStyle.solid), //Border.all
           /*** The BorderRadius widget  is here ***/
           borderRadius: const BorderRadius.all(
-            Radius.circular(10),
+            Radius.circular(100),
           ),
         ),
-        child:
-        IconButton(
+        child: IconButton(
           onPressed: onPressed,
           icon: Image(
             image: icon,
             width: 100,
             height: 100,
-            color: Colors.white,
+            //color: Colors.white,
           ),
           style: ElevatedButton.styleFrom(
             backgroundColor: backgroundColor,
           ),
-        )
-    );
+        ));
   }
 }
