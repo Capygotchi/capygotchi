@@ -16,9 +16,15 @@ class AccountPage extends StatefulWidget {
 }
 
 class _AccountPageState extends State<AccountPage> {
-  late String accountName ;
+  late String accountName;
   late String capybaraType;
   TextEditingController accountNameController = TextEditingController();
+
+  @override
+  void initState() {
+    accountNameController.text = context.read<User>().userName;
+    super.initState();
+  }
 
   checkPremiumStatus() {
     context.read<User>().checkPremium();
