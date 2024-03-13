@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:capygotchi/shared/constants/appwrite.dart';
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
 import 'package:capygotchi/shared/constants/project.dart';
 import 'package:flutter/widgets.dart';
+import 'package:http/http.dart' as http;
 
 enum AuthStatus {
   authenticated,
@@ -103,5 +106,19 @@ class AuthAPI extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  //Check premium
+  checkPremium() async{
+      var user = await account.get();
+      var url = Uri.https('65f0610c25175c6f2b79.appwrite.global', '/',{"userId":user.$id});
+      var response = await http.get(url);
+      var data = jsonDecode(response.body);
+      if(data["premium"]) {
+        return true;
+      }else{
+        return false;
+      }
+    
+}
 
 }

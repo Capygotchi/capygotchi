@@ -19,7 +19,7 @@ class _LoginPageState extends State<LoginPage> {
     try {
       context.read<AuthAPI>().signInWithProvider(provider: provider);
     } on AppwriteException catch (e) {
-      Utils.showAlert(title: 'Login failed', text: e.message.toString(), context: context);
+      Utils.showAlertOK(title: 'Login failed', text: e.message.toString(), context: context, okBtnText: "Ok");
     }
   }
 
@@ -28,7 +28,7 @@ class _LoginPageState extends State<LoginPage> {
       context.read<AuthAPI>().signInWithMagicLink(email: email);
       print('Magic link sent to $email');
     } on AppwriteException catch (e) {
-      Utils.showAlert(title: 'Login failed', text: e.message.toString(), context: context);
+      Utils.showAlertOK(title: 'Login failed', text: e.message.toString(), context: context, okBtnText: "Ok");
     }
   }
 
