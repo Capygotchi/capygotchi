@@ -29,7 +29,7 @@ class _AccountPageState extends State<AccountPage> {
     super.initState();
 
     //get account info here
-    accountName = context.read<AuthAPI>().userName!;
+    accountName = context.read<User>().name;
     capybaraType = "brun";
     accountNameController = TextEditingController(text: accountName);
 
@@ -46,7 +46,7 @@ class _AccountPageState extends State<AccountPage> {
   }
 
   wantPremiumButton() async{
-    var isPremium = await context.read<AuthAPI>().checkPremium();
+    var isPremium = await //TODO RECUP PREMIUM STATUS;
     if(isPremium){
       Utils.showAlertOK(context: context, title: "You are premium already!", text: "🎉 You have already subscribed! Thanks for your support", okBtnText: "Awesome!");
     }else{

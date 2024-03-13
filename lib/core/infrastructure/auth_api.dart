@@ -67,14 +67,4 @@ class AuthAPI extends ChangeNotifier {
     }
   }
 
-  // Update user name
-  updateUserName({required String name}) async {
-    try {
-      await account.updateName(name: name);
-      _currentUser = await account.get();
-    } finally {
-      notifyListeners();
-    }
-  }
-
 }
