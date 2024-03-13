@@ -1,11 +1,11 @@
-import 'dart:convert';
+import 'package:capygotchi/shared/constants/appwrite.dart';
 import 'package:flutter/widgets.dart';
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart' as models;
-import 'package:http/http.dart' as http;
 
 class User extends ChangeNotifier {
   late Account _account;
+  late Functions _functions;
   late models.User _user;
   late String _userName;
   late String _userId;
@@ -21,11 +21,14 @@ class User extends ChangeNotifier {
   // Constructor
   User({
     required Account account,
+    required Functions functions,
     required models.User user,
   }) {
     _account = account;
+    _functions = functions;
     _user = user;
     loadUser(user: user);
+    checkPremium();
   }
 
   void loadUser ({required models.User user}) {
@@ -33,10 +36,14 @@ class User extends ChangeNotifier {
       _userId = _user.$id;
       _userName = _user.name;
       _isPremium = _user.labels.contains('premium');
-      //TODO _premiumPurchaseDate
     } finally {
       notifyListeners();
     }
+  }
+
+  void refreshUser() async {
+    _user = await _account.get();
+    loadUser(user: _user);
   }
 
   // Update user name
@@ -50,17 +57,42 @@ class User extends ChangeNotifier {
   }
 
   //Check premium
-  void checkPremium() async{
-    var user = await _account.get();
-    var url = Uri.https('65f0610c25175c6f2b79.appwrite.global', '/',{"userId":user.$id});
-    var response = await http.get(url);
-    var data = jsonDecode(response.body);
-    if(data["premium"]) {
-      _isPremium=true;
-    }else{
-      _isPremium=false;
+  checkPremium() async {
+    // Dans cette fonction, on va vérifier si l'utilisateur est premium
+    // On va faire une requête à notre serveur pour vérifier si l'utilisateur est premium
+    // Une fois la requête terminée, on refresh l'utilisateur
+    // Et on assigne la variable _premiumPurchaseDate que la fonction serverless premium retourne
+
+    try {
+      final response = await _functions.createExecution(
+        functionId: AppWriteConstants.functionId,
+        path: '/?userId=$_userId',
+        method: 'GET',
+      );
+      print(response.responseBody.toString());
+    } catch (e) {
+      print(e);
+      return null;
+    } finally {
+      refreshUser();
+      notifyListeners();
     }
-    notifyListeners();
+  }
+
+  Future<bool> addPremium() async {
+    try {
+      final response = await _functions.createExecution(
+        functionId: AppWriteConstants.functionId,
+        path: '/?userId=$_userId',
+        method: 'PATCH',
+      );
+      print(response.responseBody.toString());
+    } catch (e) {
+      print(e);
+      return false;
+    } finally {
+      return true;
+    }
   }
 
   void displayInfo() {

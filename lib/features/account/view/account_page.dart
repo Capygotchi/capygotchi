@@ -16,19 +16,18 @@ class AccountPage extends StatefulWidget {
 }
 
 class _AccountPageState extends State<AccountPage> {
-  late String accountName ;
+  late String accountName;
   late String capybaraType;
   TextEditingController accountNameController = TextEditingController();
 
   @override
   void initState() {
+    accountNameController.text = context.read<User>().userName;
     super.initState();
+  }
 
-    //get account info here
-    accountName = context.read<User>().userName;
-    capybaraType = "brun";
-    accountNameController = TextEditingController(text: accountName);
-
+  checkPremiumStatus() {
+    context.read<User>().checkPremium();
   }
 
   logoutButton(){
@@ -41,11 +40,22 @@ class _AccountPageState extends State<AccountPage> {
     //todo: implement reskin here
   }
 
-  wantPremiumButton() async{
-    final isPremium = context.watch<User>().isPremium; //TODO RECUP PREMIUM STATUS;
+  wantPremiumButton() async {
+    final isPremium = context.read<User>().isPremium;
+    print(isPremium);
     if(isPremium){
       Utils.showAlertOK(context: context, title: "You are premium already!", text: "🎉 You have already subscribed! Thanks for your support", okBtnText: "Awesome!");
     }else{
+      await context.read<User>().addPremium().then((addedPremium) => displayPopup(addedPremium));
+    }
+  }
+
+  displayPopup(bool addedPremium){
+    if(addedPremium){
+      Utils.showAlertOK(context: context, title: "Thank you for your purchase!", text: "🎉 You have successfully bought premium for 30 days!", okBtnText: "Yeah!");
+    }
+    else{
+      Utils.showAlertOK(context: context, title: "An error has occured!", text: "We couldn't process your purchase. Sorry about that!", okBtnText: "OK");
 
     }
   }

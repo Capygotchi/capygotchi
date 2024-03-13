@@ -13,6 +13,7 @@ enum AuthStatus {
 class AuthAPI extends ChangeNotifier {
   Client client = Client();
   late final Account account;
+  late final Functions functions;
   late final Databases databases;
 
   late models.User _currentUser;
@@ -36,6 +37,7 @@ class AuthAPI extends ChangeNotifier {
         .setSelfSigned(status: true); // For self signed certificates, only use for development
     account = Account(client);
     databases = Databases(client);
+    functions = Functions(client);
   }
 
   loadUser() async {

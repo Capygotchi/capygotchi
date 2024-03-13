@@ -50,7 +50,8 @@ class _HomePageState extends State<HomePage> {
       create: (_) => Capybara(
           name: 'Roger',
           color: 'Brown',
-          documentId: ''
+          documentId: '',
+          context: context
       ),
       child: Scaffold(
         backgroundColor: const Color(0xffF4E6E4),
