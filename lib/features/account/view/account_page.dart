@@ -20,15 +20,8 @@ class _AccountPageState extends State<AccountPage> {
   late String capybaraType;
   TextEditingController accountNameController = TextEditingController();
 
-  @override
-  void initState() {
-    super.initState();
-
-    //get account info here
-    accountName = context.read<User>().userName;
-    capybaraType = "brun";
-    accountNameController = TextEditingController(text: accountName);
-
+  checkPremiumStatus() {
+    context.read<User>().checkPremium();
   }
 
   logoutButton(){

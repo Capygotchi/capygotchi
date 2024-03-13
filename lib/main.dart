@@ -10,7 +10,7 @@ void main() {
     child: ChangeNotifierProvider(
       create: (context) {
         if(context.read<AuthAPI>().status == AuthStatus.authenticated) {
-          return User(account: context.read<AuthAPI>().account, user: context.read<AuthAPI>().currentUser);
+          return User(account: context.read<AuthAPI>().account, functions: context.read<AuthAPI>().functions, user: context.read<AuthAPI>().currentUser);
         }
         return null;
       },
