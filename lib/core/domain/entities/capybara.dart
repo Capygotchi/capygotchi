@@ -56,9 +56,13 @@ class Capybara extends ChangeNotifier {
   void feed() {
     if (_hunger < 100) {
       _hunger += 10;
-      if (_hunger > 100) {
+      if (_hunger >= 100) {
         _hunger = 100;
+        _happiness -= 20;
       }
+    }
+    else {
+      _happiness -= 20;
     }
     notifyListeners();
   }
@@ -67,9 +71,12 @@ class Capybara extends ChangeNotifier {
   void pet() {
     if (_happiness < 100) {
       _happiness += 10;
-      if (_happiness > 100) {
+      if (_happiness >= 100) {
         _happiness = 100;
       }
+    }
+    else {
+      _happiness = 80;
     }
     notifyListeners();
   }
@@ -139,8 +146,10 @@ class Capybara extends ChangeNotifier {
           context: _context,
           title: "$_name is dead",
           text: "your $_name is dead!");
+
+      _name += " is dead";
     }
-    _name += " is dead";
+
 
     notifyListeners();
   }
