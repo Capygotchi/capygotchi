@@ -48,11 +48,13 @@ class _LoginPageState extends State<LoginPage> {
                 controller: emailController,
                 decoration: const InputDecoration(labelText: 'Email'),
               )),
+          const SizedBox(height: 20),
           CapyButton(
             onPressed: () => signInWithMagicLink(emailController.text),
             label: 'Login with email',
             backgroundColor: const Color(0xffca2e55),
           ),
+         const SizedBox(height: 20),
           CapyButton(
             onPressed: () => signInWithProvider('discord'),
             icon: const AssetImage('assets/discord.png'),
