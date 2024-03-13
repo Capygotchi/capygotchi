@@ -71,8 +71,8 @@ class _HomePageState extends State<HomePage> {
               ),
               tooltip: 'Account button',
               onPressed: () {
-                // context.go('/account');
-                createMonster();
+                context.go('/account');
+                // createMonster();
               },
             ),
           ],

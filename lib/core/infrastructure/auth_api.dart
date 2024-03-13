@@ -3,6 +3,8 @@ import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart' as models;
 import 'package:capygotchi/shared/constants/project.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_web_auth_2/flutter_web_auth_2.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 enum AuthStatus {
   authenticated,
@@ -73,6 +75,13 @@ class AuthAPI extends ChangeNotifier {
   // SignIn with provider
   signInWithProvider({required String provider}) async {
     try {
+      if(!kIsWeb) {
+        // Workaround for android webview closing if changing app, ej: 2FA
+        // See issue : https://github.com/appwrite/sdk-for-flutter/issues/181
+        await FlutterWebAuth2.authenticate(
+            url: '${AppWriteConstants.endpoint}/account/sessions/oauth2/$provider?project=${AppWriteConstants.projectId}',
+            callbackUrlScheme: "appwrite-callback-${AppWriteConstants.projectId}");
+      }
       final session = await account.createOAuth2Session(provider: provider);
       _currentUser = await account.get();
       _status = AuthStatus.authenticated;
