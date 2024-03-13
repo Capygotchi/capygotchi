@@ -1,6 +1,8 @@
+import 'dart:convert';
+import 'package:flutter/widgets.dart';
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart' as models;
-import 'package:flutter/cupertino.dart';
+import 'package:http/http.dart' as http;
 
 class User extends ChangeNotifier {
   late Account _account;
@@ -19,14 +21,15 @@ class User extends ChangeNotifier {
   // Constructor
   User({
     required Account account,
+    required models.User user,
   }) {
     _account = account;
-    loadUser();
+    _user = user;
+    loadUser(user: user);
   }
 
-  void loadUser () async {
+  void loadUser ({required models.User user}) {
     try {
-      _user = await _account.get();
       _userId = _user.$id;
       _userName = _user.name;
       _isPremium = _user.labels.contains('premium');
@@ -44,6 +47,20 @@ class User extends ChangeNotifier {
     } finally {
       notifyListeners();
     }
+  }
+
+  //Check premium
+  void checkPremium() async{
+    var user = await _account.get();
+    var url = Uri.https('65f0610c25175c6f2b79.appwrite.global', '/',{"userId":user.$id});
+    var response = await http.get(url);
+    var data = jsonDecode(response.body);
+    if(data["premium"]) {
+      _isPremium=true;
+    }else{
+      _isPremium=false;
+    }
+    notifyListeners();
   }
 
   void displayInfo() {

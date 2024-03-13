@@ -1,9 +1,12 @@
+import 'package:capygotchi/core/domain/entities/user.dart';
 import 'package:capygotchi/core/infrastructure/auth_api.dart';
 import 'package:capygotchi/features/account/widgets/account_text_field.dart';
+import 'package:capygotchi/shared/utils.dart';
 import 'package:capygotchi/shared/widgets/capy_button.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+
 
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
@@ -22,10 +25,10 @@ class _AccountPageState extends State<AccountPage> {
     super.initState();
 
     //get account info here
-    accountName = "accounted";
+    accountName = context.read<User>().userName;
     capybaraType = "brun";
-
     accountNameController = TextEditingController(text: accountName);
+
   }
 
   logoutButton(){
@@ -38,8 +41,13 @@ class _AccountPageState extends State<AccountPage> {
     //todo: implement reskin here
   }
 
-  wantPremiumButton(){
-    //todo: implement premium here
+  wantPremiumButton() async{
+    final isPremium = context.watch<User>().isPremium; //TODO RECUP PREMIUM STATUS;
+    if(isPremium){
+      Utils.showAlertOK(context: context, title: "You are premium already!", text: "🎉 You have already subscribed! Thanks for your support", okBtnText: "Awesome!");
+    }else{
+
+    }
   }
 
   validateChangeButton(){
@@ -95,11 +103,12 @@ class _AccountPageState extends State<AccountPage> {
                       )
                     ),
                     const SizedBox(height: 100),
+
                     SizedBox(
                       width: double.infinity,
                       child: CapyButton(
                         onPressed: () => wantPremiumButton(),
-                        label: "Do you want premium?",
+                        label: "Premium",
                         backgroundColor: const Color(0xff8a6552),
                       )
                     ),
@@ -128,4 +137,6 @@ class _AccountPageState extends State<AccountPage> {
       ),
     );
   }
+
+
 }
