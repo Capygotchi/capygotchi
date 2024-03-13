@@ -76,7 +76,7 @@ class Capybara extends ChangeNotifier {
   }
 
   // Méthode pour afficher les détails du Capybara
-  void displayInfo() {
+  displayInfo() {
     print('Name: $_name');
     print('Color: $_color');
     print('Date of birth: $_birthDate');

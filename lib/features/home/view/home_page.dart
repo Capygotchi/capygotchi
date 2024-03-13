@@ -9,6 +9,8 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:capygotchi/core/domain/entities/capybara.dart';
 
+import '../../../core/domain/entities/user.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -17,6 +19,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  Capybara capybara = Capybara(name: 'Roger', color: 'Brown', documentId: '');
+
   signOut() {
     try {
       context.read<AuthAPI>().signOut();
@@ -25,7 +29,15 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  createMonster() {
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      getMonster();
+    });
+    super.initState();
+  }
+
+  /* createMonster() {
     context.read<DatabaseAPI>().createMonster(
         capybara: Capybara(
             name: 'Michel', color: 'Yellow',
@@ -33,10 +45,15 @@ class _HomePageState extends State<HomePage> {
         ),
         userId: '65f0a73e31fe27bbe0e0'
     );
+  } */
+  getMonster() async {
+    final database = context.read<DatabaseAPI?>();
+    final userName = context.read<User?>()?.userName;
+    if(database != null && userName != null) {
+      capybara = await database.getMonster(userId: context.read<User>().userId);
+      print(capybara.displayInfo());
+    }
   }
-  // getMonster() {
-  //   context.read<DatabaseAPI>().getMonster(userId: context.read<User>().userId);
-  // }
   // updateMonster() {
   //   context.read<DatabaseAPI>().updateMonster(capybara: Capybara(
   //       name: 'Michel', color: 'Black', documentId: '65f1ef2b8c6b95d10152', hunger: 80, life: 50),
@@ -49,12 +66,9 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     //initializing the capybara
-    return ChangeNotifierProvider(
-      create: (_) => Capybara(
-          name: 'Roger',
-          color: 'Brown',
-          documentId: '',
-      ),
+    return ChangeNotifierProxyProvider<Capybara, Capybara?>(
+      create: (_) => null,
+      update: (_, Capybara previousCapybara, Capybara? capybara) => capybara ?? previousCapybara,
       child: Scaffold(
         backgroundColor: const Color(0xffF4E6E4),
         appBar: AppBar(
@@ -71,8 +85,7 @@ class _HomePageState extends State<HomePage> {
               ),
               tooltip: 'Account button',
               onPressed: () {
-                // context.go('/account');
-                createMonster();
+                context.go('/account');
               },
             ),
           ],

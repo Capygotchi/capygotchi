@@ -92,3 +92,5 @@ class User extends ChangeNotifier {
     print('Premium purchase date: $_premiumPurchaseDate');
   }
 }
+
+// utilisation de user après avoir disposé
