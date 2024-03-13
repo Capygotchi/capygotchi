@@ -79,6 +79,22 @@ class User extends ChangeNotifier {
     }
   }
 
+  Future<bool> addPremium() async {
+    try {
+      final response = await _functions.createExecution(
+        functionId: AppWriteConstants.functionId,
+        path: '/?userId=$_userId',
+        method: 'PATCH',
+      );
+      print(response.responseBody.toString());
+    } catch (e) {
+      print(e);
+      return false;
+    } finally {
+      return true;
+    }
+  }
+
   void displayInfo() {
     print('Username: $_userName');
     print('User id: $_userId');

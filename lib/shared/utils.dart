@@ -4,6 +4,7 @@ class Utils {
   static showAlertOK({required BuildContext context, required String title, required String text, required String okBtnText}) {
     showDialog(
       context: context,
+      barrierDismissible: false, // user must tap button!
       builder: (context) {
         return AlertDialog(
           title: Text(title),
@@ -22,6 +23,7 @@ class Utils {
   static showAlertPremium({required BuildContext context, required String title, required String text, required String yesBtnText, required String noBtnText}) {
     showDialog(
         context: context,
+        barrierDismissible: false,
         builder: (context) {
           return AlertDialog(
             title: Text(title),

@@ -19,9 +19,6 @@ class DatabaseAPI {
       databases.listDocuments(
           databaseId: AppWriteConstants.databaseId,
           collectionId: AppWriteConstants.collectionId,
-          queries: [
-            Query.equal('', )
-          ]
       );
     } on AppwriteException catch(e) {
       print(e);
