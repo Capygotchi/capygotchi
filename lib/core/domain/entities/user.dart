@@ -1,33 +1,54 @@
-import 'package:capygotchi/core/domain/entities/capybara.dart';
+import 'package:appwrite/appwrite.dart';
+import 'package:appwrite/models.dart' as models;
 import 'package:flutter/cupertino.dart';
 
 class User extends ChangeNotifier {
-  late String _username;
+  late Account _account;
+  late models.User _user;
+  late String _userName;
   late String _userId;
   late bool _isPremium;
   late DateTime? _premiumPurchaseDate;
 
-  String get username => _username;
+  // Getters
+  String get userName => _userName;
   String get userId => _userId;
   bool get isPremium => _isPremium;
   DateTime? get premiumPurchaseDate => _premiumPurchaseDate;
 
+  // Constructor
   User({
-    required String username,
-    required String userId,
-    required bool isPremium,
-    DateTime? premiumPurchaseDate,
+    required Account account,
   }) {
-    _username = username;
-    _userId = userId;
-    _isPremium = isPremium;
-    _premiumPurchaseDate = premiumPurchaseDate;
+    _account = account;
+    loadUser();
+  }
+
+  void loadUser () async {
+    try {
+      _user = await _account.get();
+      _userId = _user.$id;
+      _userName = _user.name;
+      //TODO le reste
+    } finally {
+      notifyListeners();
+    }
+  }
+
+  // Update user name
+  updateUserName({required String name}) async {
+    try {
+      await _account.updateName(name: name);
+      _user = await _account.get();
+    } finally {
+      notifyListeners();
+    }
   }
 
   void displayInfo() {
-    print('Username: $username');
-    print('User id: $userId');
-    print('Premium: $isPremium');
-    print('Premium purchase date: $premiumPurchaseDate');
+    print('Username: $_userName');
+    print('User id: $_userId');
+    print('Premium: $_isPremium');
+    print('Premium purchase date: $_premiumPurchaseDate');
   }
 }
