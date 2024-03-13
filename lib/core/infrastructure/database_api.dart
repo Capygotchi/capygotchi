@@ -16,23 +16,26 @@ class DatabaseAPI {
     required String userId
   }) async {
     try {
-      databases.listDocuments(
+      final document = await databases.listDocuments(
           databaseId: AppWriteConstants.databaseId,
           collectionId: AppWriteConstants.collectionId,
           queries: [
-            Query.equal('', )
+            Query.equal('userId', userId)
           ]
       );
+
+
     } on AppwriteException catch(e) {
       print(e);
     }
   }
 
   createMonster({
-    required Capybara capybara
+    required Capybara capybara,
+    required String userId
   }) async {
     try {
-      databases.createDocument(
+      await databases.createDocument(
           databaseId: AppWriteConstants.databaseId,
           collectionId: AppWriteConstants.collectionId,
           documentId: ID.unique(),
@@ -42,7 +45,8 @@ class DatabaseAPI {
             'birthdate': capybara.birthDate,
             'hunger': capybara.hunger,
             'happiness': capybara.happiness,
-            'life': capybara.life
+            'life': capybara.life,
+            'userId': userId
           }
       );
     } on AppwriteException catch(e) {
@@ -51,10 +55,11 @@ class DatabaseAPI {
   }
 
   updateMonster({
-    required Capybara capybara
+    required Capybara capybara,
+    required String userId
   }) async {
     try {
-      databases.updateDocument(
+      await databases.updateDocument(
           databaseId: AppWriteConstants.databaseId,
           collectionId: AppWriteConstants.collectionId,
           documentId: '',
@@ -64,7 +69,8 @@ class DatabaseAPI {
             'birthdate': capybara.birthDate,
             'hunger': capybara.hunger,
             'happiness': capybara.happiness,
-            'life': capybara.life
+            'life': capybara.life,
+            'userId': userId
           }
       );
     } on AppwriteException catch(e) {
@@ -73,10 +79,11 @@ class DatabaseAPI {
   }
 
   deleteMonster({
-    required Capybara capybara
+    required Capybara capybara,
+    required String userId
   }) async {
     try {
-      databases.deleteDocument(
+      await databases.deleteDocument(
           databaseId: AppWriteConstants.databaseId,
           collectionId: AppWriteConstants.collectionId,
           documentId: ''
