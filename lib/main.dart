@@ -1,16 +1,17 @@
 import 'package:capygotchi/app_router.dart';
-import 'package:capygotchi/features/account/view/account_page.dart';
-import 'package:capygotchi/features/home/view/home_page.dart';
-import 'package:capygotchi/features/login/view/login.dart';
+import 'package:capygotchi/core/domain/entities/user.dart';
+import 'package:capygotchi/core/infrastructure/appwrite_client.dart';
 import 'package:capygotchi/core/infrastructure/auth_api.dart';
-import 'package:capygotchi/features/login/view/login_magic.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:go_router/go_router.dart';
 
 void main() {
+  final client = AppWriteClient().client;
+
+  print('main: ${client.endPoint}');
+
   runApp(ChangeNotifierProvider(
-    create: (context) => AuthAPI(),
+    create: (context) => AuthAPI(client: client),
     child: const MyApp(),
   ));
 }
@@ -22,12 +23,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authStatus = context.watch<AuthAPI>().status;
-    final userName = authStatus == AuthStatus.authenticated
-        ? context.watch<AuthAPI>().userName
-        : null;
-
     print('Auth status: $authStatus');
-    print('User name: $userName');
 
     final router = AppRouter.createRouter(context, context.read<AuthAPI>());
 

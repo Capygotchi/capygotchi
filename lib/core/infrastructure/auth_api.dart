@@ -1,11 +1,8 @@
-import 'dart:convert';
-
 import 'package:capygotchi/shared/constants/appwrite.dart';
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
 import 'package:capygotchi/shared/constants/project.dart';
 import 'package:flutter/widgets.dart';
-import 'package:http/http.dart' as http;
 
 enum AuthStatus {
   authenticated,
@@ -14,53 +11,25 @@ enum AuthStatus {
 }
 
 class AuthAPI extends ChangeNotifier {
-  Client client = Client();
-  late final Account account;
-
-  late User _currentUser;
+  late Account account;
   AuthStatus _status = AuthStatus.unknown;
 
   // Getter methods
-  User get currentUser => _currentUser;
   AuthStatus get status => _status;
-  String? get userId => _currentUser.$id;
-  String? get userEmail => _currentUser.email;
-  String? get userName => _currentUser.name;
 
   // Constructor
-  AuthAPI() {
-    initClient();
-    loadUser();
-  }
-
-  // Initialize the client
-  initClient() {
-    client
-        .setEndpoint(AppWriteConstants.endpoint) // Your API Endpoint
-        .setProject(AppWriteConstants.projectId) // Your project ID
-        .setSelfSigned(status: true); // For self signed certificates, only use for development
+  AuthAPI ({required Client client}) {
     account = Account(client);
-  }
-
-  // Load user
-  loadUser() async {
-    try {
-      _currentUser = await account.get();
-      _status = AuthStatus.authenticated;
-    } catch (e) {
-      _status = AuthStatus.unauthenticated;
-    } finally {
-      notifyListeners();
-    }
+    _status = AuthStatus.unauthenticated;
   }
 
   // SignIn with provider
-  signInWithProvider({required String provider}) async {
+  Future<User> signInWithProvider({required String provider}) async {
     try {
-      final session = await account.createOAuth2Session(provider: provider);
-      _currentUser = await account.get();
+      await account.createOAuth2Session(provider: provider);
+      final user = await account.get();
       _status = AuthStatus.authenticated;
-      return session;
+      return user;
     } finally {
       notifyListeners();
     }
@@ -76,17 +45,18 @@ class AuthAPI extends ChangeNotifier {
   }
 
   // Confirm magic link
-  confirmMagicLink({required String userId, required String secret}) async {
+  Future<User> confirmMagicLink({required String userId, required String secret}) async {
     try {
-      final session = await account.updateMagicURLSession(userId: userId, secret: secret);
-      _currentUser = await account.get();
+      await account.updateMagicURLSession(userId: userId, secret: secret);
+      final user = await account.get();
       _status = AuthStatus.authenticated;
-      return session;
+      return user;
     } finally {
       notifyListeners();
     }
   }
 
+  //TODO
   // SignOut
   signOut() async {
     try {
@@ -106,19 +76,5 @@ class AuthAPI extends ChangeNotifier {
       notifyListeners();
     }
   }
-
-  //Check premium
-  checkPremium() async{
-      var user = await account.get();
-      var url = Uri.https('65f0610c25175c6f2b79.appwrite.global', '/',{"userId":user.$id});
-      var response = await http.get(url);
-      var data = jsonDecode(response.body);
-      if(data["premium"]) {
-        return true;
-      }else{
-        return false;
-      }
-    
-}
 
 }

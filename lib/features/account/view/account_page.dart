@@ -128,7 +128,7 @@ class _AccountPageState extends State<AccountPage> {
                         CapyButton(
                             onPressed: () => validateChangeButton(),
                             label: 'Save my changes',
-                            backgroundColor: const Color(0xffca2e55),
+                            backgroundColor: const Color(0xffA8C69F),
                         ),
                       ],
                     )
