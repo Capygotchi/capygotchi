@@ -50,7 +50,7 @@ class User extends ChangeNotifier {
   updateUserName({required String name}) async {
     try {
       await _account.updateName(name: name);
-      _user = await _account.get();
+      refreshUser();
     } finally {
       notifyListeners();
     }

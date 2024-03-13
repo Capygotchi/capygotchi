@@ -62,9 +62,11 @@ class _AccountPageState extends State<AccountPage> {
 
   validateChangeButton(){
     accountName = accountNameController.text;
-    print(accountName);
-    //todo: implement database save.
-    context.go('/home');
+    if(accountName.isNotEmpty) {
+      context.read<User?>()?.updateUserName(name: accountName);
+    } else {
+      Utils.showAlertOK(context: context, title: "Error", text: "Please enter a valid name", okBtnText: "OK");
+    }
   }
 
   @override
