@@ -1,18 +1,43 @@
 import 'package:capygotchi/app_router.dart';
-import 'package:capygotchi/features/account/view/account_page.dart';
-import 'package:capygotchi/features/home/view/home_page.dart';
-import 'package:capygotchi/features/login/view/login.dart';
+import 'package:capygotchi/core/domain/entities/user.dart';
 import 'package:capygotchi/core/infrastructure/auth_api.dart';
-import 'package:capygotchi/features/login/view/login_magic.dart';
+import 'package:capygotchi/core/infrastructure/database_api.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:go_router/go_router.dart';
 
 void main() {
-  runApp(ChangeNotifierProvider(
-    create: (context) => AuthAPI(),
-    child: const MyApp(),
-  ));
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider<AuthAPI>(
+          create: (context) => AuthAPI(),
+        ),
+        ChangeNotifierProxyProvider<AuthAPI, User?>(
+          create: (_) => null,
+          update: (_, auth, previousUser) {
+            if (auth.status == AuthStatus.authenticated) {
+              return User(
+                account: auth.account,
+                functions: auth.functions,
+                user: auth.currentUser,
+              );
+            }
+            return null;
+          },
+        ),
+        ChangeNotifierProxyProvider<AuthAPI, DatabaseAPI?>(
+            create: (_) => null,
+            update: (_, auth, previousDatabase) {
+              if (auth.status == AuthStatus.authenticated) {
+                return DatabaseAPI(databases: auth.databases);
+              }
+              return null;
+            }
+        ),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -22,10 +47,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authStatus = context.watch<AuthAPI>().status;
-    final userName = authStatus == AuthStatus.authenticated
-        ? context.watch<AuthAPI>().userName
-        : null;
-
+    final userName = context.watch<User?>()?.userName ?? 'null';
     print('Auth status: $authStatus');
     print('User name: $userName');
 

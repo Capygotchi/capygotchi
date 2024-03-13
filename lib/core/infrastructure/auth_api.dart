@@ -1,8 +1,10 @@
 import 'package:capygotchi/shared/constants/appwrite.dart';
 import 'package:appwrite/appwrite.dart';
-import 'package:appwrite/models.dart';
+import 'package:appwrite/models.dart' as models;
 import 'package:capygotchi/shared/constants/project.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_web_auth_2/flutter_web_auth_2.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 enum AuthStatus {
   authenticated,
@@ -13,16 +15,15 @@ enum AuthStatus {
 class AuthAPI extends ChangeNotifier {
   Client client = Client();
   late final Account account;
+  late final Functions functions;
+  late final Databases databases;
 
-  late User _currentUser;
+  late models.User _currentUser;
   AuthStatus _status = AuthStatus.unknown;
 
   // Getter methods
-  User get currentUser => _currentUser;
+  models.User get currentUser => _currentUser;
   AuthStatus get status => _status;
-  String? get userId => _currentUser.$id;
-  String? get userEmail => _currentUser.email;
-  String? get userName => _currentUser.name;
 
   // Constructor
   AuthAPI() {
@@ -37,9 +38,29 @@ class AuthAPI extends ChangeNotifier {
         .setProject(AppWriteConstants.projectId) // Your project ID
         .setSelfSigned(status: true); // For self signed certificates, only use for development
     account = Account(client);
+    databases = Databases(client);
+    functions = Functions(client);
+
+    // Set the current user to a default user
+    models.User(
+        $id: '',
+        email: '',
+        $createdAt: '',
+        $updatedAt: '',
+        name: '',
+        registration: '',
+        status: false,
+        labels: [],
+        passwordUpdate: '',
+        phone: '',
+        emailVerification:
+        false,
+        phoneVerification: false,
+        prefs: models.Preferences(data: {}),
+        accessedAt: ''
+    );
   }
 
-  // Load user
   loadUser() async {
     try {
       _currentUser = await account.get();
@@ -54,6 +75,13 @@ class AuthAPI extends ChangeNotifier {
   // SignIn with provider
   signInWithProvider({required String provider}) async {
     try {
+      if(!kIsWeb) {
+        // Workaround for android webview closing if changing app, ej: 2FA
+        // See issue : https://github.com/appwrite/sdk-for-flutter/issues/181
+        await FlutterWebAuth2.authenticate(
+            url: '${AppWriteConstants.endpoint}/account/sessions/oauth2/$provider?project=${AppWriteConstants.projectId}',
+            callbackUrlScheme: "appwrite-callback-${AppWriteConstants.projectId}");
+      }
       final session = await account.createOAuth2Session(provider: provider);
       _currentUser = await account.get();
       _status = AuthStatus.authenticated;
@@ -89,16 +117,6 @@ class AuthAPI extends ChangeNotifier {
     try {
       await account.deleteSession(sessionId: 'current');
       _status = AuthStatus.unauthenticated;
-    } finally {
-      notifyListeners();
-    }
-  }
-
-  // Update user name
-  updateUserName({required String name}) async {
-    try {
-      await account.updateName(name: name);
-      _currentUser = await account.get();
     } finally {
       notifyListeners();
     }

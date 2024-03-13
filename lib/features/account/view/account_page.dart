@@ -1,9 +1,12 @@
+import 'package:capygotchi/core/domain/entities/user.dart';
 import 'package:capygotchi/core/infrastructure/auth_api.dart';
 import 'package:capygotchi/features/account/widgets/account_text_field.dart';
+import 'package:capygotchi/shared/utils.dart';
 import 'package:capygotchi/shared/widgets/capy_button.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+
 
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
@@ -13,19 +16,18 @@ class AccountPage extends StatefulWidget {
 }
 
 class _AccountPageState extends State<AccountPage> {
-  late String accountName ;
+  late String accountName;
   late String capybaraType;
   TextEditingController accountNameController = TextEditingController();
 
   @override
   void initState() {
+    accountNameController.text = context.read<User?>()?.userName ?? 'null';
     super.initState();
+  }
 
-    //get account info here
-    accountName = "accounted";
-    capybaraType = "brun";
-
-    accountNameController = TextEditingController(text: accountName);
+  checkPremiumStatus() {
+    context.read<User?>()?.checkPremium();
   }
 
   logoutButton(){
@@ -38,8 +40,24 @@ class _AccountPageState extends State<AccountPage> {
     //todo: implement reskin here
   }
 
-  wantPremiumButton(){
-    //todo: implement premium here
+  wantPremiumButton() async {
+    final isPremium = context.read<User?>()?.isPremium;
+    if(isPremium == null) return;
+    if(isPremium){
+      Utils.showAlertOK(context: context, title: "You are premium already!", text: "🎉 You have already subscribed! Thanks for your support", okBtnText: "Awesome!");
+    }else{
+      await context.read<User?>()?.addPremium().then((addedPremium) => displayPopup(addedPremium));
+    }
+  }
+
+  displayPopup(bool addedPremium){
+    if(addedPremium){
+      Utils.showAlertOK(context: context, title: "Thank you for your purchase!", text: "🎉 You have successfully bought premium for 30 days!", okBtnText: "Yeah!");
+    }
+    else{
+      Utils.showAlertOK(context: context, title: "An error has occured!", text: "We couldn't process your purchase. Sorry about that!", okBtnText: "OK");
+
+    }
   }
 
   validateChangeButton(){
@@ -95,11 +113,12 @@ class _AccountPageState extends State<AccountPage> {
                       )
                     ),
                     const SizedBox(height: 100),
+
                     SizedBox(
                       width: double.infinity,
                       child: CapyButton(
                         onPressed: () => wantPremiumButton(),
-                        label: "Do you want premium?",
+                        label: "Premium",
                         backgroundColor: const Color(0xff8a6552),
                       )
                     ),
@@ -128,4 +147,6 @@ class _AccountPageState extends State<AccountPage> {
       ),
     );
   }
+
+
 }

@@ -54,9 +54,11 @@ class _HomeFrameState extends State<HomeFrame> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return
+    Expanded(child:
+      Container(
       width: double.infinity,
-      height: 400,
+      //height: 400,
       decoration: const BoxDecoration(
         color: Color(0xffA8C69F),
         borderRadius: BorderRadius.only(
@@ -95,6 +97,6 @@ class _HomeFrameState extends State<HomeFrame> {
 
         ],
       ),
-    );
+    ));
   }
 }
