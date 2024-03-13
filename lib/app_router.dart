@@ -19,7 +19,7 @@ class AppRouter {
                 final insideLoginPath = state.fullPath.toString().startsWith('/login');
                 if(authStatus == AuthStatus.unauthenticated && !insideLoginPath) {
                   print('home: unauthenticated or not in loginPath redirecting to /login');
-                  return '/';
+                  return '/login';
                 } else {
                   return null;
                 }

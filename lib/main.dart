@@ -6,16 +6,15 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  final client = AppWriteClient().client;
-
-  print('main: ${client.endPoint}');
-
-  runApp(MultiProvider(
-    providers: [
-      ChangeNotifierProvider(create: (_) => AuthAPI(client: client)),
-      ChangeNotifierProvider(create: (context) => User(account: context.watch<AuthAPI>().account)),
-    ],
-    child: const MyApp(),
+  runApp(ChangeNotifierProvider(
+    create: (context) => AppWriteClient(),
+    child: MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => AuthAPI(account: context.read<AppWriteClient>().account)),
+        ChangeNotifierProvider(create: (context) => User(account: context.read<AppWriteClient>().account)),
+      ],
+      child: const MyApp(),
+    ),
   ));
 }
 
@@ -26,9 +25,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authStatus = context.watch<AuthAPI>().status;
-    final userName = context.watch<User>().userName;
+    final userName = authStatus == AuthStatus.authenticated ? context.watch<User>().userName : 'not logged in';
     print('Auth status: $authStatus');
-    print('Auth status: $authStatus');
+    print('User name: $userName');
 
     final router = AppRouter.createRouter(context, context.read<AuthAPI>());
 

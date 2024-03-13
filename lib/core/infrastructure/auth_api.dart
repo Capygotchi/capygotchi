@@ -11,23 +11,23 @@ enum AuthStatus {
 }
 
 class AuthAPI extends ChangeNotifier {
-  late Account account;
+  late Account _account;
   AuthStatus _status = AuthStatus.unknown;
 
   // Getter methods
   AuthStatus get status => _status;
 
   // Constructor
-  AuthAPI ({required Client client}) {
-    account = Account(client);
+  AuthAPI ({required Account account}) {
+    _account = account;
     _status = AuthStatus.unauthenticated;
   }
 
   // SignIn with provider
   Future<User> signInWithProvider({required String provider}) async {
     try {
-      await account.createOAuth2Session(provider: provider);
-      final user = await account.get();
+      await _account.createOAuth2Session(provider: provider);
+      final user = await _account.get();
       _status = AuthStatus.authenticated;
       return user;
     } finally {
@@ -38,7 +38,7 @@ class AuthAPI extends ChangeNotifier {
   // SignIn with magic link
   signInWithMagicLink({required String email}) async {
     try {
-      await account.createMagicURLSession(userId: ID.unique(), email: email, url: Constants.basePath == '' ? null : '${Constants.basePath}/login-magic');
+      await _account.createMagicURLSession(userId: ID.unique(), email: email, url: Constants.basePath == '' ? null : '${Constants.basePath}/login-magic');
     } finally {
       notifyListeners();
     }
@@ -47,8 +47,8 @@ class AuthAPI extends ChangeNotifier {
   // Confirm magic link
   Future<User> confirmMagicLink({required String userId, required String secret}) async {
     try {
-      await account.updateMagicURLSession(userId: userId, secret: secret);
-      final user = await account.get();
+      await _account.updateMagicURLSession(userId: userId, secret: secret);
+      final user = await _account.get();
       _status = AuthStatus.authenticated;
       return user;
     } finally {
@@ -60,7 +60,7 @@ class AuthAPI extends ChangeNotifier {
   // SignOut
   signOut() async {
     try {
-      await account.deleteSession(sessionId: 'current');
+      await _account.deleteSession(sessionId: 'current');
       _status = AuthStatus.unauthenticated;
     } finally {
       notifyListeners();

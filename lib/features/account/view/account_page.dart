@@ -1,8 +1,3 @@
-import 'dart:convert';
-import 'dart:ffi';
-
-import 'package:appwrite/appwrite.dart';
-import 'package:appwrite/models.dart' as models;
 import 'package:capygotchi/core/domain/entities/user.dart';
 import 'package:capygotchi/core/infrastructure/auth_api.dart';
 import 'package:capygotchi/features/account/widgets/account_text_field.dart';
