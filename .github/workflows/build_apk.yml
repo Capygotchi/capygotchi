@@ -28,13 +28,13 @@ jobs:
       - name: Build APK
         run: |
           if [ "${GITHUB_EVENT_NAME}" == "pull_request" ]; then
-            flutter build apk --release --no-debug
-            # Ajoutez ici le code pour renommer et stocker l'APK généré
+            flutter build apk --release
+            mv build/app/outputs/apk/release/app-release.apk build/app/outputs/apk/release/pr-release-capygotchi.apk
           elif [ "${GITHUB_REF##*/}" = "dev" ]; then
-            flutter build apk --release --no-debug
+            flutter build apk --release
             mv build/app/outputs/apk/release/app-release.apk build/app/outputs/apk/release/pre-release-capygotchi.apk
           elif [ "${GITHUB_REF##*/}" = "master" ]; then
-            flutter build apk --release --no-debug
+            flutter build apk --release
             mv build/app/outputs/apk/release/app-release.apk build/app/outputs/apk/release/capygotchi.apk
           else
             echo "Unsupported branch"
