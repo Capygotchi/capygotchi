@@ -1,18 +1,15 @@
-# Name of the workflow
 name: Build APK
 
- # Controls what will trigger the workflow.
- # Change it to your needs.
 on:
- # A new push to the "main" branch. 
   push:
-   branches: [ "master", "dev" ]
- # A new pull request to the "main" branch.
+    branches:
+      - master
+      - dev
   pull_request:
-   branches: [ "master", "dev" ]
+    branches:
+      - master
+      - dev
 
- 
-# A single workflow can have multiple jobs.
 jobs:
   buildAndRelease:
     runs-on: ubuntu-latest
@@ -29,18 +26,26 @@ jobs:
       - name: Analyze
         run: flutter analyze .
       - name: Build APK
-        run: flutter build apk --debug
+        run: |
+          if [ "${GITHUB_REF##*/}" = "dev" ]; then
+            flutter build apk --release --no-debug
+            mv build/app/outputs/apk/release/app-release.apk build/app/outputs/apk/release/pre-release-capygotchi.apk
+          elif [ "${GITHUB_REF##*/}" = "master" ]; then
+            flutter build apk --release --no-debug
+            mv build/app/outputs/apk/release/app-release.apk build/app/outputs/apk/release/capygotchi.apk
+          else
+            echo "Unsupported branch"
+            exit 1
+          fi
       - uses: actions/upload-artifact@v1
         with:
           name: release-apk
-          path: build/app/outputs/apk/release/app-debug.apk
-
+          path: build/app/outputs/apk/release/
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.SECRET_TOKEN }}
-          file: build/app/outputs/apk/release/app-debug.apk
-          asset_name: app-debug.apk
+          file: build/app/outputs/apk/release/*.apk
           tag: ${{ github.ref_name }}
           overwrite: true
           body: "Release automatically created by GitHub Actions"

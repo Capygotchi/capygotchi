@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:capygotchi/shared/utils.dart';
 
 class Capybara extends ChangeNotifier {
   late String _name;
@@ -80,11 +81,11 @@ class Capybara extends ChangeNotifier {
 
   // Méthode pour afficher les détails du Capybara
   void displayInfo() {
-    print('Name: $_name');
-    print('Color: $_color');
-    print('Date of birth: $_birthDate');
-    print('Hunger: $_hunger');
-    print('Happiness: $_happiness');
+    Utils.logDebug(message: 'Name: $_name');
+    Utils.logDebug(message: 'Color: $_color');
+    Utils.logDebug(message: 'Date of birth: $_birthDate');
+    Utils.logDebug(message: 'Hunger: $_hunger');
+    Utils.logDebug(message: 'Happiness: $_happiness');
   }
 
   // Méthode pour démarrer les timers de mise à jour

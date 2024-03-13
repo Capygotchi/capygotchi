@@ -1,6 +1,7 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:capygotchi/core/domain/entities/capybara.dart';
 import 'package:capygotchi/shared/constants/appwrite.dart';
+import 'package:capygotchi/shared/utils.dart';
 import 'package:flutter/widgets.dart';
 
 class DatabaseAPI extends ChangeNotifier{
@@ -25,13 +26,13 @@ class DatabaseAPI extends ChangeNotifier{
           ]
       );
 
-      print('getMonster name result: ${document.documents.first.data['name']}');
-      print('getMonster name result: ${document.documents.first.data['color']}');
-      print('getMonster name result: ${DateTime.parse(document.documents.first.data['birthDate'])}');
-      print('getMonster name result: ${document.documents.first.data['hunger']}');
-      print('getMonster name result: ${document.documents.first.data['happiness']}');
-      print('getMonster name result: ${document.documents.first.data['life']}');
-      print('getMonster name result: ${document.documents.first.$id}');
+      Utils.logDebug(message: 'getMonster name result: ${document.documents.first.data['name']}');
+      Utils.logDebug(message: 'getMonster name result: ${document.documents.first.data['color']}');
+      Utils.logDebug(message: 'getMonster name result: ${DateTime.parse(document.documents.first.data['birthDate'])}');
+      Utils.logDebug(message: 'getMonster name result: ${document.documents.first.data['hunger']}');
+      Utils.logDebug(message: 'getMonster name result: ${document.documents.first.data['happiness']}');
+      Utils.logDebug(message: 'getMonster name result: ${document.documents.first.data['life']}');
+      Utils.logDebug(message: 'getMonster name result: ${document.documents.first.$id}');
 
       final capybaraInfo = document.documents.first.data;
       Capybara(
@@ -45,7 +46,7 @@ class DatabaseAPI extends ChangeNotifier{
       );
 
     } on AppwriteException catch(e) {
-      print(e);
+      Utils.logError(message: e);
     } finally {
       notifyListeners();
     }
@@ -71,7 +72,7 @@ class DatabaseAPI extends ChangeNotifier{
           }
       );
     } on AppwriteException catch(e) {
-      print(e);
+      Utils.logError(message: e);
     } finally {
       notifyListeners();
     }
@@ -97,7 +98,7 @@ class DatabaseAPI extends ChangeNotifier{
           }
       );
     } on AppwriteException catch(e) {
-      print(e);
+      Utils.logError(message: e);
     } finally {
       notifyListeners();
     }
@@ -113,7 +114,7 @@ class DatabaseAPI extends ChangeNotifier{
           documentId: capybara.documentId
       );
     } on AppwriteException catch(e) {
-      print(e);
+      Utils.logError(message: e);
     } finally {
       notifyListeners();
     }

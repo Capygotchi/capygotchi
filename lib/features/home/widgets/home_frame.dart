@@ -5,8 +5,8 @@ import 'dart:async';
 
 class HomeFrame extends StatefulWidget {
   const HomeFrame({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<HomeFrame> createState() => _HomeFrameState();
@@ -66,7 +66,7 @@ class _HomeFrameState extends State<HomeFrame> {
             alignment: Alignment.topCenter,
             child: Text(
               context.read<Capybara>().name,
-              style: TextStyle(fontSize: 18),
+              style: const TextStyle(fontSize: 18),
             ),
           ),
           AnimatedPositioned(  //IMAGE DU CAPYBARA
