@@ -38,6 +38,25 @@ class AuthAPI extends ChangeNotifier {
     account = Account(client);
     databases = Databases(client);
     functions = Functions(client);
+
+    // Set the current user to a default user
+    models.User(
+        $id: '',
+        email: '',
+        $createdAt: '',
+        $updatedAt: '',
+        name: '',
+        registration: '',
+        status: false,
+        labels: [],
+        passwordUpdate: '',
+        phone: '',
+        emailVerification:
+        false,
+        phoneVerification: false,
+        prefs: models.Preferences(data: {}),
+        accessedAt: ''
+    );
   }
 
   loadUser() async {

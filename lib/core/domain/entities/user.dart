@@ -58,20 +58,13 @@ class User extends ChangeNotifier {
 
   //Check premium
   checkPremium() async {
-    // Dans cette fonction, on va vérifier si l'utilisateur est premium
-    // On va faire une requête à notre serveur pour vérifier si l'utilisateur est premium
-    // Une fois la requête terminée, on refresh l'utilisateur
-    // Et on assigne la variable _premiumPurchaseDate que la fonction serverless premium retourne
-
     try {
       final response = await _functions.createExecution(
         functionId: AppWriteConstants.functionId,
         path: '/?userId=$_userId',
         method: 'GET',
       );
-      print(response.responseBody.toString());
     } catch (e) {
-      print(e);
       return null;
     } finally {
       refreshUser();
@@ -86,13 +79,10 @@ class User extends ChangeNotifier {
         path: '/?userId=$_userId',
         method: 'PATCH',
       );
-      print(response.responseBody.toString());
     } catch (e) {
-      print(e);
       return false;
-    } finally {
-      return true;
     }
+    return true;
   }
 
   void displayInfo() {

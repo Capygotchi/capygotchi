@@ -22,12 +22,12 @@ class _AccountPageState extends State<AccountPage> {
 
   @override
   void initState() {
-    accountNameController.text = context.read<User>().userName;
+    accountNameController.text = context.read<User?>()?.userName ?? 'null';
     super.initState();
   }
 
   checkPremiumStatus() {
-    context.read<User>().checkPremium();
+    context.read<User?>()?.checkPremium();
   }
 
   logoutButton(){
@@ -41,12 +41,12 @@ class _AccountPageState extends State<AccountPage> {
   }
 
   wantPremiumButton() async {
-    final isPremium = context.read<User>().isPremium;
-    print(isPremium);
+    final isPremium = context.read<User?>()?.isPremium;
+    if(isPremium == null) return;
     if(isPremium){
       Utils.showAlertOK(context: context, title: "You are premium already!", text: "🎉 You have already subscribed! Thanks for your support", okBtnText: "Awesome!");
     }else{
-      await context.read<User>().addPremium().then((addedPremium) => displayPopup(addedPremium));
+      await context.read<User?>()?.addPremium().then((addedPremium) => displayPopup(addedPremium));
     }
   }
 
