@@ -28,10 +28,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     //initializing the capybara
     return ChangeNotifierProvider(
-      create: (_) => Capybara(
-          name: 'Roger',
-          color: 'Brown'
-      ),
+      create: (_) => Capybara(name: 'Roger', color: 'Brown', context: context),
       child: Scaffold(
         backgroundColor: const Color(0xffF4E6E4),
         appBar: AppBar(
