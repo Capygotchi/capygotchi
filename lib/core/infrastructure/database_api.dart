@@ -1,22 +1,23 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:capygotchi/core/domain/entities/capybara.dart';
 import 'package:capygotchi/shared/constants/appwrite.dart';
+import 'package:flutter/cupertino.dart';
 
-class DatabaseAPI {
-  late Databases databases;
+class DatabaseAPI extends ChangeNotifier{
+  late Databases _databases;
 
   // Constructor
   DatabaseAPI({
-    required Client client
+    required Databases databases
   }) {
-    databases = Databases(client);
+    _databases = databases;
   }
 
   getMonster({
     required String userId
   }) async {
     try {
-      final document = await databases.listDocuments(
+      final document = await _databases.listDocuments(
           databaseId: AppWriteConstants.databaseId,
           collectionId: AppWriteConstants.collectionId,
           queries: [
@@ -35,7 +36,7 @@ class DatabaseAPI {
     required String userId
   }) async {
     try {
-      await databases.createDocument(
+      await _databases.createDocument(
           databaseId: AppWriteConstants.databaseId,
           collectionId: AppWriteConstants.collectionId,
           documentId: ID.unique(),
@@ -59,7 +60,7 @@ class DatabaseAPI {
     required String userId
   }) async {
     try {
-      await databases.updateDocument(
+      await _databases.updateDocument(
           databaseId: AppWriteConstants.databaseId,
           collectionId: AppWriteConstants.collectionId,
           documentId: '',
@@ -83,7 +84,7 @@ class DatabaseAPI {
     required String userId
   }) async {
     try {
-      await databases.deleteDocument(
+      await _databases.deleteDocument(
           databaseId: AppWriteConstants.databaseId,
           collectionId: AppWriteConstants.collectionId,
           documentId: ''
