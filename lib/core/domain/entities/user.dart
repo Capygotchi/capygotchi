@@ -29,7 +29,8 @@ class User extends ChangeNotifier {
       _user = await _account.get();
       _userId = _user.$id;
       _userName = _user.name;
-      //TODO le reste
+      _isPremium = _user.labels.contains('premium');
+      //TODO _premiumPurchaseDate
     } finally {
       notifyListeners();
     }
