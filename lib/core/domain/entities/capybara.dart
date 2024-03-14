@@ -11,7 +11,7 @@ enum CapyColor {
   blue,
   black,
   white,
-  ouline,
+  outline,
   vomi,
 }
 

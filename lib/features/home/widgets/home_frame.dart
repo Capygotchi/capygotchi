@@ -36,8 +36,8 @@ class _HomeFrameState extends State<HomeFrame> {
         return Image.asset('assets/stand_left_white.gif');
       case CapyColor.vomi:
         return Image.asset('assets/stand_left_vomi.gif');
-      case CapyColor.ouline:
-        return Image.asset('assets/stand_left_ouline.gif');
+      case CapyColor.outline:
+        return Image.asset('assets/stand_left_outline.gif');
       case null:
         return Image.asset('assets/stand_left.gif');
     }
@@ -59,8 +59,8 @@ class _HomeFrameState extends State<HomeFrame> {
         return Image.asset('assets/walk_left_white.gif');
       case CapyColor.vomi:
         return Image.asset('assets/walk_left_vomi.gif');
-      case CapyColor.ouline:
-        return Image.asset('assets/walk_left_ouline.gif');
+      case CapyColor.outline:
+        return Image.asset('assets/walk_left_outline.gif');
 
       case null:
         return Image.asset('assets/walk_left.gif');

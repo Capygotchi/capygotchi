@@ -62,9 +62,9 @@ class _AccountPageState extends State<AccountPage> {
         capyColor = CapyColor.vomi;
         break;
       case CapyColor.vomi:
-        capyColor = CapyColor.ouline;
+        capyColor = CapyColor.outline;
         break;
-      case CapyColor.ouline:
+      case CapyColor.outline:
         capyColor = CapyColor.brown;
         break;
 
