@@ -109,7 +109,7 @@ class _HomeFrameState extends State<HomeFrame> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         image: const DecorationImage(
-          image: AssetImage('assets/grass2.png'),
+          image: AssetImage('assets/background.png'),
           fit: BoxFit.cover,
         ),
       ),
