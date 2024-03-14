@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:appwrite/appwrite.dart';
 import 'package:capygotchi/core/domain/entities/capybara.dart';
 import 'package:capygotchi/shared/constants/appwrite.dart';
@@ -37,19 +35,19 @@ class DatabaseAPI extends ChangeNotifier{
       Utils.logDebug(message: 'getMonster name result: ${document.documents.first.$id}');
 
       final capybaraInfo = document.documents.first.data;
-      Capybara(
-        name: capybaraInfo['name'],
-        color: CapyColor.values.byName(capybaraInfo['color']),
-        birthDate: DateTime.parse(capybaraInfo['birthDate']),
-        hunger: capybaraInfo['hunger'],
-        happiness: capybaraInfo['happiness'],
-        life: capybaraInfo['life'],
-        documentId: document.documents.first.$id
+      return Capybara(
+          name: capybaraInfo['name'],
+          color: capybaraInfo['color'],
+          birthDate: DateTime.parse(capybaraInfo['birthDate']),
+          hunger: capybaraInfo['hunger'],
+          happiness: capybaraInfo['happiness'],
+          life: capybaraInfo['life'],
+          documentId: document.documents.first.$id
       );
 
     } on AppwriteException catch(e) {
       Utils.logError(message: e);
-      return Capybara(name: 'Roger', color: 'Brown', documentId: '');
+      return Capybara(name: 'Roger', color: CapyColor.brown, documentId: '');
     } finally {
       notifyListeners();
     }

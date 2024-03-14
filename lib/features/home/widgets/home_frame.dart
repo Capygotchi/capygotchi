@@ -21,7 +21,7 @@ class _HomeFrameState extends State<HomeFrame> {
   final _random = Random(); // Générateur de nombre aléatoire
 
   getStandLeft() {
-    if(context.read<Capybara>().color == CapyColor.brown.toString()) {
+    if(context.read<Capybara>().color == CapyColor.brown) {
       return Image.asset('stand_left.gif');
     } else {
       return Image.asset('stand_left_hat.gif');
@@ -29,7 +29,7 @@ class _HomeFrameState extends State<HomeFrame> {
   }
 
   getWalkLeft() {
-    if(context.read<Capybara>().color == CapyColor.brown.toString()) {
+    if(context.read<Capybara>().color == CapyColor.brown) {
       return Image.asset('walk_left.gif');
     } else {
       return Image.asset('walk_left_hat.gif');
