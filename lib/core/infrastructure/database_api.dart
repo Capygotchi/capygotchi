@@ -75,7 +75,7 @@ class DatabaseAPI extends ChangeNotifier{
             }
         );
       } else {
-        print("User have already a capybara");
+        Utils.logDebug(message: "User have already a capybara");
       }
     } on AppwriteException catch(e) {
       Utils.logError(message: e);

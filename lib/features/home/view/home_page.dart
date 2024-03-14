@@ -9,7 +9,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:capygotchi/core/domain/entities/capybara.dart';
 
-import '../../../core/domain/entities/user.dart';
+import 'package:capygotchi/core/domain/entities/user.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -19,8 +19,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  Capybara capybara = Capybara(name: 'Roger', color: 'Brown', documentId: '');
-
   signOut() {
     try {
       context.read<AuthAPI>().signOut();
@@ -32,7 +30,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      getMonster();
+      getMonster(context);
     });
     super.initState();
   }
@@ -46,12 +44,14 @@ class _HomePageState extends State<HomePage> {
         userId: '65f0a73e31fe27bbe0e0'
     );
   } */
-  getMonster() async {
+  getMonster(BuildContext context) async {
+
     final database = context.read<DatabaseAPI?>();
     final userName = context.read<User?>()?.userName;
     if(database != null && userName != null) {
       final newCapybara = await database.getMonster(userId: context.read<User>().userId);
-      capybara.updateCapybara(newCapybara);
+      if (!context.mounted) return;
+      context.read<Capybara>().updateCapybara(newCapybara);
     }
   }
   // updateMonster() {
@@ -65,9 +65,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<Capybara>(
-      create: (_) => capybara,
-      child: Scaffold(
+    return Scaffold(
         backgroundColor: const Color(0xffF4E6E4),
         appBar: AppBar(
           title: const Text(
@@ -98,7 +96,6 @@ class _HomePageState extends State<HomePage> {
             HomeFooter(),
           ],
         ),
-      )
-    );
+      );
   }
 }
