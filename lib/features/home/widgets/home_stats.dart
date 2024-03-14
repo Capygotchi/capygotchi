@@ -34,7 +34,7 @@ class _HomeStatsState extends State<HomeStats> {
   updateMonster() async {
     await context.read<DatabaseAPI?>()?.updateMonster(
       capybara: context.read<Capybara>(),
-      userId: context.read<User>().userId,
+      userId: context.read<User>().userId
     );
   }
 
