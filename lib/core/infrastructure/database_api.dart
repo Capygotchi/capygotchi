@@ -44,10 +44,6 @@ class DatabaseAPI extends ChangeNotifier{
           life: capybaraInfo['life'],
           documentId: document.documents.first.$id
         );
-      } else {
-        print('No capybara found for this user');
-        return Capybara(name: 'Roger', color: 'Brown', documentId: '');
-      }
 
     } on AppwriteException catch(e) {
       Utils.logError(message: e);

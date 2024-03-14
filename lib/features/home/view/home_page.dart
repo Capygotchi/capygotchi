@@ -51,7 +51,6 @@ class _HomePageState extends State<HomePage> {
     final userName = context.read<User?>()?.userName;
     if(database != null && userName != null) {
       final newCapybara = await database.getMonster(userId: context.read<User>().userId);
-      print(newCapybara.displayInfo());
       capybara.updateCapybara(newCapybara);
     }
   }
