@@ -18,7 +18,7 @@ class _HomeStatsState extends State<HomeStats> {
   @override
   Widget build(BuildContext context) {
     final capybara = context.watch<Capybara>();
-    return SizedBox(
+    return Container(
       width: double.infinity,
       child: Padding(
         padding: const EdgeInsets.all(8.0),

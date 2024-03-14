@@ -5,8 +5,8 @@ import 'dart:async';
 
 class HomeFrame extends StatefulWidget {
   const HomeFrame({
-    super.key,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<HomeFrame> createState() => _HomeFrameState();
@@ -46,11 +46,9 @@ class _HomeFrameState extends State<HomeFrame> {
 
   @override
   Widget build(BuildContext context) {
-    return
-    Expanded(child:
-      Container(
+    return Container(
       width: double.infinity,
-      //height: 400,
+      height: 400,
       decoration: const BoxDecoration(
         color: Color(0xffA8C69F),
         borderRadius: BorderRadius.only(
@@ -63,10 +61,10 @@ class _HomeFrameState extends State<HomeFrame> {
       child: Stack(
         children: [
           Align(  //NOM DU CAPYBARA
-            alignment: Alignment.topCenter,
+            alignment: Alignment.bottomCenter,
             child: Text(
               context.read<Capybara>().name,
-              style: const TextStyle(fontSize: 18),
+              style: TextStyle(fontSize: 18),
             ),
           ),
           AnimatedPositioned(  //IMAGE DU CAPYBARA
@@ -77,6 +75,6 @@ class _HomeFrameState extends State<HomeFrame> {
           ),
         ],
       ),
-    ));
+    );
   }
 }

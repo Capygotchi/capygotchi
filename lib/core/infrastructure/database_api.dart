@@ -1,106 +1,71 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:capygotchi/core/domain/entities/capybara.dart';
 import 'package:capygotchi/shared/constants/appwrite.dart';
-import 'package:capygotchi/shared/utils.dart';
-import 'package:flutter/widgets.dart';
 
-class DatabaseAPI extends ChangeNotifier{
-  late Databases _databases;
+class DatabaseAPI {
+  late Databases databases;
 
   // Constructor
   DatabaseAPI({
-    required Databases databases
+    required Client client
   }) {
-    _databases = databases;
+    databases = Databases(client);
   }
 
   getMonster({
     required String userId
   }) async {
     try {
-      final document = await _databases.listDocuments(
+      databases.listDocuments(
           databaseId: AppWriteConstants.databaseId,
           collectionId: AppWriteConstants.collectionId,
-          queries: [
-            Query.equal('userId', userId)
-          ]
       );
-
-      Utils.logDebug(message: 'getMonster name result: ${document.documents.first.data['name']}');
-      Utils.logDebug(message: 'getMonster name result: ${document.documents.first.data['color']}');
-      Utils.logDebug(message: 'getMonster name result: ${DateTime.parse(document.documents.first.data['birthDate'])}');
-      Utils.logDebug(message: 'getMonster name result: ${document.documents.first.data['hunger']}');
-      Utils.logDebug(message: 'getMonster name result: ${document.documents.first.data['happiness']}');
-      Utils.logDebug(message: 'getMonster name result: ${document.documents.first.data['life']}');
-      Utils.logDebug(message: 'getMonster name result: ${document.documents.first.$id}');
-
-      final capybaraInfo = document.documents.first.data;
-      Capybara(
-        name: capybaraInfo['name'],
-        color: capybaraInfo['color'],
-        birthDate: DateTime.parse(capybaraInfo['birthDate']),
-        hunger: capybaraInfo['hunger'],
-        happiness: capybaraInfo['happiness'],
-        life: capybaraInfo['life'],
-        documentId: document.documents.first.$id
-      );
-
     } on AppwriteException catch(e) {
-      Utils.logError(message: e);
-    } finally {
-      notifyListeners();
+      print(e);
     }
   }
 
   createMonster({
-    required Capybara capybara,
-    required String userId
+    required Capybara capybara
   }) async {
     try {
-      await _databases.createDocument(
+      databases.createDocument(
           databaseId: AppWriteConstants.databaseId,
           collectionId: AppWriteConstants.collectionId,
           documentId: ID.unique(),
           data: {
             'name': capybara.name,
             'color': capybara.color,
-            'birthDate': capybara.birthDate.toIso8601String(),
+            'birthdate': capybara.birthDate,
             'hunger': capybara.hunger,
             'happiness': capybara.happiness,
-            'life': capybara.life,
-            'userId': userId
+            'life': capybara.life
           }
       );
     } on AppwriteException catch(e) {
-      Utils.logError(message: e);
-    } finally {
-      notifyListeners();
+      print(e);
     }
   }
 
   updateMonster({
-    required Capybara capybara,
-    required String userId
+    required Capybara capybara
   }) async {
     try {
-      await _databases.updateDocument(
+      databases.updateDocument(
           databaseId: AppWriteConstants.databaseId,
           collectionId: AppWriteConstants.collectionId,
-          documentId: capybara.documentId,
+          documentId: '',
           data: {
             'name': capybara.name,
             'color': capybara.color,
-            'birthDate': capybara.birthDate.toIso8601String(),
+            'birthdate': capybara.birthDate,
             'hunger': capybara.hunger,
             'happiness': capybara.happiness,
-            'life': capybara.life,
-            'userId': userId
+            'life': capybara.life
           }
       );
     } on AppwriteException catch(e) {
-      Utils.logError(message: e);
-    } finally {
-      notifyListeners();
+      print(e);
     }
   }
 
@@ -108,15 +73,13 @@ class DatabaseAPI extends ChangeNotifier{
     required Capybara capybara
   }) async {
     try {
-      await _databases.deleteDocument(
+      databases.deleteDocument(
           databaseId: AppWriteConstants.databaseId,
           collectionId: AppWriteConstants.collectionId,
-          documentId: capybara.documentId
+          documentId: ''
       );
     } on AppwriteException catch(e) {
-      Utils.logError(message: e);
-    } finally {
-      notifyListeners();
+      print(e);
     }
   }
 }

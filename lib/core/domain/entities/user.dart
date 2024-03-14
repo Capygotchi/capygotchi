@@ -1,5 +1,4 @@
 import 'package:capygotchi/shared/constants/appwrite.dart';
-import 'package:capygotchi/shared/utils.dart';
 import 'package:flutter/widgets.dart';
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart' as models;
@@ -51,7 +50,7 @@ class User extends ChangeNotifier {
   updateUserName({required String name}) async {
     try {
       await _account.updateName(name: name);
-      refreshUser();
+      _user = await _account.get();
     } finally {
       notifyListeners();
     }
@@ -59,13 +58,20 @@ class User extends ChangeNotifier {
 
   //Check premium
   checkPremium() async {
+    // Dans cette fonction, on va vérifier si l'utilisateur est premium
+    // On va faire une requête à notre serveur pour vérifier si l'utilisateur est premium
+    // Une fois la requête terminée, on refresh l'utilisateur
+    // Et on assigne la variable _premiumPurchaseDate que la fonction serverless premium retourne
+
     try {
-      await _functions.createExecution(
+      final response = await _functions.createExecution(
         functionId: AppWriteConstants.functionId,
         path: '/?userId=$_userId',
         method: 'GET',
       );
+      print(response.responseBody.toString());
     } catch (e) {
+      print(e);
       return null;
     } finally {
       refreshUser();
@@ -75,21 +81,24 @@ class User extends ChangeNotifier {
 
   Future<bool> addPremium() async {
     try {
-      await _functions.createExecution(
+      final response = await _functions.createExecution(
         functionId: AppWriteConstants.functionId,
         path: '/?userId=$_userId',
         method: 'PATCH',
       );
+      print(response.responseBody.toString());
     } catch (e) {
+      print(e);
       return false;
+    } finally {
+      return true;
     }
-    return true;
   }
 
   void displayInfo() {
-    Utils.logDebug(message: 'Username: $_userName');
-    Utils.logDebug(message: 'User id: $_userId');
-    Utils.logDebug(message: 'Premium: $_isPremium');
-    Utils.logDebug(message: 'Premium purchase date: $_premiumPurchaseDate');
+    print('Username: $_userName');
+    print('User id: $_userId');
+    print('Premium: $_isPremium');
+    print('Premium purchase date: $_premiumPurchaseDate');
   }
 }

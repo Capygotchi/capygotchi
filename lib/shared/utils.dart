@@ -1,7 +1,6 @@
 import 'package:capygotchi/core/domain/entities/user.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'dart:developer';
 
 class Utils {
   static showAlertOK({required BuildContext context, required String title, required String text, required String okBtnText}) {
@@ -38,14 +37,10 @@ class Utils {
                     context.read<User>().notifyListeners();
                     Navigator.pop(context);
                   },
+                  child: Text(OKBtnText))
+              ],
+              );
+            }
     );
-  }
-
-  static logDebug({required dynamic message}) {
-    log(message.toString(), name: 'DEBUG', level: 700);
-  }
-
-  static logError({required dynamic message}) {
-    log(message.toString(), name: 'ERROR', level: 1000);
   }
 }
