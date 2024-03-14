@@ -56,7 +56,7 @@ class _HomeFrameState extends State<HomeFrame> {
             }
           } else {
             _leftPosition = _leftPosition; // Ne pas bouger
-            };
+            }
           });
         });
 
