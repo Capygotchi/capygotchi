@@ -38,7 +38,7 @@ class _HomePageState extends State<HomePage> {
   /* createMonster() {
     context.read<DatabaseAPI>().createMonster(
         capybara: Capybara(
-            name: 'Michel', color: 'Yellow',
+            name: 'Michel', color: CapyColor.brownWithHat,
             documentId: ID.unique()
         ),
         userId: '65f0a73e31fe27bbe0e0'

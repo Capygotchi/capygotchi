@@ -20,6 +20,22 @@ class _HomeFrameState extends State<HomeFrame> {
   late Timer _timer; // Timer pour mettre à jour la position de l'image
   final _random = Random(); // Générateur de nombre aléatoire
 
+  getStandLeft() {
+    if(context.read<Capybara>().color == CapyColor.brown.toString()) {
+      return Image.asset('stand_left.gif');
+    } else {
+      return Image.asset('stand_left_hat.gif');
+    }
+  }
+
+  getWalkLeft() {
+    if(context.read<Capybara>().color == CapyColor.brown.toString()) {
+      return Image.asset('walk_left.gif');
+    } else {
+      return Image.asset('walk_left_hat.gif');
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -86,12 +102,12 @@ class _HomeFrameState extends State<HomeFrame> {
                 ? Transform(
                     transform: _movingRight ? Matrix4.rotationY(3.14159) : Matrix4.rotationY(0),
                     alignment: Alignment.center,
-                    child: Image.asset('walk_left.gif'),
+                    child: getWalkLeft(),
                 )
                 : Transform(
                     transform: _movingRight ? Matrix4.rotationY(3.14159) : Matrix4.rotationY(0),
                     alignment: Alignment.center,
-                    child:Image.asset('stand_left.gif'),
+                    child: getStandLeft(),
                 ),
           ),
 
