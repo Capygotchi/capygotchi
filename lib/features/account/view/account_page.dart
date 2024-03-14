@@ -51,7 +51,7 @@ class _AccountPageState extends State<AccountPage> {
 
   displayPopup(bool addedPremium){
     if(addedPremium){
-      Utils.showAlertOK(context: context, title: "Thank you for your purchase!", text: "🎉 You have successfully bought premium for 30 days!", okBtnText: "Yeah!");
+      Utils.showAlertPremium(context: context, title: "Thank you for your purchase!", text: "🎉 You have successfully bought premium for 30 days!", okBtnText: "Yeah!");
     }
     else{
       Utils.showAlertOK(context: context, title: "An error has occured!", text: "We couldn't process your purchase. Sorry about that!", okBtnText: "OK");
