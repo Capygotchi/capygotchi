@@ -37,7 +37,6 @@ class Utils {
               ElevatedButton(
                   onPressed: () {
                     context.read<User?>()?.refreshUser();
-                    context.read<User?>()?.notifyListeners();
                     Navigator.pop(context);
                   },
                   child: Text(okBtnText)
