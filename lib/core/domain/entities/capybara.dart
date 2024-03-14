@@ -86,13 +86,10 @@ class Capybara extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Méthode pour afficher les détails du Capybara
-  void displayInfo() {
-    Utils.logDebug(message: 'Name: $_name');
-    Utils.logDebug(message: 'Color: $_color');
-    Utils.logDebug(message: 'Date of birth: $_birthDate');
-    Utils.logDebug(message: 'Hunger: $_hunger');
-    Utils.logDebug(message: 'Happiness: $_happiness');
+  void changeColor(CapyColor newColor) {
+    _color = newColor;
+    Utils.logDebug(message: newColor.toString());
+    notifyListeners();
   }
 
   // Méthode pour démarrer les timers de mise à jour

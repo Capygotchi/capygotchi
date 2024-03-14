@@ -69,7 +69,7 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: const Color(0xffF4E6E4),
         appBar: AppBar(
           title: const Text(
-            'Capygatcha',
+            'Capygotchi',
             style: TextStyle(color: Colors.white),
           ),
           actions: <Widget>[

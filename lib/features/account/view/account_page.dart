@@ -1,3 +1,4 @@
+import 'package:capygotchi/core/domain/entities/capybara.dart';
 import 'package:capygotchi/core/domain/entities/user.dart';
 import 'package:capygotchi/core/infrastructure/auth_api.dart';
 import 'package:capygotchi/features/account/widgets/account_text_field.dart';
@@ -16,11 +17,11 @@ class AccountPage extends StatefulWidget {
 
 class _AccountPageState extends State<AccountPage> {
   late String accountName;
-  late String capybaraType;
   TextEditingController accountNameController = TextEditingController();
 
   @override
   void initState() {
+
     accountNameController.text = context.read<User?>()?.userName ?? 'null';
     super.initState();
   }
@@ -33,10 +34,10 @@ class _AccountPageState extends State<AccountPage> {
     context.read<AuthAPI>().signOut();
   }
 
-  reskinButton(String pType){
-    capybaraType = pType;
-    Utils.logDebug(message: capybaraType);
-    //todo: implement reskin here
+  reskinButton(){
+    var capyColor = context.read<Capybara?>()?.color;
+    capyColor = capyColor == CapyColor.brown ? CapyColor.brownWithHat : CapyColor.brown;
+    context.read<Capybara>().changeColor(capyColor);
   }
 
   wantPremiumButton() async {
@@ -108,8 +109,8 @@ class _AccountPageState extends State<AccountPage> {
                     SizedBox(
                       width: double.infinity,
                       child: CapyButton(
-                        onPressed: () => reskinButton("mauve"),
-                        label: "Reskin Capybara (premium only)",
+                        onPressed: () => reskinButton(),
+                        label: "*Premium* Change skin : ${context.watch<Capybara?>()?.color ?? CapyColor.brown}",
                         backgroundColor: const Color(0xff8a6552),
                       )
                     ),
