@@ -21,18 +21,49 @@ class _HomeFrameState extends State<HomeFrame> {
   final _random = Random(); // Générateur de nombre aléatoire
 
   getStandLeft() {
-    if(context.read<Capybara>().color == CapyColor.brown) {
-      return Image.asset('stand_left.gif');
-    } else {
-      return Image.asset('stand_left_hat.gif');
+    switch(context.read<Capybara?>()?.color) {
+      case CapyColor.brown:
+        return Image.asset('assets/stand_left.gif');
+      case CapyColor.brownWithHat:
+        return Image.asset('assets/stand_left_hat.gif');
+      case CapyColor.rainbow:
+        return Image.asset('assets/stand_left_rainbow.gif');
+      case CapyColor.blue:
+        return Image.asset('assets/stand_left_blue.gif');
+      case CapyColor.black:
+        return Image.asset('assets/stand_left_black.gif');
+      case CapyColor.white:
+        return Image.asset('assets/stand_left_white.gif');
+      case CapyColor.vomi:
+        return Image.asset('assets/stand_left_vomi.gif');
+      case CapyColor.ouline:
+        return Image.asset('assets/stand_left_ouline.gif');
+      case null:
+        return Image.asset('assets/stand_left.gif');
     }
   }
 
   getWalkLeft() {
-    if(context.read<Capybara>().color == CapyColor.brown) {
-      return Image.asset('walk_left.gif');
-    } else {
-      return Image.asset('walk_left_hat.gif');
+    switch(context.read<Capybara?>()?.color) {
+      case CapyColor.brown:
+        return Image.asset('assets/walk_left.gif');
+      case CapyColor.brownWithHat:
+        return Image.asset('assets/walk_left_hat.gif');
+      case CapyColor.rainbow:
+        return Image.asset('assets/walk_left_rainbow.gif');
+      case CapyColor.blue:
+        return Image.asset('assets/walk_left_blue.gif');
+      case CapyColor.black:
+        return Image.asset('assets/walk_left_black.gif');
+      case CapyColor.white:
+        return Image.asset('assets/walk_left_white.gif');
+      case CapyColor.vomi:
+        return Image.asset('assets/walk_left_vomi.gif');
+      case CapyColor.ouline:
+        return Image.asset('assets/walk_left_ouline.gif');
+
+      case null:
+        return Image.asset('assets/walk_left.gif');
     }
   }
 

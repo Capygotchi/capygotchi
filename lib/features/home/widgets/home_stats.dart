@@ -6,8 +6,8 @@ import 'package:capygotchi/shared/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/domain/entities/user.dart';
-import '../../../core/infrastructure/database_api.dart';
+import 'package:capygotchi/core/domain/entities/user.dart';
+import 'package:capygotchi/core/infrastructure/database_api.dart';
 
 class HomeStats extends StatefulWidget {
   const HomeStats({super.key});
@@ -70,7 +70,7 @@ class _HomeStatsState extends State<HomeStats> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text("- Type :${capybara.color}"),
+                      Text("- Type :${capybara.color.name}"),
                       Text("- He is : ${getAge()} days old."),
                       HomeStatBar(
                           value: capybara.life!, type: "life:              "),

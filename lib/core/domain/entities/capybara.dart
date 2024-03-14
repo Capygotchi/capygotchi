@@ -7,6 +7,12 @@ import 'package:capygotchi/shared/utils.dart';
 enum CapyColor {
   brown,
   brownWithHat,
+  rainbow,
+  blue,
+  black,
+  white,
+  ouline,
+  vomi,
 }
 
 class Capybara extends ChangeNotifier {

@@ -39,7 +39,35 @@ class _AccountPageState extends State<AccountPage> {
   reskinButton(){
     Utils.logDebug(message: context.read<User>().isPremium.toString());
     var capyColor = context.read<Capybara?>()?.color;
-    capyColor = capyColor == CapyColor.brown ? CapyColor.brownWithHat : CapyColor.brown;
+    switch(capyColor){
+      case CapyColor.brown:
+        capyColor = CapyColor.brownWithHat;
+        break;
+      case CapyColor.brownWithHat:
+        capyColor = CapyColor.rainbow;
+        break;
+      case CapyColor.rainbow:
+        capyColor = CapyColor.blue;
+        break;
+      case CapyColor.blue:
+        capyColor = CapyColor.black;
+        break;
+      case CapyColor.black:
+        capyColor = CapyColor.white;
+        break;
+      case CapyColor.white:
+        capyColor = CapyColor.vomi;
+        break;
+      case CapyColor.vomi:
+        capyColor = CapyColor.ouline;
+        break;
+      case CapyColor.ouline:
+        capyColor = CapyColor.brown;
+        break;
+
+      case null:
+        capyColor = CapyColor.brown;
+    }
     context.read<Capybara>().changeColor(capyColor);
   }
 
@@ -135,7 +163,7 @@ class _AccountPageState extends State<AccountPage> {
                       child: CapyButton(
                         disabled: context.watch<User?>()?.isPremium!=true,
                         onPressed: () => reskinButton(),
-                        label: "*Premium* Change skin : ${(context.watch<Capybara?>()?.color ?? CapyColor.brown.toString()).toString()}",
+                        label: "*Premium* Change skin : ${(context.watch<Capybara?>()?.color.name ?? CapyColor.brown.name)}",
                         backgroundColor: const Color(0xff8a6552),
                       )
                     ),
