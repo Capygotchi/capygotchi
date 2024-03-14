@@ -1,16 +1,7 @@
-# capygotchi
+# Capygotchi
+Capygotchi is a simple game where you take care of a capybara. You can feed it and play with it. If you don't take care of it, it will die.
+Premiums members can also change his skin !
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## How to play
+ Get the APK from the release page and install it on your phone. You can also clone the project and build it yourself.
+ 
