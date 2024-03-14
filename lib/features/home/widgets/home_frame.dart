@@ -120,7 +120,7 @@ class _HomeFrameState extends State<HomeFrame> {
           Align(  //NOM DU CAPYBARA
             alignment: Alignment.topCenter,
             child: Text(
-              context.read<Capybara>().name,
+              (context.read<Capybara?>()?.alive ?? true) ? context.read<Capybara>().name : '${context.read<Capybara>().name} is dead',
               style: const TextStyle(fontSize: 18),
             ),
           ),

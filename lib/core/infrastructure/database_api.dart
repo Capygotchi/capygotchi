@@ -26,34 +26,41 @@ class DatabaseAPI extends ChangeNotifier{
           ]
       );
 
-      Utils.logDebug(message: 'getMonster name result: ${document.documents.first.data['name']}');
-      Utils.logDebug(message: 'getMonster color result: ${document.documents.first.data['color']}');
-      Utils.logDebug(message: 'getMonster birthDate result: ${DateTime.parse(document.documents.first.data['birthDate'])}');
-      Utils.logDebug(message: 'getMonster hunger result: ${document.documents.first.data['hunger']}');
-      Utils.logDebug(message: 'getMonster happiness result: ${document.documents.first.data['happiness']}');
-      Utils.logDebug(message: 'getMonster life result: ${document.documents.first.data['life']}');
-      Utils.logDebug(message: 'getMonster userId result: ${document.documents.first.$id}');
-
       final capybaraInfo = document.documents.first.data;
-      return Capybara(
-          name: capybaraInfo['name'],
-          color: CapyColor.values.byName(capybaraInfo['color']),
-          birthDate: DateTime.parse(capybaraInfo['birthDate']),
-          hunger: capybaraInfo['hunger'],
-          happiness: capybaraInfo['happiness'],
-          life: capybaraInfo['life'],
-          documentId: document.documents.first.$id
-      );
 
+      if(capybaraInfo['alive'] == true) {
+        Utils.logDebug(message: 'getMonster name result: ${capybaraInfo['name']}');
+        Utils.logDebug(message: 'getMonster color result: ${capybaraInfo['color']}');
+        Utils.logDebug(message: 'getMonster birthDate result: ${DateTime.parse(capybaraInfo['birthDate'])}');
+        Utils.logDebug(message: 'getMonster hunger result: ${capybaraInfo['hunger']}');
+        Utils.logDebug(message: 'getMonster happiness result: ${capybaraInfo['happiness']}');
+        Utils.logDebug(message: 'getMonster life result: ${capybaraInfo['life']}');
+        Utils.logDebug(message: 'getMonster alive result: ${capybaraInfo['alive']}');
+        Utils.logDebug(message: 'getMonster userId result: ${document.documents.first.$id}');
+
+        return Capybara(
+            name: capybaraInfo['name'],
+            color: CapyColor.values.byName(capybaraInfo['color']),
+            birthDate: DateTime.parse(capybaraInfo['birthDate']),
+            hunger: capybaraInfo['hunger'],
+            happiness: capybaraInfo['happiness'],
+            life: capybaraInfo['life'],
+            alive: capybaraInfo['alive'],
+            documentId: document.documents.first.$id
+        );
+      } else {
+        deleteMonster(capybara: Capybara(name: capybaraInfo['name'], color: CapyColor.values.byName(capybaraInfo['color']), documentId: document.documents.first.$id));
+        return createMonster(capybara: Capybara(name: 'Roger', color: CapyColor.brown, documentId: ID.unique()), userId: userId);
+      }
     } on AppwriteException catch(e) {
       Utils.logError(message: e);
-      return Capybara(name: 'Roger', color: CapyColor.brown, documentId: '');
+      return createMonster(capybara: Capybara(name: 'Roger', color: CapyColor.brown, documentId: ''), userId: userId);
     } finally {
       notifyListeners();
     }
   }
 
-  createMonster({
+  Future<Capybara> createMonster({
     required Capybara capybara,
     required String userId
   }) async {
@@ -71,6 +78,7 @@ class DatabaseAPI extends ChangeNotifier{
               'hunger': capybara.hunger,
               'happiness': capybara.happiness,
               'life': capybara.life,
+              'alive': capybara.alive,
               'userId': userId
             }
         );
@@ -82,6 +90,7 @@ class DatabaseAPI extends ChangeNotifier{
     } finally {
       notifyListeners();
     }
+    return capybara;
   }
 
   updateMonster({
@@ -102,6 +111,7 @@ class DatabaseAPI extends ChangeNotifier{
               'hunger': capybara.hunger,
               'happiness': capybara.happiness,
               'life': capybara.life,
+              'alive': capybara.alive,
               'userId': userId
             }
         );
