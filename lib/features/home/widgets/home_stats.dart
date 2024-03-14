@@ -1,7 +1,13 @@
+import 'dart:async';
+
 import 'package:capygotchi/core/domain/entities/capybara.dart';
 import 'package:capygotchi/features/home/widgets/home_stat_bar.dart';
+import 'package:capygotchi/shared/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../../../core/domain/entities/user.dart';
+import '../../../core/infrastructure/database_api.dart';
 
 class HomeStats extends StatefulWidget {
   const HomeStats({super.key});
@@ -11,8 +17,31 @@ class HomeStats extends StatefulWidget {
 }
 
 class _HomeStatsState extends State<HomeStats> {
+  late Timer _timer; // Timer pour mettre à jour le capybara
+
   getAge() {
     return DateTime.now().difference(context.read<Capybara>().birthDate).inDays;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _timer = Timer.periodic(const Duration(milliseconds: 30000), (timer) {
+      setState(() async {
+        final database = context.read<DatabaseAPI?>();
+        final userName = context.read<User?>()?.userName;
+        if(database != null && userName != null) {
+          await database.updateMonster(capybara: context.watch<Capybara>(), userId: context.read<User>().userId);
+          Utils.logDebug(message: 'MAJ CAPYBARA');
+        }
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel(); // Arrêter le Timer lorsque le widget est supprimé
+    super.dispose();
   }
 
   @override

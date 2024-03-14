@@ -45,7 +45,6 @@ class _HomePageState extends State<HomePage> {
     );
   } */
   getMonster(BuildContext context) async {
-
     final database = context.read<DatabaseAPI?>();
     final userName = context.read<User?>()?.userName;
     if(database != null && userName != null) {
