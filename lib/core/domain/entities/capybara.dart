@@ -3,6 +3,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:capygotchi/shared/utils.dart';
 
+enum CapyColor {
+  brown,
+  brownWithHat,
+}
+
 class Capybara extends ChangeNotifier {
   late String _name;
   late DateTime _birthDate;
@@ -37,7 +42,7 @@ class Capybara extends ChangeNotifier {
     required String documentId
   }) {
     _name = name;
-    _color = color;
+    _color = CapyColor.brown.toString();
     _birthDate = birthDate ?? DateTime.now();
     _hunger = hunger;
     _happiness = happiness;
