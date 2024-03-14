@@ -1,5 +1,4 @@
 import 'package:appwrite/appwrite.dart';
-import 'package:capygotchi/core/domain/entities/user.dart';
 import 'package:capygotchi/shared/utils.dart';
 import 'package:capygotchi/core/infrastructure/auth_api.dart';
 import 'package:capygotchi/shared/widgets/capy_button.dart';
@@ -26,8 +25,9 @@ class _LoginPageState extends State<LoginPage> {
 
   signInWithMagicLink(String email) {
     try {
+      if(email.isEmpty) return;
       context.read<AuthAPI>().signInWithMagicLink(email: email);
-      print('Magic link sent to $email');
+      Utils.logDebug(message: 'Magic link sent to $email');
     } on AppwriteException catch (e) {
       Utils.showAlertOK(title: 'Login failed', text: e.message.toString(), context: context, okBtnText: "Ok");
     }

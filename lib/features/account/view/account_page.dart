@@ -4,7 +4,6 @@ import 'package:capygotchi/features/account/widgets/account_text_field.dart';
 import 'package:capygotchi/shared/utils.dart';
 import 'package:capygotchi/shared/widgets/capy_button.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 
@@ -36,7 +35,7 @@ class _AccountPageState extends State<AccountPage> {
 
   reskinButton(String pType){
     capybaraType = pType;
-    print(capybaraType);
+    Utils.logDebug(message: capybaraType);
     //todo: implement reskin here
   }
 
@@ -62,9 +61,11 @@ class _AccountPageState extends State<AccountPage> {
 
   validateChangeButton(){
     accountName = accountNameController.text;
-    print(accountName);
-    //todo: implement database save.
-    context.go('/home');
+    if(accountName.isNotEmpty) {
+      context.read<User?>()?.updateUserName(name: accountName);
+    } else {
+      Utils.showAlertOK(context: context, title: "Error", text: "Please enter a valid name", okBtnText: "OK");
+    }
   }
 
   @override
