@@ -1,3 +1,4 @@
+import 'package:capygotchi/core/domain/entities/capybara.dart';
 import 'package:capygotchi/core/domain/entities/user.dart';
 import 'package:capygotchi/core/infrastructure/auth_api.dart';
 import 'package:capygotchi/features/account/widgets/account_text_field.dart';
@@ -16,8 +17,10 @@ class AccountPage extends StatefulWidget {
 
 class _AccountPageState extends State<AccountPage> {
   late String accountName;
+  late String capybaraName;
   late String capybaraType;
   TextEditingController accountNameController = TextEditingController();
+  TextEditingController capybaraNameController = TextEditingController();
 
   @override
   void initState() {
@@ -61,10 +64,17 @@ class _AccountPageState extends State<AccountPage> {
 
   validateChangeButton(){
     accountName = accountNameController.text;
+    capybaraName = capybaraNameController.text;
     if(accountName.isNotEmpty) {
       context.read<User?>()?.updateUserName(name: accountName);
     } else {
       Utils.showAlertOK(context: context, title: "Error", text: "Please enter a valid name", okBtnText: "OK");
+    }
+    if(capybaraName.isNotEmpty){
+      Utils.logDebug(message: "capybara's new name: $capybaraName");
+      //context.read<Capybara>()?.;
+    }else{
+      Utils.showAlertOK(context: context, title: "Error", text: "Please give a real name to your capybara", okBtnText: "ok");
     }
   }
 
@@ -101,7 +111,20 @@ class _AccountPageState extends State<AccountPage> {
                   child:
                   AccountTextField(controller: accountNameController),
                 ),
-                const SizedBox(height: 150),
+                const SizedBox(height: 50),
+
+                const Text("Change capybara's name:",
+                    style:
+                    TextStyle(color: Colors.black)),
+                const SizedBox(height: 10),
+                Container(
+                  decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(40)),
+                      color: Color(0xff8a6552)),
+                  child:
+                  AccountTextField(controller: capybaraNameController),
+                ),
+                const SizedBox(height: 100),
 
                 Column(
                   children: [
@@ -113,7 +136,7 @@ class _AccountPageState extends State<AccountPage> {
                         backgroundColor: const Color(0xff8a6552),
                       )
                     ),
-                    const SizedBox(height: 100),
+                    const SizedBox(height: 50),
 
                     SizedBox(
                       width: double.infinity,
@@ -135,7 +158,7 @@ class _AccountPageState extends State<AccountPage> {
                         CapyButton(
                             onPressed: () => validateChangeButton(),
                             label: 'Save my changes',
-                            backgroundColor: const Color(0xffA8C69F),
+                            backgroundColor: const Color(0xffca2e55),
                         ),
                       ],
                     )
