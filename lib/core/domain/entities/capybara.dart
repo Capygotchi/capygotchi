@@ -49,7 +49,7 @@ class Capybara extends ChangeNotifier {
 
   // Feed capybara
   void feed() {
-    if (_hunger < 100) {
+    if (_hunger < 100 && _alive) {
       _hunger += 10;
       if (_hunger >= 100) {
         _hunger = 100;
@@ -57,9 +57,11 @@ class Capybara extends ChangeNotifier {
       }
     }
     else {
-      _happiness -= 20;
-      if(_happiness < 0){
-        _happiness = 0;
+      if(_alive){
+        _happiness -= 20;
+        if(_happiness < 0){
+          _happiness = 0;
+        }
       }
     }
     notifyListeners();
@@ -67,14 +69,16 @@ class Capybara extends ChangeNotifier {
 
   // Pet capybara
   void pet() {
-    if (_happiness < 100) {
+    if (_happiness < 100 && _alive) {
       _happiness += 10;
       if (_happiness >= 100) {
         _happiness = 100;
       }
     }
     else {
-      _happiness = 80;
+      if(_alive){
+        _happiness = 80;
+      }
     }
     notifyListeners();
   }
