@@ -31,7 +31,7 @@ class _HomeFooterState extends State<HomeFooter> {
                 ),
                 HomeFooterButton(
                   onPressed: () => context.read<Capybara>().feed(),
-                  icon: const AssetImage('assets/food.png'),
+                  icon: const AssetImage('assets/leaf.png'),
                   backgroundColor: const Color(0xffA8C69F),
                 ),
 

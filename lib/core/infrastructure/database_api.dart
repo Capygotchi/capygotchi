@@ -66,7 +66,7 @@ class DatabaseAPI extends ChangeNotifier{
             documentId: ID.unique(),
             data: {
               'name': capybara.name,
-              'color': capybara.color,
+              'color': capybara.color.name,
               'birthDate': capybara.birthDate.toIso8601String(),
               'hunger': capybara.hunger,
               'happiness': capybara.happiness,
@@ -90,14 +90,14 @@ class DatabaseAPI extends ChangeNotifier{
   }) async {
     try {
       final isHavingMonster = await getMonster(userId: userId);
-      if(isHavingMonster.documentId == '') {
+      if(isHavingMonster.documentId != '') {
         await _databases.updateDocument(
             databaseId: AppWriteConstants.databaseId,
             collectionId: AppWriteConstants.collectionId,
             documentId: capybara.documentId,
             data: {
               'name': capybara.name,
-              'color': capybara.color,
+              'color': capybara.color.name,
               'birthDate': capybara.birthDate.toIso8601String(),
               'hunger': capybara.hunger,
               'happiness': capybara.happiness,

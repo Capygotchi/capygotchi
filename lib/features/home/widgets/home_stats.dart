@@ -26,16 +26,16 @@ class _HomeStatsState extends State<HomeStats> {
   @override
   void initState() {
     super.initState();
-    _timer = Timer.periodic(const Duration(milliseconds: 30000), (timer) {
-      setState(() async {
-        final database = context.read<DatabaseAPI?>();
-        final userName = context.read<User?>()?.userName;
-        if(database != null && userName != null) {
-          await database.updateMonster(capybara: context.watch<Capybara>(), userId: context.read<User>().userId);
-          Utils.logDebug(message: 'MAJ CAPYBARA');
-        }
-      });
+    _timer = Timer.periodic(const Duration(milliseconds: 8000), (timer) {
+      updateMonster();
     });
+  }
+
+  updateMonster() async {
+    await context.read<DatabaseAPI?>()?.updateMonster(
+      capybara: context.read<Capybara>(),
+      userId: context.read<User>().userId
+    );
   }
 
   @override

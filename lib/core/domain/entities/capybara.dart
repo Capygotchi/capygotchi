@@ -166,12 +166,8 @@ class Capybara extends ChangeNotifier {
   }
 
   updateName({required String name}) async {
-    try {
-      //await _account.updateName(name: name);
-      //refreshUser();
-    } finally {
-      notifyListeners();
-    }
+    _name = name;
+    notifyListeners();
   }
 
   // Méthode pour arrêter les timers lors de la suppression de l'objet

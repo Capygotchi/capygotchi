@@ -7,6 +7,8 @@ import 'package:capygotchi/shared/widgets/capy_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/infrastructure/database_api.dart';
+
 
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
@@ -18,6 +20,7 @@ class AccountPage extends StatefulWidget {
 class _AccountPageState extends State<AccountPage> {
   late String accountName;
   late String capybaraName;
+  late Capybara capybara;
   TextEditingController accountNameController = TextEditingController();
   TextEditingController capybaraNameController = TextEditingController();
 
@@ -97,10 +100,16 @@ class _AccountPageState extends State<AccountPage> {
   validateChangeButton(){
     accountName = accountNameController.text;
     capybaraName = capybaraNameController.text;
+    capybara = context.read<Capybara>();
     if(accountName.isNotEmpty && capybaraName.isNotEmpty) {
-      Utils.showAlertPremium(context: context, onPressed: () {
+      Utils.showAlertPremium(context: context, onPressed: () async {
         context.read<User?>()?.updateUserName(name: accountName);
         context.read<Capybara?>()?.updateName(name: capybaraName);
+        await context.read<DatabaseAPI?>()?.updateMonster(
+            capybara: capybara,
+            userId: context.read<User>().userId
+        );
+        if(!context.mounted) return;
         Navigator.pop(context);
       }, title: "Updated !", text: "🎉 You have successfully updated your account!", okBtnText: "Ok");
     } else {
