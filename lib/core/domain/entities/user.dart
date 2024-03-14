@@ -93,3 +93,5 @@ class User extends ChangeNotifier {
     Utils.logDebug(message: 'Premium purchase date: $_premiumPurchaseDate');
   }
 }
+
+// utilisation de user après avoir disposé

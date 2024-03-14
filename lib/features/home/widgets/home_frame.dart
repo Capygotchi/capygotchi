@@ -20,6 +20,53 @@ class _HomeFrameState extends State<HomeFrame> {
   late Timer _timer; // Timer pour mettre à jour la position de l'image
   final _random = Random(); // Générateur de nombre aléatoire
 
+  getStandLeft() {
+    switch(context.read<Capybara?>()?.color) {
+      case CapyColor.brown:
+        return Image.asset('assets/stand_left.gif');
+      case CapyColor.brownWithHat:
+        return Image.asset('assets/stand_left_hat.gif');
+      case CapyColor.rainbow:
+        return Image.asset('assets/stand_left_rainbow.gif');
+      case CapyColor.blue:
+        return Image.asset('assets/stand_left_blue.gif');
+      case CapyColor.black:
+        return Image.asset('assets/stand_left_black.gif');
+      case CapyColor.white:
+        return Image.asset('assets/stand_left_white.gif');
+      case CapyColor.vomi:
+        return Image.asset('assets/stand_left_vomi.gif');
+      case CapyColor.outline:
+        return Image.asset('assets/stand_left_outline.gif');
+      case null:
+        return Image.asset('assets/stand_left.gif');
+    }
+  }
+
+  getWalkLeft() {
+    switch(context.read<Capybara?>()?.color) {
+      case CapyColor.brown:
+        return Image.asset('assets/walk_left.gif');
+      case CapyColor.brownWithHat:
+        return Image.asset('assets/walk_left_hat.gif');
+      case CapyColor.rainbow:
+        return Image.asset('assets/walk_left_rainbow.gif');
+      case CapyColor.blue:
+        return Image.asset('assets/walk_left_blue.gif');
+      case CapyColor.black:
+        return Image.asset('assets/walk_left_black.gif');
+      case CapyColor.white:
+        return Image.asset('assets/walk_left_white.gif');
+      case CapyColor.vomi:
+        return Image.asset('assets/walk_left_vomi.gif');
+      case CapyColor.outline:
+        return Image.asset('assets/walk_left_outline.gif');
+
+      case null:
+        return Image.asset('assets/walk_left.gif');
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -40,7 +87,7 @@ class _HomeFrameState extends State<HomeFrame> {
             }
           } else {
             _leftPosition = _leftPosition; // Ne pas bouger
-            };
+            }
           });
         });
 
@@ -86,12 +133,12 @@ class _HomeFrameState extends State<HomeFrame> {
                 ? Transform(
                     transform: _movingRight ? Matrix4.rotationY(3.14159) : Matrix4.rotationY(0),
                     alignment: Alignment.center,
-                    child: Image.asset('walk_left.gif'),
+                    child: getWalkLeft(),
                 )
                 : Transform(
                     transform: _movingRight ? Matrix4.rotationY(3.14159) : Matrix4.rotationY(0),
                     alignment: Alignment.center,
-                    child:Image.asset('stand_left.gif'),
+                    child: getStandLeft(),
                 ),
           ),
 

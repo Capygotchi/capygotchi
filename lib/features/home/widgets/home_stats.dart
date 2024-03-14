@@ -1,7 +1,13 @@
+import 'dart:async';
+
 import 'package:capygotchi/core/domain/entities/capybara.dart';
 import 'package:capygotchi/features/home/widgets/home_stat_bar.dart';
+import 'package:capygotchi/shared/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import 'package:capygotchi/core/domain/entities/user.dart';
+import 'package:capygotchi/core/infrastructure/database_api.dart';
 
 class HomeStats extends StatefulWidget {
   const HomeStats({super.key});
@@ -11,8 +17,31 @@ class HomeStats extends StatefulWidget {
 }
 
 class _HomeStatsState extends State<HomeStats> {
+  late Timer _timer; // Timer pour mettre à jour le capybara
+
   getAge() {
     return DateTime.now().difference(context.read<Capybara>().birthDate).inDays;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _timer = Timer.periodic(const Duration(milliseconds: 8000), (timer) {
+      updateMonster();
+    });
+  }
+
+  updateMonster() async {
+    await context.read<DatabaseAPI?>()?.updateMonster(
+      capybara: context.read<Capybara>(),
+      userId: context.read<User>().userId
+    );
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel(); // Arrêter le Timer lorsque le widget est supprimé
+    super.dispose();
   }
 
   @override
@@ -41,7 +70,7 @@ class _HomeStatsState extends State<HomeStats> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text("- Type :${capybara.color}"),
+                      Text("- Type :${capybara.color.name}"),
                       Text("- He is : ${getAge()} days old."),
                       HomeStatBar(
                           value: capybara.life!, type: "life:              "),

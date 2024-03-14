@@ -1,12 +1,24 @@
 import 'dart:async';
+import 'package:capygotchi/core/infrastructure/database_api.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:capygotchi/shared/utils.dart';
 
+enum CapyColor {
+  brown,
+  brownWithHat,
+  rainbow,
+  blue,
+  black,
+  white,
+  outline,
+  vomi,
+}
+
 class Capybara extends ChangeNotifier {
   late String _name;
   late DateTime _birthDate;
-  late String _color;
+  late CapyColor _color;
   late int _hunger;
   late int _happiness;
   late int _life;
@@ -19,7 +31,7 @@ class Capybara extends ChangeNotifier {
   // Getters
   String get name => _name;
   DateTime get birthDate => _birthDate;
-  String get color => _color;
+  CapyColor get color => _color;
   int? get hunger => _hunger;
   int? get happiness => _happiness;
   int? get life => _life;
@@ -29,7 +41,7 @@ class Capybara extends ChangeNotifier {
   // Constructor
   Capybara({
     required String name,
-    required String color,
+    required CapyColor color,
     DateTime? birthDate,
     int hunger = 100,
     int happiness = 100,
@@ -37,7 +49,7 @@ class Capybara extends ChangeNotifier {
     required String documentId
   }) {
     _name = name;
-    _color = color;
+    _color = CapyColor.brown;
     _birthDate = birthDate ?? DateTime.now();
     _hunger = hunger;
     _happiness = happiness;
@@ -49,7 +61,7 @@ class Capybara extends ChangeNotifier {
 
   // Feed capybara
   void feed() {
-    if (_hunger < 100) {
+    if (_hunger < 100 && _alive) {
       _hunger += 10;
       if (_hunger >= 100) {
         _hunger = 100;
@@ -57,9 +69,11 @@ class Capybara extends ChangeNotifier {
       }
     }
     else {
-      _happiness -= 20;
-      if(_happiness < 0){
-        _happiness = 0;
+      if(_alive){
+        _happiness -= 20;
+        if(_happiness < 0){
+          _happiness = 0;
+        }
       }
     }
     notifyListeners();
@@ -67,25 +81,24 @@ class Capybara extends ChangeNotifier {
 
   // Pet capybara
   void pet() {
-    if (_happiness < 100) {
+    if (_happiness < 100 && _alive) {
       _happiness += 10;
       if (_happiness >= 100) {
         _happiness = 100;
       }
     }
     else {
-      _happiness = 80;
+      if(_alive){
+        _happiness = 80;
+      }
     }
     notifyListeners();
   }
 
-  // Méthode pour afficher les détails du Capybara
-  void displayInfo() {
-    Utils.logDebug(message: 'Name: $_name');
-    Utils.logDebug(message: 'Color: $_color');
-    Utils.logDebug(message: 'Date of birth: $_birthDate');
-    Utils.logDebug(message: 'Hunger: $_hunger');
-    Utils.logDebug(message: 'Happiness: $_happiness');
+  void changeColor(CapyColor newColor) {
+    _color = newColor;
+    Utils.logDebug(message: newColor.toString());
+    notifyListeners();
   }
 
   // Méthode pour démarrer les timers de mise à jour
@@ -149,8 +162,11 @@ class Capybara extends ChangeNotifier {
 
       _name += " is dead";
     }
+    notifyListeners();
+  }
 
-
+  updateName({required String name}) async {
+    _name = name;
     notifyListeners();
   }
 
@@ -160,5 +176,16 @@ class Capybara extends ChangeNotifier {
     _hungerTimer.cancel();
     _happinessTimer.cancel();
     super.dispose();
+  }
+
+  void updateCapybara(Capybara newCapybara) {
+    _name = newCapybara.name;
+    _color = newCapybara.color;
+    _documentId = newCapybara.documentId;
+    _birthDate = newCapybara.birthDate;
+    _hunger = newCapybara.hunger!;
+    _happiness = newCapybara.happiness!;
+    _life = newCapybara.life!;
+    notifyListeners();
   }
 }

@@ -5,19 +5,21 @@ class CapyButton extends StatelessWidget {
   final String? label;
   final dynamic icon;
   final Color backgroundColor;
+  final bool disabled; // Nouvelle propriété pour activer/désactiver le bouton
 
   const CapyButton({
-    super.key,
+    Key? key,
     required this.onPressed,
     this.label,
     this.icon,
     this.backgroundColor = Colors.white,
-  });
+    this.disabled = false, // Par défaut, le bouton n'est pas désactivé
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: onPressed,
+      onPressed: disabled ? null : onPressed, // Désactiver le bouton si 'disabled' est vrai
       style: ElevatedButton.styleFrom(
         backgroundColor: backgroundColor,
       ),

@@ -9,6 +9,8 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:capygotchi/core/domain/entities/capybara.dart';
 
+import 'package:capygotchi/core/domain/entities/user.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -25,18 +27,32 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  createMonster() {
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      getMonster(context);
+    });
+    super.initState();
+  }
+
+  /* createMonster() {
     context.read<DatabaseAPI>().createMonster(
         capybara: Capybara(
-            name: 'Michel', color: 'Yellow',
+            name: 'Michel', color: CapyColor.brownWithHat,
             documentId: ID.unique()
         ),
         userId: '65f0a73e31fe27bbe0e0'
     );
+  } */
+  getMonster(BuildContext context) async {
+    final database = context.read<DatabaseAPI?>();
+    final userName = context.read<User?>()?.userName;
+    if(database != null && userName != null) {
+      final newCapybara = await database.getMonster(userId: context.read<User>().userId);
+      if (!context.mounted) return;
+      context.read<Capybara>().updateCapybara(newCapybara);
+    }
   }
-  // getMonster() {
-  //   context.read<DatabaseAPI>().getMonster(userId: context.read<User>().userId);
-  // }
   // updateMonster() {
   //   context.read<DatabaseAPI>().updateMonster(capybara: Capybara(
   //       name: 'Michel', color: 'Black', documentId: '65f1ef2b8c6b95d10152', hunger: 80, life: 50),
@@ -48,18 +64,11 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    //initializing the capybara
-    return ChangeNotifierProvider(
-      create: (_) => Capybara(
-          name: 'Roger',
-          color: 'Brown',
-          documentId: '',
-      ),
-      child: Scaffold(
+    return Scaffold(
         backgroundColor: const Color(0xffF4E6E4),
         appBar: AppBar(
           title: const Text(
-            'Capygatcha',
+            'Capygotchi',
             style: TextStyle(color: Colors.white),
           ),
           actions: <Widget>[
@@ -72,7 +81,6 @@ class _HomePageState extends State<HomePage> {
               tooltip: 'Account button',
               onPressed: () {
                 context.go('/account');
-                // createMonster();
               },
             ),
           ],
@@ -87,7 +95,6 @@ class _HomePageState extends State<HomePage> {
             HomeFooter(),
           ],
         ),
-      ),
-    );
+      );
   }
 }

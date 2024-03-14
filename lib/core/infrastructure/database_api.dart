@@ -14,7 +14,7 @@ class DatabaseAPI extends ChangeNotifier{
     _databases = databases;
   }
 
-  getMonster({
+  Future<Capybara> getMonster({
     required String userId
   }) async {
     try {
@@ -27,26 +27,27 @@ class DatabaseAPI extends ChangeNotifier{
       );
 
       Utils.logDebug(message: 'getMonster name result: ${document.documents.first.data['name']}');
-      Utils.logDebug(message: 'getMonster name result: ${document.documents.first.data['color']}');
-      Utils.logDebug(message: 'getMonster name result: ${DateTime.parse(document.documents.first.data['birthDate'])}');
-      Utils.logDebug(message: 'getMonster name result: ${document.documents.first.data['hunger']}');
-      Utils.logDebug(message: 'getMonster name result: ${document.documents.first.data['happiness']}');
-      Utils.logDebug(message: 'getMonster name result: ${document.documents.first.data['life']}');
-      Utils.logDebug(message: 'getMonster name result: ${document.documents.first.$id}');
+      Utils.logDebug(message: 'getMonster color result: ${document.documents.first.data['color']}');
+      Utils.logDebug(message: 'getMonster birthDate result: ${DateTime.parse(document.documents.first.data['birthDate'])}');
+      Utils.logDebug(message: 'getMonster hunger result: ${document.documents.first.data['hunger']}');
+      Utils.logDebug(message: 'getMonster happiness result: ${document.documents.first.data['happiness']}');
+      Utils.logDebug(message: 'getMonster life result: ${document.documents.first.data['life']}');
+      Utils.logDebug(message: 'getMonster userId result: ${document.documents.first.$id}');
 
       final capybaraInfo = document.documents.first.data;
-      Capybara(
-        name: capybaraInfo['name'],
-        color: capybaraInfo['color'],
-        birthDate: DateTime.parse(capybaraInfo['birthDate']),
-        hunger: capybaraInfo['hunger'],
-        happiness: capybaraInfo['happiness'],
-        life: capybaraInfo['life'],
-        documentId: document.documents.first.$id
+      return Capybara(
+          name: capybaraInfo['name'],
+          color: CapyColor.values.byName(capybaraInfo['color']),
+          birthDate: DateTime.parse(capybaraInfo['birthDate']),
+          hunger: capybaraInfo['hunger'],
+          happiness: capybaraInfo['happiness'],
+          life: capybaraInfo['life'],
+          documentId: document.documents.first.$id
       );
 
     } on AppwriteException catch(e) {
       Utils.logError(message: e);
+      return Capybara(name: 'Roger', color: CapyColor.brown, documentId: '');
     } finally {
       notifyListeners();
     }
@@ -57,20 +58,25 @@ class DatabaseAPI extends ChangeNotifier{
     required String userId
   }) async {
     try {
-      await _databases.createDocument(
-          databaseId: AppWriteConstants.databaseId,
-          collectionId: AppWriteConstants.collectionId,
-          documentId: ID.unique(),
-          data: {
-            'name': capybara.name,
-            'color': capybara.color,
-            'birthDate': capybara.birthDate.toIso8601String(),
-            'hunger': capybara.hunger,
-            'happiness': capybara.happiness,
-            'life': capybara.life,
-            'userId': userId
-          }
-      );
+      final isHavingMonster = await getMonster(userId: userId);
+      if(isHavingMonster.documentId == '') {
+        await _databases.createDocument(
+            databaseId: AppWriteConstants.databaseId,
+            collectionId: AppWriteConstants.collectionId,
+            documentId: ID.unique(),
+            data: {
+              'name': capybara.name,
+              'color': capybara.color.name,
+              'birthDate': capybara.birthDate.toIso8601String(),
+              'hunger': capybara.hunger,
+              'happiness': capybara.happiness,
+              'life': capybara.life,
+              'userId': userId
+            }
+        );
+      } else {
+        Utils.logDebug(message: "User have already a capybara");
+      }
     } on AppwriteException catch(e) {
       Utils.logError(message: e);
     } finally {
@@ -83,20 +89,23 @@ class DatabaseAPI extends ChangeNotifier{
     required String userId
   }) async {
     try {
-      await _databases.updateDocument(
-          databaseId: AppWriteConstants.databaseId,
-          collectionId: AppWriteConstants.collectionId,
-          documentId: capybara.documentId,
-          data: {
-            'name': capybara.name,
-            'color': capybara.color,
-            'birthDate': capybara.birthDate.toIso8601String(),
-            'hunger': capybara.hunger,
-            'happiness': capybara.happiness,
-            'life': capybara.life,
-            'userId': userId
-          }
-      );
+      final isHavingMonster = await getMonster(userId: userId);
+      if(isHavingMonster.documentId != '') {
+        await _databases.updateDocument(
+            databaseId: AppWriteConstants.databaseId,
+            collectionId: AppWriteConstants.collectionId,
+            documentId: capybara.documentId,
+            data: {
+              'name': capybara.name,
+              'color': capybara.color.name,
+              'birthDate': capybara.birthDate.toIso8601String(),
+              'hunger': capybara.hunger,
+              'happiness': capybara.happiness,
+              'life': capybara.life,
+              'userId': userId
+            }
+        );
+      }
     } on AppwriteException catch(e) {
       Utils.logError(message: e);
     } finally {

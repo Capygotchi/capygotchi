@@ -1,8 +1,10 @@
 import 'package:capygotchi/app_router.dart';
+import 'package:capygotchi/core/domain/entities/capybara.dart';
 import 'package:capygotchi/core/domain/entities/user.dart';
 import 'package:capygotchi/core/infrastructure/auth_api.dart';
 import 'package:capygotchi/core/infrastructure/database_api.dart';
 import 'package:capygotchi/shared/utils.dart';
+import 'package:capygotchi/features/home/view/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -34,6 +36,9 @@ void main() {
               }
               return null;
             }
+        ),
+        ChangeNotifierProvider<Capybara>(
+            create: (_) => Capybara(name: 'Roger', color: CapyColor.brown, documentId: '')
         ),
       ],
       child: const MyApp(),

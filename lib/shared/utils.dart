@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'dart:developer';
 
+import 'package:provider/provider.dart';
+
+import '../core/domain/entities/user.dart';
+
 class Utils {
   static showAlertOK({required BuildContext context, required String title, required String text, required String okBtnText}) {
     showDialog(
@@ -21,7 +25,7 @@ class Utils {
       }
     );
   }
-  static showAlertPremium({required BuildContext context, required String title, required String text, required String yesBtnText, required String noBtnText}) {
+  static showAlertPremium({required BuildContext context, required Function onPressed, required String title, required String text, required String okBtnText}) {
     showDialog(
         context: context,
         barrierDismissible: false,
@@ -31,16 +35,8 @@ class Utils {
             content: Text(text),
             actions: [
               ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text(noBtnText)
-              ),
-              ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text(yesBtnText)
+                  onPressed: () => onPressed(),
+                  child: Text(okBtnText)
               )
             ],
           );
