@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:capygotchi/core/infrastructure/auth_api.dart';
+import 'package:capygotchi/shared/utils.dart';
 import 'package:provider/provider.dart';
 
 class LoginMagicPage extends StatefulWidget {
@@ -19,7 +20,7 @@ class _LoginMagicPageState extends State<LoginMagicPage> {
   }
 
   confirmLogin() {
-    print('confirmLogin: Confirming login for user: ${widget.userId} with secret: ${widget.secret}');
+    Utils.logDebug(message: 'confirmLogin: Confirming login for user: ${widget.userId} with secret: ${widget.secret}');
     context.read<AuthAPI>().confirmMagicLink(userId: widget.userId, secret: widget.secret);
   }
 

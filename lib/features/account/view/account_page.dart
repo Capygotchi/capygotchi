@@ -4,7 +4,6 @@ import 'package:capygotchi/features/account/widgets/account_text_field.dart';
 import 'package:capygotchi/shared/utils.dart';
 import 'package:capygotchi/shared/widgets/capy_button.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 
@@ -22,12 +21,12 @@ class _AccountPageState extends State<AccountPage> {
 
   @override
   void initState() {
-    accountNameController.text = context.read<User>().userName;
+    accountNameController.text = context.read<User?>()?.userName ?? 'null';
     super.initState();
   }
 
   checkPremiumStatus() {
-    context.read<User>().checkPremium();
+    context.read<User?>()?.checkPremium();
   }
 
   logoutButton(){
@@ -36,17 +35,17 @@ class _AccountPageState extends State<AccountPage> {
 
   reskinButton(String pType){
     capybaraType = pType;
-    print(capybaraType);
+    Utils.logDebug(message: capybaraType);
     //todo: implement reskin here
   }
 
   wantPremiumButton() async {
-    final isPremium = context.read<User>().isPremium;
-    print(isPremium);
+    final isPremium = context.read<User?>()?.isPremium;
+    if(isPremium == null) return;
     if(isPremium){
       Utils.showAlertOK(context: context, title: "You are premium already!", text: "🎉 You have already subscribed! Thanks for your support", okBtnText: "Awesome!");
     }else{
-      await context.read<User>().addPremium().then((addedPremium) => displayPopup(addedPremium));
+      await context.read<User?>()?.addPremium().then((addedPremium) => displayPopup(addedPremium));
     }
   }
 
@@ -62,9 +61,11 @@ class _AccountPageState extends State<AccountPage> {
 
   validateChangeButton(){
     accountName = accountNameController.text;
-    print(accountName);
-    //todo: implement database save.
-    context.go('/home');
+    if(accountName.isNotEmpty) {
+      context.read<User?>()?.updateUserName(name: accountName);
+    } else {
+      Utils.showAlertOK(context: context, title: "Error", text: "Please enter a valid name", okBtnText: "OK");
+    }
   }
 
   @override

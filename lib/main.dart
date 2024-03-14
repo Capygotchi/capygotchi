@@ -1,22 +1,44 @@
 import 'package:capygotchi/app_router.dart';
 import 'package:capygotchi/core/domain/entities/user.dart';
 import 'package:capygotchi/core/infrastructure/auth_api.dart';
+import 'package:capygotchi/core/infrastructure/database_api.dart';
+import 'package:capygotchi/shared/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp(ChangeNotifierProvider(
-    create: (context) => AuthAPI(),
-    child: ChangeNotifierProvider(
-      create: (context) {
-        if(context.read<AuthAPI>().status == AuthStatus.authenticated) {
-          return User(account: context.read<AuthAPI>().account, functions: context.read<AuthAPI>().functions, user: context.read<AuthAPI>().currentUser);
-        }
-        return null;
-      },
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider<AuthAPI>(
+          create: (context) => AuthAPI(),
+        ),
+        ChangeNotifierProxyProvider<AuthAPI, User?>(
+          create: (_) => null,
+          update: (_, auth, previousUser) {
+            if (auth.status == AuthStatus.authenticated) {
+              return User(
+                account: auth.account,
+                functions: auth.functions,
+                user: auth.currentUser,
+              );
+            }
+            return null;
+          },
+        ),
+        ChangeNotifierProxyProvider<AuthAPI, DatabaseAPI?>(
+            create: (_) => null,
+            update: (_, auth, previousDatabase) {
+              if (auth.status == AuthStatus.authenticated) {
+                return DatabaseAPI(databases: auth.databases);
+              }
+              return null;
+            }
+        ),
+      ],
       child: const MyApp(),
     ),
-  ));
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -26,9 +48,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authStatus = context.watch<AuthAPI>().status;
-    final userName = authStatus == AuthStatus.authenticated ? context.watch<User>().userName : 'null';
-    print('Auth status: $authStatus');
-    print('User name: $userName');
+    final userName = context.watch<User?>()?.userName ?? 'null';
+    Utils.logDebug(message: 'Auth status: $authStatus');
+    Utils.logDebug(message: 'User name: $userName');
 
     final router = AppRouter.createRouter(context, context.read<AuthAPI>());
 
