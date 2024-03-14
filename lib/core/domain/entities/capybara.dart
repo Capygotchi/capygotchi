@@ -18,7 +18,6 @@ class Capybara extends ChangeNotifier {
   late int _life;
   late String _documentId;
   late bool _alive;
-  late DatabaseAPI database;
 
   late Timer _hungerTimer;
   late Timer _happinessTimer;
@@ -136,15 +135,6 @@ class Capybara extends ChangeNotifier {
       _life = 0;
     }
     _updateAlive();
-    database.updateMonster(capybara: Capybara(
-      name: _name,
-      color: _color,
-      documentId: _documentId,
-      birthDate: _birthDate,
-      hunger: _hunger,
-      happiness: _happiness,
-      life: _life
-    ), userId: '');
     notifyListeners();
   }
 
