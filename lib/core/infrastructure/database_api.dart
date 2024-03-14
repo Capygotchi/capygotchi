@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:appwrite/appwrite.dart';
 import 'package:capygotchi/core/domain/entities/capybara.dart';
 import 'package:capygotchi/shared/constants/appwrite.dart';
@@ -37,7 +39,7 @@ class DatabaseAPI extends ChangeNotifier{
       final capybaraInfo = document.documents.first.data;
       Capybara(
         name: capybaraInfo['name'],
-        color: capybaraInfo['color'],
+        color: CapyColor.values.byName(capybaraInfo['color']),
         birthDate: DateTime.parse(capybaraInfo['birthDate']),
         hunger: capybaraInfo['hunger'],
         happiness: capybaraInfo['happiness'],

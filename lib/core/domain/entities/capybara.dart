@@ -11,7 +11,7 @@ enum CapyColor {
 class Capybara extends ChangeNotifier {
   late String _name;
   late DateTime _birthDate;
-  late String _color;
+  late CapyColor _color;
   late int _hunger;
   late int _happiness;
   late int _life;
@@ -24,7 +24,7 @@ class Capybara extends ChangeNotifier {
   // Getters
   String get name => _name;
   DateTime get birthDate => _birthDate;
-  String get color => _color;
+  CapyColor get color => _color;
   int? get hunger => _hunger;
   int? get happiness => _happiness;
   int? get life => _life;
@@ -34,7 +34,7 @@ class Capybara extends ChangeNotifier {
   // Constructor
   Capybara({
     required String name,
-    required String color,
+    required CapyColor color,
     DateTime? birthDate,
     int hunger = 100,
     int happiness = 100,
@@ -42,7 +42,7 @@ class Capybara extends ChangeNotifier {
     required String documentId
   }) {
     _name = name;
-    _color = CapyColor.brown.toString();
+    _color = CapyColor.brown;
     _birthDate = birthDate ?? DateTime.now();
     _hunger = hunger;
     _happiness = happiness;
