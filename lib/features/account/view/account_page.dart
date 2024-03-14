@@ -17,14 +17,14 @@ class AccountPage extends StatefulWidget {
 
 class _AccountPageState extends State<AccountPage> {
   late String accountName;
+  late String capybaraName;
   TextEditingController accountNameController = TextEditingController();
   TextEditingController capybaraNameController = TextEditingController();
 
   @override
   void initState() {
-
     accountNameController.text = context.read<User?>()?.userName ?? 'null';
-    //capybaraNameController.text = context.read<Capybara>().name;
+    capybaraNameController.text = context.read<Capybara?>()?.name ?? 'null';
     super.initState();
   }
 
@@ -54,7 +54,10 @@ class _AccountPageState extends State<AccountPage> {
 
   displayPopup(bool addedPremium){
     if(addedPremium){
-      Utils.showAlertPremium(context: context, title: "Thank you for your purchase!", text: "🎉 You have successfully bought premium for 30 days!", okBtnText: "Yeah!");
+      Utils.showAlertPremium(context: context, onPressed: () {
+        context.read<User?>()?.checkPremium();
+        Navigator.pop(context);
+      }, title: "Thank you for your purchase!", text: "🎉 You have successfully bought premium for 30 days!", okBtnText: "Yeah!");
     }
     else{
       Utils.showAlertOK(context: context, title: "An error has occured!", text: "We couldn't process your purchase. Sorry about that!", okBtnText: "OK");
@@ -65,15 +68,13 @@ class _AccountPageState extends State<AccountPage> {
   validateChangeButton(){
     accountName = accountNameController.text;
     capybaraName = capybaraNameController.text;
-    if(accountName.isNotEmpty) {
-      context.read<User?>()?.updateUserName(name: accountName);
+    if(accountName.isNotEmpty && capybaraName.isNotEmpty) {
+      Utils.showAlertPremium(context: context, onPressed: () {
+        context.read<User?>()?.updateUserName(name: accountName);
+        context.read<Capybara?>()?.updateName(name: capybaraName);
+        Navigator.pop(context);
+      }, title: "Updated !", text: "🎉 You have successfully updated your account!", okBtnText: "Ok");
     } else {
-      Utils.showAlertOK(context: context, title: "Error", text: "Please enter a valid name", okBtnText: "OK");
-    }
-    if(capybaraName.isNotEmpty){
-      Utils.logDebug(message: "capybara's new name: $capybaraName");
-      //context.read<Capybara>().updateName(name: capybaraName);
-    }else{
       Utils.showAlertOK(context: context, title: "Error", text: "Please give a real name to your capybara", okBtnText: "ok");
     }
   }

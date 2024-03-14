@@ -25,7 +25,7 @@ class Utils {
       }
     );
   }
-  static showAlertPremium({required BuildContext context, required String title, required String text, required String okBtnText}) {
+  static showAlertPremium({required BuildContext context, required Function onPressed, required String title, required String text, required String okBtnText}) {
     showDialog(
         context: context,
         barrierDismissible: false,
@@ -35,10 +35,7 @@ class Utils {
             content: Text(text),
             actions: [
               ElevatedButton(
-                  onPressed: () {
-                    context.read<User?>()?.refreshUser();
-                    Navigator.pop(context);
-                  },
+                  onPressed: () => onPressed(),
                   child: Text(okBtnText)
               )
             ],
