@@ -103,16 +103,15 @@ class _HomeFrameState extends State<HomeFrame> {
   Widget build(BuildContext context) {
     return
     Expanded(child:
-      Container(
+    Container(
       width: double.infinity,
       //height: 400,
-      decoration: const BoxDecoration(
-        color: Color(0xffA8C69F),
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(10),
-          topRight: Radius.circular(10),
-          bottomLeft: Radius.circular(10),
-          bottomRight: Radius.circular(10),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        image: const DecorationImage(
+          image: AssetImage('assets/background.png'),
+          alignment: Alignment.bottomCenter,
+          fit: BoxFit.cover,
         ),
       ),
       child: Stack(
