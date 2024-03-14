@@ -37,6 +37,7 @@ class _AccountPageState extends State<AccountPage> {
   }
 
   reskinButton(){
+    Utils.logDebug(message: context.read<User>().isPremium.toString());
     var capyColor = context.read<Capybara?>()?.color;
     capyColor = capyColor == CapyColor.brown ? CapyColor.brownWithHat : CapyColor.brown;
     context.read<Capybara>().changeColor(capyColor);
@@ -132,8 +133,9 @@ class _AccountPageState extends State<AccountPage> {
                     SizedBox(
                       width: double.infinity,
                       child: CapyButton(
+                        disabled: context.watch<User?>()?.isPremium!=true,
                         onPressed: () => reskinButton(),
-                        label: "*Premium* Change skin : ${context.watch<Capybara?>()?.color ?? CapyColor.brown}",
+                        label: "*Premium* Change skin : ${(context.watch<Capybara?>()?.color ?? CapyColor.brown.toString()).toString()}",
                         backgroundColor: const Color(0xff8a6552),
                       )
                     ),
