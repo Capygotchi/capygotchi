@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:capygotchi/core/infrastructure/database_api.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -11,6 +12,7 @@ class Capybara extends ChangeNotifier {
   late int _life;
   late String _documentId;
   late bool _alive;
+  late DatabaseAPI database;
 
   late Timer _hungerTimer;
   late Timer _happinessTimer;
@@ -124,6 +126,15 @@ class Capybara extends ChangeNotifier {
       _life = 0;
     }
     _updateAlive();
+    database.updateMonster(capybara: Capybara(
+      name: _name,
+      color: _color,
+      documentId: _documentId,
+      birthDate: _birthDate,
+      hunger: _hunger,
+      happiness: _happiness,
+      life: _life
+    ), userId: '');
     notifyListeners();
   }
 
@@ -156,5 +167,16 @@ class Capybara extends ChangeNotifier {
     _hungerTimer.cancel();
     _happinessTimer.cancel();
     super.dispose();
+  }
+
+  void updateCapybara(Capybara newCapybara) {
+    _name = newCapybara.name;
+    _color = newCapybara.color;
+    _documentId = newCapybara.documentId;
+    _birthDate = newCapybara.birthDate;
+    _hunger = newCapybara.hunger!;
+    _happiness = newCapybara.happiness!;
+    _life = newCapybara.life!;
+    notifyListeners();
   }
 }

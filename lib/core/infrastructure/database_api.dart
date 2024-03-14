@@ -26,13 +26,13 @@ class DatabaseAPI extends ChangeNotifier{
       );
 
       if(document.documents.isNotEmpty) {
-        print('getMonster name result: ${document.documents.first.data['name']}');
+        /* print('getMonster name result: ${document.documents.first.data['name']}');
         print('getMonster name result: ${document.documents.first.data['color']}');
         print('getMonster name result: ${DateTime.parse(document.documents.first.data['birthDate'])}');
         print('getMonster name result: ${document.documents.first.data['hunger']}');
         print('getMonster name result: ${document.documents.first.data['happiness']}');
         print('getMonster name result: ${document.documents.first.data['life']}');
-        print('getMonster name result: ${document.documents.first.$id}');
+        print('getMonster name result: ${document.documents.first.$id}'); */
 
       final capybaraInfo = document.documents.first.data;
         return Capybara(

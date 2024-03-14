@@ -50,8 +50,9 @@ class _HomePageState extends State<HomePage> {
     final database = context.read<DatabaseAPI?>();
     final userName = context.read<User?>()?.userName;
     if(database != null && userName != null) {
-      capybara = await database.getMonster(userId: context.read<User>().userId);
-      print(capybara.displayInfo());
+      final newCapybara = await database.getMonster(userId: context.read<User>().userId);
+      print(newCapybara.displayInfo());
+      capybara.updateCapybara(newCapybara);
     }
   }
   // updateMonster() {
@@ -65,10 +66,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    //initializing the capybara
-    return ChangeNotifierProxyProvider<Capybara, Capybara?>(
-      create: (_) => null,
-      update: (_, Capybara previousCapybara, Capybara? capybara) => capybara ?? previousCapybara,
+    return ChangeNotifierProvider<Capybara>(
+      create: (_) => capybara,
       child: Scaffold(
         backgroundColor: const Color(0xffF4E6E4),
         appBar: AppBar(
@@ -100,7 +99,7 @@ class _HomePageState extends State<HomePage> {
             HomeFooter(),
           ],
         ),
-      ),
+      )
     );
   }
 }
