@@ -1,4 +1,6 @@
+import 'package:capygotchi/core/domain/entities/user.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Utils {
   static showAlertOK({required BuildContext context, required String title, required String text, required String okBtnText}) {
@@ -20,7 +22,7 @@ class Utils {
       }
     );
   }
-  static showAlertPremium({required BuildContext context, required String title, required String text, required String yesBtnText, required String noBtnText}) {
+  static showAlertPremium({required BuildContext context, required String title, required String text, required String OKBtnText}) {
     showDialog(
         context: context,
         barrierDismissible: false,
@@ -31,15 +33,11 @@ class Utils {
             actions: [
               ElevatedButton(
                   onPressed: () {
+                    context.read<User>().refreshUser();
+                    context.read<User>().notifyListeners();
                     Navigator.pop(context);
                   },
-                  child: Text(noBtnText)
-              ),
-              ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text(yesBtnText))
+                  child: Text(OKBtnText))
               ],
               );
             }
