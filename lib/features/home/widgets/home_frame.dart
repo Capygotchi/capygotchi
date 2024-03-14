@@ -86,12 +86,12 @@ class _HomeFrameState extends State<HomeFrame> {
                 ? Transform(
                     transform: _movingRight ? Matrix4.rotationY(3.14159) : Matrix4.rotationY(0),
                     alignment: Alignment.center,
-                    child: Image.asset('assets/walk_left.gif'),
+                    child: Image.asset('walk_left.gif'),
                 )
                 : Transform(
                     transform: _movingRight ? Matrix4.rotationY(3.14159) : Matrix4.rotationY(0),
                     alignment: Alignment.center,
-                    child:Image.asset('assets/stand_left.gif'),
+                    child:Image.asset('stand_left.gif'),
                 ),
           ),
 
