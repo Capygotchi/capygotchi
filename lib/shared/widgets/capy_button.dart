@@ -8,13 +8,13 @@ class CapyButton extends StatelessWidget {
   final bool disabled; // Nouvelle propriété pour activer/désactiver le bouton
 
   const CapyButton({
-    Key? key,
+    super.key,
     required this.onPressed,
     this.label,
     this.icon,
     this.backgroundColor = Colors.white,
     this.disabled = false, // Par défaut, le bouton n'est pas désactivé
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
