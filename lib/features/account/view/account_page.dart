@@ -80,6 +80,7 @@ class _AccountPageState extends State<AccountPage> {
     if(isPremium){
       Utils.showAlertOK(context: context, title: "You are premium already!", text: "🎉 You have already subscribed! Thanks for your support", okBtnText: "Awesome!");
     }else{
+      if(!context.mounted) return;
       await context.read<User?>()?.addPremium().then((addedPremium) => displayPopup(addedPremium));
     }
   }
@@ -109,7 +110,7 @@ class _AccountPageState extends State<AccountPage> {
             capybara: capybara,
             userId: context.read<User>().userId
         );
-        if(!context.mounted) return;
+        if(!mounted) return;
         Navigator.pop(context);
       }, title: "Updated !", text: "🎉 You have successfully updated your account!", okBtnText: "Ok");
     } else {

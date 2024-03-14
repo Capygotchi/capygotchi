@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:capygotchi/core/infrastructure/database_api.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:capygotchi/shared/utils.dart';

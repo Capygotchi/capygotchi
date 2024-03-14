@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:developer';
 
-import 'package:provider/provider.dart';
-
-import '../core/domain/entities/user.dart';
-
 class Utils {
   static showAlertOK({required BuildContext context, required String title, required String text, required String okBtnText}) {
     showDialog(
