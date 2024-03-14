@@ -45,7 +45,8 @@ class Capybara extends ChangeNotifier {
     int hunger = 100,
     int happiness = 100,
     int life = 100,
-    required String documentId
+    required String documentId,
+    bool alive = true
   }) {
     _name = name;
     _color = CapyColor.brown;
@@ -54,7 +55,7 @@ class Capybara extends ChangeNotifier {
     _happiness = happiness;
     _life = life;
     _documentId = documentId;
-    _alive = true;
+    _alive = alive;
     _startTimers();
   }
 
@@ -185,6 +186,7 @@ class Capybara extends ChangeNotifier {
     _hunger = newCapybara.hunger!;
     _happiness = newCapybara.happiness!;
     _life = newCapybara.life!;
+    _alive = newCapybara._alive;
     notifyListeners();
   }
 }

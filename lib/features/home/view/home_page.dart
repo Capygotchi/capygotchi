@@ -30,18 +30,37 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      getMonster(context);
+      initMonster(context);
     });
     super.initState();
   }
 
-  getMonster(BuildContext context) async {
+  initMonster(BuildContext context) async {
     final database = context.read<DatabaseAPI?>();
-    final userName = context.read<User?>()?.userName;
-    if(database != null && userName != null) {
-      final newCapybara = await database.getMonster(userId: context.read<User>().userId);
-      if (!context.mounted) return;
-      context.read<Capybara>().updateCapybara(newCapybara);
+    final user = context.read<User?>();
+
+    if(database != null && user?.userName != null) {
+      final loadedCapybara = await database.getMonster(userId: context.read<User>().userId);
+      final newCapybara = Capybara(
+        name: 'Capybara',
+        color: CapyColor.brown,
+        documentId: '',
+      );
+
+      // No capybara found in database
+      if(loadedCapybara == null && context.mounted) {
+        await database.createMonster(capybara: newCapybara, userId: context.read<User>().userId);
+        if(!context.mounted) return;
+        context.read<Capybara>().updateCapybara(newCapybara);
+      }
+
+      // Capybara found is dead
+      if(loadedCapybara?.alive == false && loadedCapybara != null && context.mounted) {
+        database.deleteMonster(capybara: loadedCapybara);
+        await database.createMonster(capybara: newCapybara, userId: context.read<User>().userId);
+        if(!context.mounted) return;
+        context.read<Capybara>().updateCapybara(newCapybara);
+      }
     }
   }
 

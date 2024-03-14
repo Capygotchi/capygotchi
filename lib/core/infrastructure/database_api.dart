@@ -14,7 +14,7 @@ class DatabaseAPI extends ChangeNotifier{
     _databases = databases;
   }
 
-  Future<Capybara> getMonster({
+  Future<Capybara?> getMonster({
     required String userId
   }) async {
     try {
@@ -26,15 +26,10 @@ class DatabaseAPI extends ChangeNotifier{
           ]
       );
 
-      Utils.logDebug(message: 'getMonster name result: ${document.documents.first.data['name']}');
-      Utils.logDebug(message: 'getMonster color result: ${document.documents.first.data['color']}');
-      Utils.logDebug(message: 'getMonster birthDate result: ${DateTime.parse(document.documents.first.data['birthDate'])}');
-      Utils.logDebug(message: 'getMonster hunger result: ${document.documents.first.data['hunger']}');
-      Utils.logDebug(message: 'getMonster happiness result: ${document.documents.first.data['happiness']}');
-      Utils.logDebug(message: 'getMonster life result: ${document.documents.first.data['life']}');
-      Utils.logDebug(message: 'getMonster userId result: ${document.documents.first.$id}');
+      if(document == null || document.documents.isEmpty) return null;
 
       final capybaraInfo = document.documents.first.data;
+
       return Capybara(
           name: capybaraInfo['name'],
           color: CapyColor.values.byName(capybaraInfo['color']),
@@ -42,41 +37,38 @@ class DatabaseAPI extends ChangeNotifier{
           hunger: capybaraInfo['hunger'],
           happiness: capybaraInfo['happiness'],
           life: capybaraInfo['life'],
+          alive: capybaraInfo['alive'],
           documentId: document.documents.first.$id
       );
 
     } on AppwriteException catch(e) {
       Utils.logError(message: e);
-      return Capybara(name: 'Roger', color: CapyColor.brown, documentId: '');
+      return null;
     } finally {
       notifyListeners();
     }
   }
 
-  createMonster({
+  Future<void> createMonster({
     required Capybara capybara,
     required String userId
   }) async {
     try {
-      final isHavingMonster = await getMonster(userId: userId);
-      if(isHavingMonster.documentId == '') {
-        await _databases.createDocument(
-            databaseId: AppWriteConstants.databaseId,
-            collectionId: AppWriteConstants.collectionId,
-            documentId: ID.unique(),
-            data: {
-              'name': capybara.name,
-              'color': capybara.color.name,
-              'birthDate': capybara.birthDate.toIso8601String(),
-              'hunger': capybara.hunger,
-              'happiness': capybara.happiness,
-              'life': capybara.life,
-              'userId': userId
-            }
-        );
-      } else {
-        Utils.logDebug(message: "User have already a capybara");
-      }
+      await _databases.createDocument(
+        databaseId: AppWriteConstants.databaseId,
+        collectionId: AppWriteConstants.collectionId,
+        documentId: ID.unique(),
+        data: {
+          'name': capybara.name,
+          'color': capybara.color.name,
+          'birthDate': capybara.birthDate.toIso8601String(),
+          'hunger': capybara.hunger,
+          'happiness': capybara.happiness,
+          'life': capybara.life,
+          'alive': capybara.alive,
+          'userId': userId
+        }
+      );
     } on AppwriteException catch(e) {
       Utils.logError(message: e);
     } finally {
@@ -90,11 +82,11 @@ class DatabaseAPI extends ChangeNotifier{
   }) async {
     try {
       final isHavingMonster = await getMonster(userId: userId);
-      if(isHavingMonster.documentId != '') {
+      if(isHavingMonster != null && isHavingMonster?.documentId != '') {
         await _databases.updateDocument(
             databaseId: AppWriteConstants.databaseId,
             collectionId: AppWriteConstants.collectionId,
-            documentId: capybara.documentId,
+            documentId: isHavingMonster.documentId,
             data: {
               'name': capybara.name,
               'color': capybara.color.name,
@@ -102,6 +94,7 @@ class DatabaseAPI extends ChangeNotifier{
               'hunger': capybara.hunger,
               'happiness': capybara.happiness,
               'life': capybara.life,
+              'alive': capybara.alive,
               'userId': userId
             }
         );
