@@ -25,6 +25,7 @@ class _AccountPageState extends State<AccountPage> {
   @override
   void initState() {
     accountNameController.text = context.read<User?>()?.userName ?? 'null';
+    //capybaraNameController.text = context.read<Capybara>().name;
     super.initState();
   }
 
@@ -72,7 +73,7 @@ class _AccountPageState extends State<AccountPage> {
     }
     if(capybaraName.isNotEmpty){
       Utils.logDebug(message: "capybara's new name: $capybaraName");
-      //context.read<Capybara>()?.;
+      //context.read<Capybara>().updateName(name: capybaraName);
     }else{
       Utils.showAlertOK(context: context, title: "Error", text: "Please give a real name to your capybara", okBtnText: "ok");
     }
