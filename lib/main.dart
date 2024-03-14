@@ -4,7 +4,6 @@ import 'package:capygotchi/core/domain/entities/user.dart';
 import 'package:capygotchi/core/infrastructure/auth_api.dart';
 import 'package:capygotchi/core/infrastructure/database_api.dart';
 import 'package:capygotchi/shared/utils.dart';
-import 'package:capygotchi/features/home/view/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
