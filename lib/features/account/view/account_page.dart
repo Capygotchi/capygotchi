@@ -75,7 +75,7 @@ class _AccountPageState extends State<AccountPage> {
         Navigator.pop(context);
       }, title: "Updated !", text: "🎉 You have successfully updated your account!", okBtnText: "Ok");
     } else {
-      Utils.showAlertOK(context: context, title: "Error", text: "Please give a real name to your capybara", okBtnText: "ok");
+      Utils.showAlertOK(context: context, title: "Error", text: "Please give a name to your account or capybara", okBtnText: "ok");
     }
   }
 
