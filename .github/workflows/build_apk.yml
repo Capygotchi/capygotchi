@@ -1,0 +1,58 @@
+name: Build APK
+
+on:
+  push:
+    branches:
+      - master
+      - dev
+  pull_request:
+    branches:
+      - master
+      - dev
+
+jobs:
+  buildAndRelease:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '12.x'
+      - uses: subosito/flutter-action@v1
+        with:
+          channel: 'beta'
+      - name: Get dependencies
+        run: flutter pub get
+      - name: Analyze
+        run: flutter analyze .
+      - name: Build APK
+        run: |
+          if [ "${GITHUB_EVENT_NAME}" == "pull_request" ]; then
+            flutter build apk --release
+            mv build/app/outputs/apk/release/app-release.apk build/app/outputs/apk/release/capygotchi.apk
+          elif [ "${GITHUB_REF##*/}" = "dev" ]; then
+            flutter build apk --release
+            mv build/app/outputs/apk/release/app-release.apk build/app/outputs/apk/release/capygotchi.apk
+          elif [ "${GITHUB_REF##*/}" = "master" ]; then
+            flutter build apk --release
+            mv build/app/outputs/apk/release/app-release.apk build/app/outputs/apk/release/capygotchi.apk
+          else
+            echo "Unsupported branch"
+            exit 1
+          fi
+      - name: Upload APK as artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: release-apk
+          path: build/app/outputs/apk/release/
+
+      - name: Upload binaries to release
+        if: github.event_name != 'pull_request'
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.SECRET_TOKEN }}
+          file: build/app/outputs/apk/release/capygotchi.apk
+          tag: ${{ github.ref_name }}
+          overwrite: true
+          body: "Release automatically created by GitHub Actions"
+          prerelease: true

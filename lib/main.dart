@@ -1,9 +1,48 @@
-import 'package:capygotchi/features/auth/pages/login.dart';
+import 'package:capygotchi/app_router.dart';
+import 'package:capygotchi/core/domain/entities/capybara.dart';
+import 'package:capygotchi/core/domain/entities/user.dart';
+import 'package:capygotchi/core/infrastructure/auth_api.dart';
+import 'package:capygotchi/core/infrastructure/database_api.dart';
+import 'package:capygotchi/shared/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:appwrite/appwrite.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider<AuthAPI>(
+          create: (context) => AuthAPI(),
+        ),
+        ChangeNotifierProxyProvider<AuthAPI, User?>(
+          create: (_) => null,
+          update: (_, auth, previousUser) {
+            if (auth.status == AuthStatus.authenticated) {
+              return User(
+                account: auth.account,
+                functions: auth.functions,
+                user: auth.currentUser,
+              );
+            }
+            return null;
+          },
+        ),
+        ChangeNotifierProxyProvider<AuthAPI, DatabaseAPI?>(
+            create: (_) => null,
+            update: (_, auth, previousDatabase) {
+              if (auth.status == AuthStatus.authenticated) {
+                return DatabaseAPI(databases: auth.databases);
+              }
+              return null;
+            }
+        ),
+        ChangeNotifierProvider<Capybara>(
+            create: (_) => Capybara(name: 'Roger', color: CapyColor.brown, documentId: '')
+        ),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -12,20 +51,22 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final authStatus = context.watch<AuthAPI>().status;
+    final userName = context.watch<User?>()?.userName ?? 'null';
+    Utils.logDebug(message: 'Auth status: $authStatus');
+    Utils.logDebug(message: 'User name: $userName');
 
-    Client client = Client()
-        .setEndpoint("https://cloud.appwrite.io/v1")
-        .setProject("65eb3c30edc0ee1934e6")
-        .setSelfSigned(status: true); //! For self signed certificates, only use for development
-    Account account = Account(client);
+    final router = AppRouter.createRouter(context, context.read<AuthAPI>());
 
-    return MaterialApp(
-      title: 'Flutter Demo',
+    return MaterialApp.router(
+      title: 'Capygotchi',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
+        fontFamily: 'Capriola',
       ),
-      home: LoginPage(account: account)
+      routerConfig: router,
     );
   }
 }
