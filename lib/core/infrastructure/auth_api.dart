@@ -35,8 +35,8 @@ class AuthAPI extends ChangeNotifier {
   initClient() {
     client
         .setEndpoint(AppWriteConstants.endpoint) // Your API Endpoint
-        .setProject(AppWriteConstants.projectId) // Your project ID
-        .setSelfSigned(status: true); // For self signed certificates, only use for development
+        .setProject(AppWriteConstants.projectId); // Your project ID
+        // .setSelfSigned(status: true); // For self signed certificates, only use for development
     account = Account(client);
     databases = Databases(client);
     functions = Functions(client);
