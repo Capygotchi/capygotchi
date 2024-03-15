@@ -49,7 +49,7 @@ class Capybara extends ChangeNotifier {
     bool alive = true
   }) {
     _name = name;
-    _color = CapyColor.brown;
+    _color = color;
     _birthDate = birthDate ?? DateTime.now();
     _hunger = hunger;
     _happiness = happiness;
@@ -97,7 +97,6 @@ class Capybara extends ChangeNotifier {
 
   void changeColor(CapyColor newColor) {
     _color = newColor;
-    Utils.logDebug(message: newColor.toString());
     notifyListeners();
   }
 

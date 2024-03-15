@@ -30,6 +30,8 @@ class DatabaseAPI extends ChangeNotifier{
 
       final capybaraInfo = document.documents.first.data;
 
+      Utils.logDebug(message: CapyColor.values.byName(capybaraInfo['color']));
+
       return Capybara(
           name: capybaraInfo['name'],
           color: CapyColor.values.byName(capybaraInfo['color']),
@@ -55,19 +57,19 @@ class DatabaseAPI extends ChangeNotifier{
   }) async {
     try {
       await _databases.createDocument(
-        databaseId: AppWriteConstants.databaseId,
-        collectionId: AppWriteConstants.collectionId,
-        documentId: ID.unique(),
-        data: {
-          'name': capybara.name,
-          'color': capybara.color.name,
-          'birthDate': capybara.birthDate.toIso8601String(),
-          'hunger': capybara.hunger,
-          'happiness': capybara.happiness,
-          'life': capybara.life,
-          'alive': capybara.alive,
-          'userId': userId
-        }
+          databaseId: AppWriteConstants.databaseId,
+          collectionId: AppWriteConstants.collectionId,
+          documentId: ID.unique(),
+          data: {
+            'name': capybara.name,
+            'color': capybara.color.name,
+            'birthDate': capybara.birthDate.toIso8601String(),
+            'hunger': capybara.hunger,
+            'happiness': capybara.happiness,
+            'life': capybara.life,
+            'alive': capybara.alive,
+            'userId': userId
+          }
       );
     } on AppwriteException catch(e) {
       Utils.logError(message: e);
@@ -98,6 +100,8 @@ class DatabaseAPI extends ChangeNotifier{
               'userId': userId
             }
         );
+      } else {
+        await createMonster(capybara: capybara, userId: userId);
       }
     } on AppwriteException catch(e) {
       Utils.logError(message: e);

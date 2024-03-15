@@ -37,7 +37,7 @@ void main() {
             }
         ),
         ChangeNotifierProvider<Capybara>(
-            create: (_) => Capybara(name: 'Roger', color: CapyColor.brown, documentId: '')
+            create: (BuildContext context) => Capybara(name: 'Roger', color: CapyColor.brown, documentId: ''),
         ),
       ],
       child: const MyApp(),
