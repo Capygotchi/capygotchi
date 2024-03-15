@@ -26,11 +26,9 @@ class DatabaseAPI extends ChangeNotifier{
           ]
       );
 
-      if(document == null || document.documents.isEmpty) return null;
+      if(document.documents.isEmpty) return null;
 
       final capybaraInfo = document.documents.first.data;
-
-      Utils.logDebug(message: CapyColor.values.byName(capybaraInfo['color']));
 
       return Capybara(
           name: capybaraInfo['name'],
@@ -84,7 +82,7 @@ class DatabaseAPI extends ChangeNotifier{
   }) async {
     try {
       final isHavingMonster = await getMonster(userId: userId);
-      if(isHavingMonster != null && isHavingMonster?.documentId != '') {
+      if(isHavingMonster != null && isHavingMonster.documentId != '') {
         await _databases.updateDocument(
             databaseId: AppWriteConstants.databaseId,
             collectionId: AppWriteConstants.collectionId,

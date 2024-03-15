@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:capygotchi/core/domain/entities/capybara.dart';
 import 'package:capygotchi/features/home/widgets/home_stat_bar.dart';
-import 'package:capygotchi/shared/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:capygotchi/core/domain/entities/user.dart';
@@ -24,7 +23,7 @@ class _HomeStatsState extends State<HomeStats> {
   @override
   void initState() {
     super.initState();
-    _timer = Timer.periodic(const Duration(milliseconds: 15000), (timer) {
+    _timer = Timer.periodic(const Duration(minutes: 1), (timer) {
       updateMonster();
     });
   }

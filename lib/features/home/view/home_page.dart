@@ -1,5 +1,3 @@
-import 'package:appwrite/appwrite.dart';
-import 'package:capygotchi/core/infrastructure/auth_api.dart';
 import 'package:capygotchi/features/home/widgets/home_footer.dart';
 import 'package:capygotchi/features/home/widgets/home_frame.dart';
 import 'package:capygotchi/features/home/widgets/home_stats.dart';
@@ -8,7 +6,6 @@ import 'package:capygotchi/core/infrastructure/database_api.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:capygotchi/core/domain/entities/capybara.dart';
-
 import 'package:capygotchi/core/domain/entities/user.dart';
 
 class HomePage extends StatefulWidget {
@@ -19,8 +16,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  Capybara _capybara = Capybara(name: 'Roger', color: CapyColor.brown, documentId: '');
-
   @override
   void initState() {
     super.initState();
@@ -39,7 +34,6 @@ class _HomePageState extends State<HomePage> {
     if (capybara != null && capybara.alive == true) {
       // Si un Capybara vivant est trouvé, utilisez-le
       setState(() {
-        _capybara = capybara;
         context.read<Capybara>().updateCapybara(capybara);
       });
     }
@@ -69,8 +63,7 @@ class _HomePageState extends State<HomePage> {
         ],
         backgroundColor: const Color(0xff8a6552),
       ),
-      body: _capybara != null
-          ? const Column(
+      body: const Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           HomeStats(),
@@ -78,8 +71,7 @@ class _HomePageState extends State<HomePage> {
           Spacer(),
           HomeFooter(),
         ],
-      )
-          : CircularProgressIndicator(), // Afficher un indicateur de chargement tant que le Capybara n'est pas chargé
+      ),
     );
   }
 }
