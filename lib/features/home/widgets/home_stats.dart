@@ -23,7 +23,7 @@ class _HomeStatsState extends State<HomeStats> {
   @override
   void initState() {
     super.initState();
-    _timer = Timer.periodic(const Duration(milliseconds: 8000), (timer) {
+    _timer = Timer.periodic(const Duration(minutes: 1), (timer) {
       updateMonster();
     });
   }

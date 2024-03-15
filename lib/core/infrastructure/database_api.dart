@@ -26,7 +26,7 @@ class DatabaseAPI extends ChangeNotifier{
           ]
       );
 
-      if(document == null || document.documents.isEmpty) return null;
+      if(document.documents.isEmpty) return null;
 
       final capybaraInfo = document.documents.first.data;
 
@@ -55,19 +55,19 @@ class DatabaseAPI extends ChangeNotifier{
   }) async {
     try {
       await _databases.createDocument(
-        databaseId: AppWriteConstants.databaseId,
-        collectionId: AppWriteConstants.collectionId,
-        documentId: ID.unique(),
-        data: {
-          'name': capybara.name,
-          'color': capybara.color.name,
-          'birthDate': capybara.birthDate.toIso8601String(),
-          'hunger': capybara.hunger,
-          'happiness': capybara.happiness,
-          'life': capybara.life,
-          'alive': capybara.alive,
-          'userId': userId
-        }
+          databaseId: AppWriteConstants.databaseId,
+          collectionId: AppWriteConstants.collectionId,
+          documentId: ID.unique(),
+          data: {
+            'name': capybara.name,
+            'color': capybara.color.name,
+            'birthDate': capybara.birthDate.toIso8601String(),
+            'hunger': capybara.hunger,
+            'happiness': capybara.happiness,
+            'life': capybara.life,
+            'alive': capybara.alive,
+            'userId': userId
+          }
       );
     } on AppwriteException catch(e) {
       Utils.logError(message: e);
@@ -82,7 +82,7 @@ class DatabaseAPI extends ChangeNotifier{
   }) async {
     try {
       final isHavingMonster = await getMonster(userId: userId);
-      if(isHavingMonster != null && isHavingMonster?.documentId != '') {
+      if(isHavingMonster != null && isHavingMonster.documentId != '') {
         await _databases.updateDocument(
             databaseId: AppWriteConstants.databaseId,
             collectionId: AppWriteConstants.collectionId,
@@ -98,6 +98,8 @@ class DatabaseAPI extends ChangeNotifier{
               'userId': userId
             }
         );
+      } else {
+        await createMonster(capybara: capybara, userId: userId);
       }
     } on AppwriteException catch(e) {
       Utils.logError(message: e);

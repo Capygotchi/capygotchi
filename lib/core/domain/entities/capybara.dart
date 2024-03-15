@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:capygotchi/shared/utils.dart';
 
 enum CapyColor {
   brown,
@@ -49,7 +48,7 @@ class Capybara extends ChangeNotifier {
     bool alive = true
   }) {
     _name = name;
-    _color = CapyColor.brown;
+    _color = color;
     _birthDate = birthDate ?? DateTime.now();
     _hunger = hunger;
     _happiness = happiness;
@@ -97,7 +96,6 @@ class Capybara extends ChangeNotifier {
 
   void changeColor(CapyColor newColor) {
     _color = newColor;
-    Utils.logDebug(message: newColor.toString());
     notifyListeners();
   }
 
@@ -159,8 +157,6 @@ class Capybara extends ChangeNotifier {
       //     title: "$_name is dead",
       //     text: "your $_name is dead!",
       //     okBtnText: 'OK');
-
-      _name += " is dead";
     }
     notifyListeners();
   }
